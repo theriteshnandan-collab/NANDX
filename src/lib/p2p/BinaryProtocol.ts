@@ -25,7 +25,9 @@ const TYPE_MAP: Record<string, number> = {
     "ANSWER": 4,
     "CANDIDATE": 5,
     "TYPING": 6,
-    "SEEN": 7
+    "SEEN": 7,
+    "GHOST_CMD": 8,
+    "GHOST_RESP": 9
 };
 
 // Reverse map for decoding

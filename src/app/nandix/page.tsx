@@ -52,6 +52,9 @@ export default function NandixOS() {
     const botManagerRef = useRef<BotManager | null>(null);
     const [botShards, setBotShards] = useState<BotShard[]>([]);
 
+    // Error & Toast State
+    const [lastError, setLastError] = useState<string | null>(null);
+
     // Load/Sync Profile
     useEffect(() => {
         if (myId) {
@@ -63,7 +66,7 @@ export default function NandixOS() {
                 setBotShards(botManagerRef.current.getShards());
             }
 
-            // Hook Mesh Events for Bots
+            // Hook Mesh Events
             mesh.onConnection((peerId) => {
                 botManagerRef.current?.handleConnection(peerId);
             });
@@ -72,9 +75,14 @@ export default function NandixOS() {
                 botManagerRef.current?.handleMessage(peerId, text);
             });
 
-            // Handle incoming trust vouches (Update UI if needed)
+            mesh.onConnectionError((peerId, err) => {
+                console.error(`[UI] Connection error with ${peerId}:`, err);
+                setLastError(`Connection to ${peerId.substring(0, 8)} failed. Retrying...`);
+                setTimeout(() => setLastError(null), 5000);
+            });
+
+            // Handle incoming trust vouches
             mesh.onTrustVouch(() => {
-                // Dexie LiveQuery handles the score update, here we just log
                 console.log("[UI] 🛡️ Trust metrics updated via mesh vouch");
             });
         }
@@ -157,7 +165,7 @@ export default function NandixOS() {
     }, []);
 
     useEffect(() => {
-        mesh.setPacketListener((packet) => {
+        const unsubscribe = mesh.setPacketListener((packet) => {
             if (packet.type === "BLUE_START") {
                 mesh.initIncomingStream(packet.payload);
             }
@@ -166,61 +174,7 @@ export default function NandixOS() {
                 setStreamProgress({ percent: 0, file: "" });
             }
         });
-
-        mesh.setProgressListener((percent, file) => {
-            setStreamProgress({ percent, file });
-        });
-
-        // 📞 Voice/Video Listeners
-        mesh.onIncomingCall((call) => {
-            if (callState !== "idle") {
-                mesh.rejectCall(call.peer);
-                return;
-            }
-            setActiveCallPeer(call.peer);
-            setCallState("incoming");
-            // Defaults to video if it's a media connection? 
-            // PeerJS doesn't explicitly send "voice" vs "video" in the call packet,
-            // but we can infer or just handle both as streams.
-            setCallType("voice");
-        });
-
-        mesh.onRemoteStream((peerId, stream) => {
-            console.log(`[UI] 📺 Remote stream attached from ${peerId}`);
-            setRemoteStream(stream);
-        });
-
-        mesh.onCallClose((peerId) => {
-            if (activeCallPeer === peerId || !peerId) {
-                setCallState("idle");
-                setActiveCallPeer(null);
-                setRemoteStream(null);
-                stopStream();
-            }
-        });
-
-        // 🔗 Pairing Listeners
-        mesh.onPairingRequest((peerId, secret) => {
-            console.log(`[UI] 🔗 Pairing request from ${peerId}`);
-            setPairingRequest({ peerId, secret });
-        });
-
-        mesh.onPairingData(async (mnemonic) => {
-            console.log("[UI] 🔐 Pairing data received! Scaling identity...");
-            const profile = identity.recover(mnemonic);
-            if (profile) {
-                // Success! Force reload to re-init all providers with new identity
-                window.location.reload();
-            }
-        });
-
-        mesh.onRoomAnnounce((peerId, room) => {
-            setDiscoveredRooms(prev => {
-                const exists = prev.find(r => r.id === room.id);
-                if (exists) return prev;
-                return [...prev, { ...room, host: peerId }];
-            });
-        });
+        return () => { unsubscribe(); };
     }, [callState, activeCallPeer]);
 
     const initiateCall = async (peerId: string, type: "voice" | "video") => {
@@ -268,7 +222,22 @@ export default function NandixOS() {
     };
 
     return (
-        <div className="relative w-screen h-screen overflow-hidden bg-[#000000] text-white">
+        <div className="relative w-screen h-screen overflow-hidden bg-[#000000] text-white selection:bg-emerald-500/30">
+            {/* ═══ ERROR TOAST ═══ */}
+            <AnimatePresence>
+                {lastError && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -20, x: "-50%" }}
+                        animate={{ opacity: 1, y: 0, x: "-50%" }}
+                        exit={{ opacity: 0, y: -20, x: "-50%" }}
+                        className="fixed top-8 left-1/2 z-[100] px-6 py-3 rounded-2xl bg-rose-500/10 border border-rose-500/20 backdrop-blur-xl flex items-center gap-3 shadow-[0_0_40px_rgba(244,63,94,0.1)]"
+                    >
+                        <AlertTriangle className="w-4 h-4 text-rose-500" />
+                        <span className="text-[11px] font-black uppercase tracking-widest text-rose-400">{lastError}</span>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
             {/* IDENTITY VESSEL: Onboarding Modal */}
             <AnimatePresence>
                 {showVessel && mnemonic && (
@@ -359,7 +328,7 @@ export default function NandixOS() {
             </AnimatePresence>
 
             {/* MAIN CONTENT: The Void Canvas */}
-            <main className="relative w-full h-full z-10 pt-14 pb-32">
+            <main className="relative w-full h-full z-10 pt-14 pb-20 md:pb-32">
                 <AnimatePresence mode="wait">
                     {mode === "TALK" && (
                         <TalkView
@@ -528,14 +497,16 @@ function TalkView({ messages, sendMessage, sendMediaMessage, myId, activeTopic, 
             className="h-full flex flex-col max-w-4xl mx-auto px-6 md:px-12"
         >
             {/* ═══ CONSOLIDATED HEADER ═══ */}
-            <div className="flex items-center justify-between pt-4 pb-4 border-b border-white/[0.03] gap-4">
-                <div className="flex items-center gap-3">
+            <div className="flex items-center justify-between pt-4 pb-4 border-b border-white/[0.03] gap-2 md:gap-4">
+                <div className="flex items-center gap-2 md:gap-3">
                     <button
                         onClick={() => setShowRooms(!showRooms)}
-                        className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-zinc-900/60 border border-white/[0.04] text-[11px] font-bold text-zinc-300 hover:text-white transition-all"
+                        className="flex items-center gap-2 px-3 py-2 md:py-1.5 rounded-lg bg-zinc-900/60 border border-white/[0.04] text-[11px] font-bold text-zinc-300 hover:text-white transition-all active:scale-95"
                     >
-                        <Hash className="w-3 h-3 text-emerald-500" />
-                        {activeTopic === "general" ? "general" : rooms.find(r => r.id === activeTopic)?.name || activeTopic}
+                        <Hash className="w-3.5 h-3.5 text-emerald-500" />
+                        <span className="truncate max-w-[80px] md:max-w-none">
+                            {activeTopic === "general" ? "general" : rooms.find(r => r.id === activeTopic)?.name || activeTopic}
+                        </span>
                     </button>
                     {activeTopic !== "general" && (
                         <button
@@ -547,17 +518,17 @@ function TalkView({ messages, sendMessage, sendMediaMessage, myId, activeTopic, 
                     )}
                 </div>
 
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-1 md:gap-3">
                     <button
                         onClick={() => onCall(activeTopic, "voice")}
-                        className="p-2 rounded-lg text-zinc-600 hover:text-emerald-400 hover:bg-emerald-500/10 transition-all"
+                        className="p-2.5 md:p-2 rounded-lg text-zinc-600 hover:text-emerald-400 hover:bg-emerald-500/10 transition-all active:scale-90"
                         title="Voice Call"
                     >
                         <Phone className="w-4 h-4" />
                     </button>
                     <button
                         onClick={() => onCall(activeTopic, "video")}
-                        className="p-2 rounded-lg text-zinc-600 hover:text-cyan-400 hover:bg-cyan-500/10 transition-all"
+                        className="p-2.5 md:p-2 rounded-lg text-zinc-600 hover:text-cyan-400 hover:bg-cyan-500/10 transition-all active:scale-90"
                         title="Video Call"
                     >
                         <Video className="w-4 h-4" />
@@ -567,14 +538,14 @@ function TalkView({ messages, sendMessage, sendMediaMessage, myId, activeTopic, 
                         {isSearching && (
                             <motion.div
                                 initial={{ width: 0, opacity: 0 }}
-                                animate={{ width: 180, opacity: 1 }}
+                                animate={{ width: 140, opacity: 1 }}
                                 exit={{ width: 0, opacity: 0 }}
-                                className="overflow-hidden"
+                                className="overflow-hidden hidden md:block"
                             >
                                 <input
                                     autoFocus
                                     type="text"
-                                    placeholder="Search shards..."
+                                    placeholder="Search..."
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                     className="w-full bg-zinc-950 border border-white/5 rounded-lg px-3 py-1.5 text-[11px] text-zinc-300 placeholder:text-zinc-700 focus:outline-none focus:border-emerald-500/30"
@@ -584,7 +555,7 @@ function TalkView({ messages, sendMessage, sendMediaMessage, myId, activeTopic, 
                     </AnimatePresence>
                     <button
                         onClick={() => { setIsSearching(!isSearching); if (isSearching) setSearchQuery(""); }}
-                        className={`p-2 rounded-lg transition-colors ${isSearching ? 'bg-emerald-500/10 text-emerald-500' : 'text-zinc-600 hover:text-zinc-400'}`}
+                        className={`p-2.5 md:p-2 rounded-lg transition-colors active:scale-90 ${isSearching ? 'bg-emerald-500/10 text-emerald-500' : 'text-zinc-600 hover:text-zinc-400'}`}
                     >
                         <Edit3 className="w-4 h-4" />
                     </button>
@@ -594,10 +565,10 @@ function TalkView({ messages, sendMessage, sendMediaMessage, myId, activeTopic, 
                             const name = prompt("Room name:");
                             if (name?.trim()) onCreateRoom(name.trim());
                         }}
-                        className="w-7 h-7 rounded-lg bg-zinc-900/60 border border-white/[0.04] flex items-center justify-center text-zinc-600 hover:text-emerald-400 hover:border-emerald-500/20 transition-all"
+                        className="w-9 h-9 md:w-7 md:h-7 rounded-lg bg-zinc-900/60 border border-white/[0.04] flex items-center justify-center text-zinc-600 hover:text-emerald-400 hover:border-emerald-500/20 transition-all active:scale-90"
                         title="Create Room"
                     >
-                        <Plus className="w-3 h-3" />
+                        <Plus className="w-3.5 h-3.5" />
                     </button>
                 </div>
             </div>
@@ -1633,9 +1604,9 @@ function ProfileView({ profile, onSave, shards, onToggleShard }: { profile: User
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="h-full max-w-2xl mx-auto px-6 pt-12"
+            className="h-full max-w-2xl mx-auto px-4 md:px-6 pt-6 md:pt-12 pb-32"
         >
-            <div className="space-y-8">
+            <div className="space-y-6 md:space-y-8">
                 {/* ═══ QR SHARD ═══ */}
                 <div className="relative group mx-auto w-64 h-64">
                     <div className="absolute -inset-4 bg-violet-600/10 rounded-[2.5rem] blur-2xl group-hover:bg-violet-600/20 transition-all duration-700" />

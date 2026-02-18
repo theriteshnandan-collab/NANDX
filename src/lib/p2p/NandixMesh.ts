@@ -45,7 +45,7 @@ export class NandixMesh {
     private connectionQuality: Map<string, "direct" | "relay" | "unknown"> = new Map();
 
     private myId: string | null = null;
-    private onPacketReceived?: (packet: NandixPacket) => void;
+    private packetListeners: Set<(packet: NandixPacket) => void> = new Set();
     private onStreamProgress?: (progress: number, fileName: string) => void;
     private connectionChangeCallback?: (count: number) => void;
     private onTypingCallback?: (peerId: string, isTyping: boolean) => void;
@@ -72,8 +72,9 @@ export class NandixMesh {
         return NandixMesh.instance;
     }
 
-    public setPacketListener(callback: (packet: NandixPacket) => void) {
-        this.onPacketReceived = callback;
+    public setPacketListener(cb: (packet: NandixPacket) => void) {
+        this.packetListeners.add(cb);
+        return () => this.packetListeners.delete(cb);
     }
 
     public setProgressListener(callback: (progress: number, fileName: string) => void) {
@@ -194,6 +195,16 @@ export class NandixMesh {
             this.peer.on("error", (err: any) => {
                 console.error(`[TRIDENT] ❌ PeerJS Error:`, err.type, err.message || err);
 
+                // If disconnected from server, try to reconnect
+                if (err.type === "network" || err.type === "peer-unavailable" || err.type === "disconnected") {
+                    console.log(`[TRIDENT] ⚠️ Network error. Attempting reconnect in 3s...`);
+                    setTimeout(() => {
+                        if (this.peer && !this.peer.destroyed) {
+                            this.peer.reconnect();
+                        }
+                    }, 3000);
+                }
+
                 // If the ID is taken, retry without custom ID
                 if (err.type === "unavailable-id" && id) {
                     console.log(`[TRIDENT] 🔄 ID taken, retrying with auto-ID...`);
@@ -212,6 +223,13 @@ export class NandixMesh {
                         console.error(`[TRIDENT] ❌ FATAL:`, e2);
                     });
                     this.registerPeerListeners();
+                }
+            });
+
+            this.peer.on("disconnected", () => {
+                console.warn("[TRIDENT] ⚠️ Peer disconnected from server. Auto-reconnecting...");
+                if (this.peer && !this.peer.destroyed) {
+                    this.peer.reconnect();
                 }
             });
 
@@ -596,9 +614,13 @@ export class NandixMesh {
                 return;
             }
 
-            if (this.onPacketReceived) {
-                this.onPacketReceived(packet);
-            }
+            this.packetListeners.forEach(listener => {
+                try {
+                    listener(packet);
+                } catch (err) {
+                    console.error("[TRIDENT] ❌ Packet listener error:", err);
+                }
+            });
         });
 
         conn.on("close", () => {
@@ -612,7 +634,27 @@ export class NandixMesh {
 
         conn.on("error", (err) => {
             console.error(`[TRIDENT] ❌ ${wire} connection error with ${conn.peer}:`, err);
+            // Don't delete immediately, let close event handle cleanup if needed, 
+            // or maybe retry connection?
+            if (this.onConnectionErrorCallback) {
+                this.onConnectionErrorCallback(conn.peer, err);
+            }
         });
+    }
+
+    private onConnectionErrorCallback?: (peerId: string, error: any) => void;
+    public onConnectionError(cb: (peerId: string, error: any) => void) { this.onConnectionErrorCallback = cb; }
+
+    /**
+     * 💪 Force Retry Connection
+     */
+    public async retryConnection(peerId: string) {
+        if (this.chatConnections.has(peerId)) {
+            const conn = this.chatConnections.get(peerId);
+            if (conn?.open) return; // Already open
+            this.chatConnections.delete(peerId); // Remove stale
+        }
+        await this.connectToPeer(peerId);
     }
 
     /**
