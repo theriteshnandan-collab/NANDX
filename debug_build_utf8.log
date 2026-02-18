@@ -1,0 +1,240 @@
+﻿  Γû▓ Next.js 14.2.14
+  - Environments: .env.local
+
+   Creating an optimized production build ...
+node.exe : Failed to 
+compile.
+At line:1 char:1
++ & "C:\Program Files
+\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo 
+...
++ ~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~
+    + CategoryInfo   
+           : NotSpe  
+  cified: (Failed    
+ to compile.:Stri    
+ng) [], RemoteEx    
+ception
+    + FullyQualified 
+   ErrorId : Native  
+  CommandError
+ 
+
+./node_modules/@wllam
+a/wllama/src/cache-ma
+nager.ts
+Module parse failed: 
+Unexpected token 
+(1:12)
+File was processed 
+with these loaders:
+ * ./node_modules/nex
+t/dist/build/webpack/
+loaders/next-flight-c
+lient-module-loader.j
+s
+ * ./node_modules/nex
+t/dist/build/webpack/
+loaders/next-swc-load
+er.js
+You may need an 
+additional loader to 
+handle the result of 
+these loaders.
+> import type { Downl
+oadProgressCallback 
+} from 
+'./model-manager';
+| import { 
+createWorker, 
+isSafariMobile } 
+from './utils';
+| import { OPFS_UTILS
+_WORKER_CODE } from '
+./workers-code/genera
+ted';
+
+Import trace for 
+requested module:
+./node_modules/@wllam
+a/wllama/src/cache-ma
+nager.ts
+./node_modules/@wllam
+a/wllama/src/index.ts
+./node_modules/@wllam
+a/wllama/index.ts
+./src/lib/ghost/Ghost
+EngineCPU.ts
+./src/components/Shel
+l/NerveCenter.tsx
+./src/app/nandix/page
+.tsx
+
+./node_modules/@wllam
+a/wllama/src/model-ma
+nager.ts
+Module parse failed: 
+Unexpected token 
+(2:7)
+File was processed 
+with these loaders:
+ * ./node_modules/nex
+t/dist/build/webpack/
+loaders/next-flight-c
+lient-module-loader.j
+s
+ * ./node_modules/nex
+t/dist/build/webpack/
+loaders/next-swc-load
+er.js
+You may need an 
+additional loader to 
+handle the result of 
+these loaders.
+| import 
+CacheManager, {
+>   type CacheEntry,
+|   type 
+DownloadOptions,
+| } from 
+'./cache-manager';
+
+Import trace for 
+requested module:
+./node_modules/@wllam
+a/wllama/src/model-ma
+nager.ts
+./node_modules/@wllam
+a/wllama/src/index.ts
+./node_modules/@wllam
+a/wllama/index.ts
+./src/lib/ghost/Ghost
+EngineCPU.ts
+./src/components/Shel
+l/NerveCenter.tsx
+./src/app/nandix/page
+.tsx
+
+./node_modules/@wllam
+a/wllama/src/utils.ts
+Module parse failed: 
+Unexpected token 
+(1:35)
+File was processed 
+with these loaders:
+ * ./node_modules/nex
+t/dist/build/webpack/
+loaders/next-flight-c
+lient-module-loader.j
+s
+ * ./node_modules/nex
+t/dist/build/webpack/
+loaders/next-swc-load
+er.js
+You may need an 
+additional loader to 
+handle the result of 
+these loaders.
+> export const 
+joinBuffers = 
+(buffers: 
+Uint8Array[]): 
+Uint8Array => {
+|   const totalSize 
+= 
+buffers.reduce((acc, 
+buf) => acc + 
+buf.length, 0);
+|   const output = 
+new Uint8Array(totalS
+ize);
+
+Import trace for 
+requested module:
+./node_modules/@wllam
+a/wllama/src/utils.ts
+./node_modules/@wllam
+a/wllama/src/index.ts
+./node_modules/@wllam
+a/wllama/index.ts
+./src/lib/ghost/Ghost
+EngineCPU.ts
+./src/components/Shel
+l/NerveCenter.tsx
+./src/app/nandix/page
+.tsx
+
+./node_modules/@wllam
+a/wllama/src/wllama.t
+s
+Module parse failed: 
+Unexpected token 
+(13:28)
+File was processed 
+with these loaders:
+ * ./node_modules/nex
+t/dist/build/webpack/
+loaders/next-flight-c
+lient-module-loader.j
+s
+ * ./node_modules/nex
+t/dist/build/webpack/
+loaders/next-swc-load
+er.js
+You may need an 
+additional loader to 
+handle the result of 
+these loaders.
+|   isValidGgufFile,
+| } from './utils';
+> import 
+CacheManager, { type 
+DownloadOptions } 
+from 
+'./cache-manager';
+| import { 
+ModelManager, Model 
+} from 
+'./model-manager';
+| import type {
+
+Import trace for 
+requested module:
+./node_modules/@wllam
+a/wllama/src/wllama.t
+s
+./node_modules/@wllam
+a/wllama/src/index.ts
+./node_modules/@wllam
+a/wllama/index.ts
+./src/lib/ghost/Ghost
+EngineCPU.ts
+./src/components/Shel
+l/NerveCenter.tsx
+./src/app/nandix/page
+.tsx
+
+./src/components/Shel
+l/NerveCenter.tsx
+Module not found: 
+Can't resolve 
+'../AI/GhostTerminal'
+
+https://nextjs.org/do
+cs/messages/module-no
+t-found
+
+Import trace for 
+requested module:
+./src/app/nandix/page
+.tsx
+
+
+> Build failed 
+because of webpack 
+errors

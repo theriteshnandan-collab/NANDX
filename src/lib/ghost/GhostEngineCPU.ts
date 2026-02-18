@@ -115,8 +115,21 @@ class GhostEngine {
         let tokenCount = 0;
 
         try {
-            // Phi-3 Prompt Format
-            const formattedPrompt = `<|user|>\n${prompt}<|end|>\n<|assistant|>\n`;
+            // ☢️ REACTOR: Retrieve context for the prompt
+            console.log(`[GHOST] ☢️ Querying Reactor for: "${prompt.substring(0, 30)}..."`);
+            const contextResults = await import("./VectorEngine").then(m => m.vectorEngine.query(prompt));
+
+            let contextBlock = "";
+            if (contextResults.length > 0) {
+                contextBlock = "\n[SOVEREIGN CONTEXT]\n" +
+                    contextResults.map(r => `- ${r.text}`).join("\n") +
+                    "\n[/SOVEREIGN CONTEXT]\n";
+                console.log(`[GHOST] 📖 Injected ${contextResults.length} context shards.`);
+            }
+
+            // Phi-3 Prompt Format with injected context
+            const systemPrompt = `You are GHOST, the Sovereign Intelligence of NANDIX OS. Use the provided context if relevant.${contextBlock}`;
+            const formattedPrompt = `<|system|>\n${systemPrompt}<|end|>\n<|user|>\n${prompt}<|end|>\n<|assistant|>\n`;
 
             await this.wllama.createCompletion(formattedPrompt, {
                 nPredict: this.MAX_TOKENS,

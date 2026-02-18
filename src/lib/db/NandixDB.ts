@@ -144,7 +144,7 @@ export const db = new NandixDatabase();
 
 /** Log a file transfer to the local database */
 export async function logFileTransfer(file: Omit<DroppedFile, "id">) {
-    return db.files.add(file);
+    return (db as any).files.add(file);
 }
 
 /** Update a file transfer's status */
@@ -153,7 +153,7 @@ export async function updateFileStatus(
     status: DroppedFile["status"],
     progress: number = 100
 ) {
-    return db.files.update(id, { status, progress });
+    return (db as any).files.update(id, { status, progress });
 }
 
 /** Save a chat message to local history */

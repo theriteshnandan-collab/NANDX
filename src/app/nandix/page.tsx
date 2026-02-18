@@ -16,6 +16,8 @@ import { BotManager, BotShard } from "@/lib/agents/BotShards";
 import { trustEngine, TrustVouch } from "@/lib/crypto/TrustEngine";
 import { useLiveQuery } from "dexie-react-hooks";
 import { motion, AnimatePresence } from "framer-motion";
+// import { reactorPipeline } from "@/lib/ghost/ReactorPipeline";
+// import { vectorEngine } from "@/lib/ghost/VectorEngine";
 import QRCode from "qrcode";
 import {
     Send, Share2, Radio, User, Cpu,
@@ -23,13 +25,15 @@ import {
     Wifi, Shield, Check, Zap, Copy, Users,
     Key, Eye, EyeOff, RefreshCw, AlertTriangle,
     Plus, Hash, ChevronLeft, Trash2, Image as ImageIcon, Mic, X, Play, Pause, Clock, CheckCheck,
-    Settings, QrCode, Edit3, Phone, PhoneOff, VideoOff, Volume2, VolumeX, Video
+    Settings, QrCode, Edit3, Phone, PhoneOff, VideoOff, Volume2, VolumeX, Video, Globe
 } from "lucide-react";
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // NANDIX OS: THE VOID
 // A spatial, physics-based sovereign interface.
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+const modes: VoidMode[] = ["TALK", "DROP", "RADAR", "PROFILE"];
 
 export default function NandixOS() {
     const [mode, setMode] = useState<VoidMode>("TALK");
@@ -88,6 +92,10 @@ export default function NandixOS() {
             mesh.onTrustVouch(() => {
                 console.log("[UI] 🛡️ Trust metrics updated via mesh vouch");
             });
+
+            // ☢️ BOOT REACTOR
+            // reactorPipeline.start();
+            // vectorEngine.initialize();
         }
     }, [myId]);
 
@@ -297,6 +305,12 @@ export default function NandixOS() {
                         <Shield className="w-3 h-3 text-zinc-600" />
                     </div>
                 </div>
+
+                {/* ☢️ REACTOR HUD */}
+                <div className="absolute top-14 left-8 flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/5 border border-emerald-500/10 backdrop-blur-md">
+                    <Zap className="w-3 h-3 text-emerald-500 animate-pulse" />
+                    <span className="text-[9px] font-black uppercase tracking-widest text-emerald-400">Reactor Online</span>
+                </div>
             </header>
 
             {/* STREAM HUD */}
@@ -363,7 +377,7 @@ export default function NandixOS() {
                                 rooms={rooms || []}
                                 onSwitchTopic={setActiveTopic}
                                 onCreateRoom={async (name) => {
-                                    const id = await createRoom(name);
+                                    const id = await createRoom(name, myId || "anonymous");
                                     if (id) {
                                         setActiveTopic(id);
                                         mesh.sendRoomInvite(id, name, "");
@@ -371,7 +385,7 @@ export default function NandixOS() {
                                 }}
                                 showRegistry={showRegistry}
                                 setShowRegistry={setShowRegistry}
-                                onCall={startCall}
+                                onCall={initiateCall}
                             />
                         )}
                         {mode === "DROP" && <DropView key="drop" streamProgress={streamProgress} />}
@@ -429,7 +443,7 @@ export default function NandixOS() {
 // TALK VIEW: Data Shards (Not Bubbles)
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-function TalkView({ messages, sendMessage, sendMediaMessage, myId, activeTopic, rooms, onSwitchTopic, onCreateRoom, onCall }: { messages: any[]; sendMessage: (text: string) => void; sendMediaMessage: (mediaType: "image" | "voice" | "file", mediaData: string, text?: string, mediaName?: string) => void; myId: string | null; activeTopic: string; rooms: ChatRoom[]; onSwitchTopic: (topic: string) => void; onCreateRoom: (name: string) => void; onCall: (peerId: string, type: "voice" | "video") => void }) {
+function TalkView({ messages, sendMessage, sendMediaMessage, myId, activeTopic, rooms, onSwitchTopic, onCreateRoom, onCall, showRegistry, setShowRegistry }: { messages: any[]; sendMessage: (text: string) => void; sendMediaMessage: (mediaType: "image" | "voice" | "file", mediaData: string, text?: string, mediaName?: string) => void; myId: string | null; activeTopic: string; rooms: ChatRoom[]; onSwitchTopic: (topic: string) => void; onCreateRoom: (name: string) => void; onCall: (peerId: string, type: "voice" | "video") => void; showRegistry: boolean; setShowRegistry: (show: boolean) => void }) {
     const [input, setInput] = useState("");
     const [peerTyping, setPeerTyping] = useState<string | null>(null);
     const endRef = useRef<HTMLDivElement>(null);
@@ -900,7 +914,7 @@ function TalkView({ messages, sendMessage, sendMediaMessage, myId, activeTopic, 
 function DropView({ streamProgress }: any) {
     const [dragging, setDragging] = useState(false);
     const recentFiles = useLiveQuery(
-        () => db.files.orderBy("timestamp").reverse().limit(5).toArray(),
+        () => (db as any).files.orderBy("timestamp").reverse().limit(5).toArray(),
         []
     );
 
@@ -995,7 +1009,7 @@ function DropView({ streamProgress }: any) {
                         <span className="px-6 text-[9px] font-black tracking-[0.6em] text-zinc-800 uppercase">Archive</span>
                         <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/5 to-transparent" />
                     </div>
-                    {recentFiles.map((file, i) => (
+                    {recentFiles.map((file: any, i: number) => (
                         <motion.div
                             key={file.id}
                             initial={{ opacity: 0, x: -10 }}
@@ -1874,7 +1888,7 @@ function PairingDialog({ request, onAccept, onReject }: { request: { peerId: str
 
 function VoidStats() {
     const { connectedPeers } = useMesh();
-    const fileCount = useLiveQuery(() => db.files.count(), []);
+    const fileCount = useLiveQuery(() => (db as any).files.count(), []);
     const msgCount = useLiveQuery(() => db.messages.count(), []);
 
     const stats = [
