@@ -1,0 +1,16 @@
+src/app/dashboard/page.tsx(29,39): error TS7006: Parameter 'k' implicitly has an 'any' type.
+src/app/ghost/page.tsx(239,19): error TS7034: Variable 'shards' implicitly has type 'any[]' in some locations where its type cannot be determined.
+src/app/ghost/page.tsx(250,34): error TS7005: Variable 'shards' implicitly has an 'any[]' type.
+src/app/page.tsx(22,12): error TS2304: Cannot find name 'Globe'.
+src/app/page.tsx(27,8): error TS2304: Cannot find name 'Navbar'.
+src/app/page.tsx(30,8): error TS2304: Cannot find name 'Hero'.
+src/app/page.tsx(48,8): error TS2304: Cannot find name 'TerminalDemo'.
+src/app/page.tsx(52,10): error TS2304: Cannot find name 'ArsenalGrid'.
+src/app/page.tsx(56,8): error TS2304: Cannot find name 'HowItWorks'.
+src/app/page.tsx(76,8): error TS2304: Cannot find name 'Footer'.
+src/components/landing/Hero.tsx(19,77): error TS7006: Parameter '_event' implicitly has an 'any' type.
+src/components/landing/Hero.tsx(19,85): error TS7006: Parameter 'session' implicitly has an 'any' type.
+src/components/Navbar.tsx(21,77): error TS7006: Parameter '_event' implicitly has an 'any' type.
+src/components/Navbar.tsx(21,85): error TS7006: Parameter 'session' implicitly has an 'any' type.
+src/lib/agents/BotShards.ts(78,29): error TS2802: Type 'MapIterator<BotShard>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+src/lib/agents/BotShards.ts(89,29): error TS2802: Type 'MapIterator<BotShard>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.

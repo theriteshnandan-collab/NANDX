@@ -1,0 +1,195 @@
+/* =========================================
+   DANRIT: THE SWISS INDUSTRIAL DESIGN SYSTEM
+   ========================================= */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* THE CORE PALETTE */
+    --void: #050505;
+    --bone: #E5E5E5;
+    --ash: #888888;
+    --grid: #1a1a1a;
+    --border: #222222;
+    --background: #000000;
+    --foreground: #E5E5E5;
+
+    /* SIGNAL COLORS (Use sparingly) */
+    --signal-green: #22C55E;
+    --signal-red: #EF4444;
+    --signal-amber: #F59E0B;
+    --signal-orange: #EA580C;
+
+    /* PREMIUM PALETTE (Refined - No Neon) */
+    --copper: #B45309;       /* Warm copper/bronze */
+    --amber-warm: #D97706;   /* Warm amber */
+    --slate-warm: #475569;   /* Warm slate blue */
+    --stone-dark: #1C1917;   /* Warm dark stone */
+    --cream: #FAFAF9;        /* Off-white cream */
+
+    /* SPACING (4px baseline) */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-6: 24px;
+    --space-8: 32px;
+    --space-12: 48px;
+    --space-16: 64px;
+  }
+
+  html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply text-[#E5E5E5] antialiased;
+    background: var(--void);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+}
+
+@layer components {
+
+  /* THE GRID OVERLAY */
+  .grid-overlay {
+    background-image:
+      linear-gradient(to right, var(--grid) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  /* THE PANEL (The Swiss Card) */
+  .panel {
+    @apply border border-[#222];
+    background: var(--void);
+  }
+
+  .panel-header {
+    @apply px-6 py-4 border-b border-[#222];
+  }
+
+  .panel-body {
+    @apply p-6;
+  }
+
+  /* THE LABEL (Tiny Uppercase Label) */
+  .label {
+    @apply text-[10px] uppercase tracking-[1px] text-[#888] font-semibold;
+  }
+
+  /* THE DATA VALUE (Big Monospace Number/Text) */
+  .data-value {
+    @apply text-2xl font-light tracking-tight text-[#E5E5E5];
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  }
+
+  /* THE BUTTON (Industrial) */
+  .btn-primary {
+    @apply px-6 py-3 bg-[#E5E5E5] text-[#050505] text-sm uppercase tracking-wider font-semibold;
+    @apply hover:bg-white transition-colors duration-100;
+  }
+
+  .btn-secondary {
+    @apply px-6 py-3 border border-[#333] text-[#888] text-sm uppercase tracking-wider;
+    @apply hover:border-[#E5E5E5] hover:text-[#E5E5E5] transition-colors duration-100;
+  }
+
+  /* THE INPUT (Industrial) */
+  .input-industrial {
+    @apply w-full px-4 py-3 bg-transparent border border-[#333] text-[#E5E5E5];
+    @apply focus:outline-none focus:border-[#E5E5E5] transition-colors duration-100;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* STATUS INDICATORS */
+  .status-dot {
+    @apply w-2 h-2 rounded-full;
+  }
+
+  .status-dot.online {
+    @apply bg-[#22C55E];
+  }
+
+  .status-dot.offline {
+    @apply bg-[#EF4444];
+  }
+
+  .status-dot.pending {
+    @apply bg-[#F59E0B];
+  }
+}
+
+@layer utilities {
+
+  /* TYPOGRAPHY UTILITIES */
+  .font-heading {
+    @apply font-semibold uppercase tracking-[-0.02em];
+  }
+
+  .font-mono {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  }
+
+  /* THE GRID LAYOUT HELPERS */
+  .grid-swiss {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 1px;
+    background: var(--border);
+  }
+
+  .grid-swiss>* {
+    background: var(--void);
+  }
+
+  /* SIDEBAR WIDTH */
+  .sidebar-width {
+    width: 240px;
+    min-width: 240px;
+  }
+
+  /* STATUS BAR HEIGHT */
+  .statusbar-height {
+    height: 40px;
+  }
+}
+
+/* CUSTOM SCROLLBAR (Minimal) */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--void);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ash);
+}
+
+/* SELECTION */
+::selection {
+  background: rgba(229, 229, 229, 0.2);
+  color: white;
+}
+
+/* ANIMATIONS */
+@keyframes infinite-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-100%); }
+}
+
+.animate-infinite-scroll {
+  animation: infinite-scroll 25s linear infinite;
+}

@@ -1,0 +1,10 @@
+.next/types/app/dashboard/layout.ts(2,24): error TS2307: Cannot find module '../../../../src/app/dashboard/layout.js' or its corresponding type declarations.
+.next/types/app/dashboard/layout.ts(5,29): error TS2307: Cannot find module '../../../../src/app/dashboard/layout.js' or its corresponding type declarations.
+.next/types/app/dashboard/page.ts(2,24): error TS2307: Cannot find module '../../../../src/app/dashboard/page.js' or its corresponding type declarations.
+.next/types/app/dashboard/page.ts(5,29): error TS2307: Cannot find module '../../../../src/app/dashboard/page.js' or its corresponding type declarations.
+.next/types/app/ghost/page.ts(2,24): error TS2307: Cannot find module '../../../../src/app/ghost/page.js' or its corresponding type declarations.
+.next/types/app/ghost/page.ts(5,29): error TS2307: Cannot find module '../../../../src/app/ghost/page.js' or its corresponding type declarations.
+src/components/landing/Hero.tsx(19,77): error TS7006: Parameter '_event' implicitly has an 'any' type.
+src/components/landing/Hero.tsx(19,85): error TS7006: Parameter 'session' implicitly has an 'any' type.
+src/components/Navbar.tsx(21,77): error TS7006: Parameter '_event' implicitly has an 'any' type.
+src/components/Navbar.tsx(21,85): error TS7006: Parameter 'session' implicitly has an 'any' type.

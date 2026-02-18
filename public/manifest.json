@@ -1,0 +1,25 @@
+{
+    "name": "NANDIX — Sovereign Mesh",
+    "short_name": "NANDIX",
+    "description": "Sovereign P2P communication. No servers. No tracking. Your identity, your rules.",
+    "start_url": "/nandix",
+    "display": "standalone",
+    "orientation": "portrait",
+    "background_color": "#000000",
+    "theme_color": "#000000",
+    "categories": [
+        "communication",
+        "social",
+        "utilities"
+    ],
+    "icons": [
+        {
+            "src": "/icons/icon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+        }
+    ],
+    "screenshots": [],
+    "prefer_related_applications": false
+}

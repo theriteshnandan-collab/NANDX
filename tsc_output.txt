@@ -1,0 +1,14 @@
+src/app/nandix/page.tsx(4,39): error TS2307: Cannot find module '@/components/Shell/NerveCenter' or its corresponding type declarations.
+src/app/nandix/page.tsx(5,30): error TS2307: Cannot find module '@/hooks/useSovereign' or its corresponding type declarations.
+src/app/nandix/page.tsx(6,33): error TS2307: Cannot find module '@/hooks/useVoiceMessage' or its corresponding type declarations.
+src/app/nandix/page.tsx(7,32): error TS2307: Cannot find module '@/hooks/useMediaStream' or its corresponding type declarations.
+src/app/nandix/page.tsx(8,25): error TS2307: Cannot find module '@/context/MeshProvider' or its corresponding type declarations.
+src/app/nandix/page.tsx(9,22): error TS2307: Cannot find module '@/lib/p2p/NandixMesh' or its corresponding type declarations.
+src/app/nandix/page.tsx(10,33): error TS2307: Cannot find module '@/lib/crypto/SovereignCrypto' or its corresponding type declarations.
+src/app/nandix/page.tsx(11,67): error TS2307: Cannot find module '@/lib/crypto/Identity' or its corresponding type declarations.
+src/app/nandix/page.tsx(12,101): error TS2307: Cannot find module '@/lib/db/NandixDB' or its corresponding type declarations.
+src/app/nandix/page.tsx(13,38): error TS2307: Cannot find module '@/lib/agents/BotShards' or its corresponding type declarations.
+src/app/nandix/page.tsx(14,41): error TS2307: Cannot find module '@/lib/crypto/TrustEngine' or its corresponding type declarations.
+src/lib/p2p/NandixMesh.ts(4,141): error TS2307: Cannot find module '@/lib/db/NandixDB' or its corresponding type declarations.
+src/lib/p2p/NandixMesh.ts(5,50): error TS2307: Cannot find module '@/lib/crypto/SovereignCrypto' or its corresponding type declarations.
+src/lib/p2p/NandixMesh.ts(6,41): error TS2307: Cannot find module '@/lib/crypto/TrustEngine' or its corresponding type declarations.
