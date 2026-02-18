@@ -1,0 +1,189 @@
+"use client";
+
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Hash, Users, Shield, Plus, Search, Globe, Zap, ArrowRight, User } from "lucide-react";
+import { useMesh } from "../../context/MeshProvider";
+import { useLiveQuery } from "dexie-react-hooks";
+import { db } from "../../lib/db/NandixDB";
+
+interface RegistryViewProps {
+    onJoinRoom: (roomId: string, inviteCode: string) => void;
+    onAddContact: (peerId: string) => void;
+}
+
+export const RegistryView: React.FC<RegistryViewProps> = ({ onJoinRoom, onAddContact }) => {
+    const { connectedPeers } = useMesh();
+    const [filter, setFilter] = useState("");
+    const [tab, setTab] = useState<"ROOMS" | "PEERS">("ROOMS");
+
+    // Live Data
+    const localRooms = useLiveQuery(() => db.rooms.toArray(), []) || [];
+    const localContacts = useLiveQuery(() => db.contacts.toArray(), []) || [];
+
+    // Filter logic
+    const filteredRooms = localRooms.filter(r => r.name.toLowerCase().includes(filter.toLowerCase()));
+    const filteredPeers = localContacts.filter(p => (p.nickname || p.peerId).toLowerCase().includes(filter.toLowerCase()));
+
+    return (
+        <div className="w-full h-full flex flex-col bg-zinc-950/40 backdrop-blur-xl border border-white/[0.04] rounded-3xl overflow-hidden">
+            {/* Header: Search & Navigation */}
+            <div className="p-6 space-y-4 border-b border-white/[0.04]">
+                <div className="flex items-center justify-between">
+                    <h2 className="text-xs font-black uppercase tracking-[0.3em] text-white/40 flex items-center gap-2">
+                        <Globe className="w-3 h-3 text-cyan-400" />
+                        The Registry
+                    </h2>
+                    <div className="flex items-center gap-1 bg-white/5 p-1 rounded-xl">
+                        <button
+                            onClick={() => setTab("ROOMS")}
+                            className={`px-3 py-1.5 text-[10px] font-bold rounded-lg transition-all ${tab === "ROOMS" ? "bg-white/10 text-white shadow-lg" : "text-white/40 hover:text-white/60"}`}
+                        >
+                            Swarms
+                        </button>
+                        <button
+                            onClick={() => setTab("PEERS")}
+                            className={`px-3 py-1.5 text-[10px] font-bold rounded-lg transition-all ${tab === "PEERS" ? "bg-white/10 text-white shadow-lg" : "text-white/40 hover:text-white/60"}`}
+                        >
+                            Mesh
+                        </button>
+                    </div>
+                </div>
+
+                <div className="relative group">
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20 group-focus-within:text-cyan-400 transition-colors" />
+                    <input
+                        type="text"
+                        placeholder={tab === "ROOMS" ? "Search public swarms..." : "Search mesh contacts..."}
+                        value={filter}
+                        onChange={(e) => setFilter(e.target.value)}
+                        className="w-full bg-white/[0.03] border border-white/[0.06] rounded-2xl py-3 pl-12 pr-4 text-sm text-white placeholder:text-white/10 outline-none focus:border-cyan-500/50 focus:bg-white/[0.05] transition-all"
+                    />
+                </div>
+            </div>
+
+            {/* Content: Scrollable Grid */}
+            <div className="flex-1 overflow-y-auto p-4 custom-scrollbar">
+                <AnimatePresence mode="wait">
+                    {tab === "ROOMS" ? (
+                        <motion.div
+                            key="rooms"
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            className="grid grid-cols-1 md:grid-cols-2 gap-3"
+                        >
+                            {filteredRooms.map((room) => (
+                                <RoomCard key={room.id} room={room} onJoin={() => onJoinRoom(room.id, room.inviteCode)} />
+                            ))}
+                            {filteredRooms.length === 0 && <EmptyState icon={Hash} message="No swarms detected in the mesh." />}
+                        </motion.div>
+                    ) : (
+                        <motion.div
+                            key="peers"
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            className="space-y-2"
+                        >
+                            {filteredPeers.map((peer) => (
+                                <PeerRow key={peer.peerId} peer={peer} onAdd={() => onAddContact(peer.peerId)} />
+                            ))}
+                            {filteredPeers.length === 0 && <EmptyState icon={Users} message="Mesh history is empty." />}
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </div>
+        </div>
+    );
+};
+
+function RoomCard({ room, onJoin }: { room: any, onJoin: () => void }) {
+    return (
+        <motion.div
+            whileHover={{ y: -2 }}
+            className="group p-5 bg-white/[0.02] border border-white/[0.04] hover:border-cyan-500/30 rounded-2xl transition-all cursor-pointer relative overflow-hidden"
+            onClick={onJoin}
+        >
+            <div className="absolute top-0 left-0 w-1 h-full bg-cyan-500/0 group-hover:bg-cyan-500/100 transition-all" />
+
+            <div className="flex items-start justify-between mb-4">
+                <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center">
+                    <Hash className="w-5 h-5 text-cyan-400" />
+                </div>
+                <div className="flex flex-col items-end">
+                    <span className="text-[10px] font-black uppercase tracking-tighter text-white/20">MEMBERS</span>
+                    <span className="text-xs font-bold text-white/60">{room.members?.length || 0}</span>
+                </div>
+            </div>
+
+            <div className="space-y-1">
+                <h3 className="font-bold text-white group-hover:text-cyan-400 transition-colors">{room.name}</h3>
+                <p className="text-[11px] text-white/30 line-clamp-2 leading-relaxed">
+                    {room.description || "A sovereign group in the NANDIX mesh."}
+                </p>
+            </div>
+
+            <div className="mt-4 flex items-center justify-between">
+                <div className="flex -space-x-2">
+                    {[1, 2, 3].map(i => (
+                        <div key={i} className="w-5 h-5 rounded-full bg-zinc-900 border border-white/10" />
+                    ))}
+                </div>
+                <Zap className="w-4 h-4 text-white/10 group-hover:text-amber-400 transition-colors" />
+            </div>
+        </motion.div>
+    );
+}
+
+function PeerRow({ peer, onAdd }: { peer: any, onAdd: () => void }) {
+    return (
+        <motion.div
+            whileHover={{ x: 4 }}
+            className="flex items-center justify-between p-4 bg-white/[0.01] hover:bg-white/[0.03] border border-white/[0.03] rounded-2xl transition-all"
+        >
+            <div className="flex items-center gap-4">
+                <div className="relative">
+                    <div className="w-10 h-10 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center">
+                        <User className="w-5 h-5 text-purple-400" />
+                    </div>
+                    {peer.lastSeen > Date.now() - 60000 && (
+                        <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 border-2 border-zinc-950 rounded-full" />
+                    )}
+                </div>
+                <div>
+                    <h4 className="text-sm font-bold text-white">{peer.nickname || `nandix-${peer.peerId.substring(0, 6)}`}</h4>
+                    <p className="text-[10px] text-white/20 font-mono tracking-tighter uppercase">{peer.peerId}</p>
+                </div>
+            </div>
+
+            <div className="flex items-center gap-3">
+                {peer.trustScore && (
+                    <div className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-emerald-500/5 border border-emerald-500/10">
+                        <Shield className="w-2.5 h-2.5 text-emerald-400" />
+                        <span className="text-[9px] font-black text-emerald-400">{peer.trustScore}</span>
+                    </div>
+                )}
+                <button
+                    onClick={(e) => { e.stopPropagation(); onAdd(); }}
+                    className="p-2 bg-white/5 hover:bg-cyan-500/20 rounded-xl border border-white/5 hover:border-cyan-500/30 transition-all text-white/40 hover:text-cyan-400"
+                >
+                    <ArrowRight className="w-4 h-4" />
+                </button>
+            </div>
+        </motion.div>
+    );
+}
+
+function EmptyState({ icon: Icon, message }: { icon: any, message: string }) {
+    return (
+        <div className="w-full py-20 flex flex-col items-center justify-center text-center space-y-4">
+            <div className="w-16 h-16 rounded-3xl bg-white/[0.02] border border-white/[0.04] flex items-center justify-center">
+                <Icon className="w-8 h-8 text-white/10" />
+            </div>
+            <p className="text-[11px] font-bold text-white/20 uppercase tracking-[0.2em]">
+                {message}
+            </p>
+        </div>
+    );
+}

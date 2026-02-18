@@ -7,6 +7,8 @@ import { useVoiceMessage } from "@/hooks/useVoiceMessage";
 import { useMediaStream } from "@/hooks/useMediaStream";
 import { useMesh } from "@/context/MeshProvider";
 import { mesh } from "@/lib/p2p/NandixMesh";
+import { RegistryView } from "@/components/Social/RegistryView";
+import { LinkPreview } from "@/components/Chat/LinkPreview";
 import { sovereignCrypto } from "@/lib/crypto/SovereignCrypto";
 import { identity, UserProfile, getMyProfile, setMyProfile } from "@/lib/crypto/Identity";
 import { db, saveContact, removeContact, createRoom, deleteRoom, ChatRoom, updateRoomPrivacy } from "@/lib/db/NandixDB";
@@ -40,6 +42,7 @@ export default function NandixOS() {
     const [showVessel, setShowVessel] = useState(false);
     const [myProfile, setMyProfileState] = useState<UserProfile | null>(null);
     const [discoveredRooms, setDiscoveredRooms] = useState<any[]>([]);
+    const [showRegistry, setShowRegistry] = useState(false);
 
     // CALL STATE
     const [callState, setCallState] = useState<"idle" | "calling" | "incoming" | "active">("idle");
@@ -330,45 +333,67 @@ export default function NandixOS() {
             {/* MAIN CONTENT: The Void Canvas */}
             <main className="relative w-full h-full z-10 pt-14 pb-20 md:pb-32">
                 <AnimatePresence mode="wait">
-                    {mode === "TALK" && (
-                        <TalkView
-                            key="talk"
-                            messages={messages}
-                            sendMessage={sendMessage}
-                            sendMediaMessage={sendMediaMessage}
-                            myId={myId}
-                            activeTopic={activeTopic}
-                            rooms={rooms || []}
-                            onSwitchTopic={setActiveTopic}
-                            onCall={initiateCall}
-                            onCreateRoom={async (name: string) => {
-                                if (myId) {
-                                    const id = await createRoom(name, myId);
-                                    setActiveTopic(id);
-                                    mesh.sendRoomInvite(id, name, "");
+                    <motion.div
+                        key={mode}
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -20 }}
+                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                        className="flex-1 w-full"
+                        onPanEnd={(_, info) => {
+                            // 📱 Mobile Swipe Logic
+                            if (Math.abs(info.offset.x) > 50) {
+                                const currentIndex = modes.indexOf(mode);
+                                if (info.offset.x > 0 && currentIndex > 0) {
+                                    setMode(modes[currentIndex - 1]);
+                                } else if (info.offset.x < 0 && currentIndex < modes.length - 1) {
+                                    setMode(modes[currentIndex + 1]);
                                 }
-                            }}
-                        />
-                    )}
-                    {mode === "DROP" && <DropView key="drop" streamProgress={streamProgress} />}
-                    {mode === "RADAR" && (
-                        <RadarView
-                            key="radar"
-                            myId={myId}
-                            connectedPeers={connectedPeers}
-                            discoveredRooms={discoveredRooms}
-                        />
-                    )}
-                    {mode === "PROFILE" && <ProfileView
-                        key="profile"
-                        profile={myProfile}
-                        shards={botShards}
-                        onToggleShard={(id, enabled) => {
-                            botManagerRef.current?.toggleShard(id, enabled);
-                            setBotShards([...(botManagerRef.current?.getShards() || [])]);
+                            }
                         }}
-                        onSave={async (p) => { await setMyProfile(p); setMyProfileState(p); mesh.sendProfile(p); }}
-                    />}
+                    >
+                        {mode === "TALK" && (
+                            <TalkView
+                                key="talk"
+                                messages={messages}
+                                sendMessage={sendMessage}
+                                sendMediaMessage={sendMediaMessage}
+                                myId={myId}
+                                activeTopic={activeTopic}
+                                rooms={rooms || []}
+                                onSwitchTopic={setActiveTopic}
+                                onCreateRoom={async (name) => {
+                                    const id = await createRoom(name);
+                                    if (id) {
+                                        setActiveTopic(id);
+                                        mesh.sendRoomInvite(id, name, "");
+                                    }
+                                }}
+                                showRegistry={showRegistry}
+                                setShowRegistry={setShowRegistry}
+                                onCall={startCall}
+                            />
+                        )}
+                        {mode === "DROP" && <DropView key="drop" streamProgress={streamProgress} />}
+                        {mode === "RADAR" && (
+                            <RadarView
+                                key="radar"
+                                myId={myId}
+                                connectedPeers={connectedPeers}
+                                discoveredRooms={discoveredRooms}
+                            />
+                        )}
+                        {mode === "PROFILE" && <ProfileView
+                            key="profile"
+                            profile={myProfile}
+                            shards={botShards}
+                            onToggleShard={(id, enabled) => {
+                                botManagerRef.current?.toggleShard(id, enabled);
+                                setBotShards([...(botManagerRef.current?.getShards() || [])]);
+                            }}
+                            onSave={async (p) => { await setMyProfile(p); setMyProfileState(p); mesh.sendProfile(p); }}
+                        />}
+                    </motion.div>
                 </AnimatePresence>
             </main>
 
@@ -561,6 +586,14 @@ function TalkView({ messages, sendMessage, sendMediaMessage, myId, activeTopic, 
                     </button>
 
                     <button
+                        onClick={() => setShowRegistry(!showRegistry)}
+                        className={`w-9 h-9 md:w-7 md:h-7 rounded-lg border flex items-center justify-center transition-all active:scale-90 ${showRegistry ? 'bg-cyan-500/20 border-cyan-500/30 text-cyan-400' : 'bg-zinc-900/60 border-white/[0.04] text-zinc-600 hover:text-cyan-400 hover:border-cyan-500/20'}`}
+                        title="Discovery Lounge"
+                    >
+                        <Globe className="w-3.5 h-3.5" />
+                    </button>
+
+                    <button
                         onClick={() => {
                             const name = prompt("Room name:");
                             if (name?.trim()) onCreateRoom(name.trim());
@@ -707,9 +740,22 @@ function TalkView({ messages, sendMessage, sendMediaMessage, myId, activeTopic, 
                                 )}
 
                                 {msg.text && (
-                                    <p className="text-[14px] text-zinc-300 leading-relaxed font-normal tracking-tight selection:bg-emerald-500 selection:text-emerald-950">
-                                        {msg.text}
-                                    </p>
+                                    <>
+                                        <p className="text-[14px] text-zinc-300 leading-relaxed font-normal tracking-tight selection:bg-emerald-500 selection:text-emerald-950">
+                                            {msg.text}
+                                        </p>
+                                        {(() => {
+                                            const urlMatch = msg.text.match(/https?:\/\/[^\s]+/);
+                                            if (urlMatch) {
+                                                return (
+                                                    <div className="mt-3">
+                                                        <LinkPreview url={urlMatch[0]} />
+                                                    </div>
+                                                );
+                                            }
+                                            return null;
+                                        })()}
+                                    </>
                                 )}
 
                                 <div className="flex items-center justify-end gap-2 mt-3 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -865,7 +911,7 @@ function DropView({ streamProgress }: any) {
         if (file) mesh.streamFile(file);
     };
 
-    // 🧠 LEARNING: Circular progress using SVG. 
+    // 🧠 LEARNING: Circular progress using SVG.
     // dasharray = circumference. dashoffset = 1 - percentage.
     const radius = 90;
     const circumference = 2 * Math.PI * radius;

@@ -43,6 +43,8 @@ export class NandixMesh {
     // Streaming Buffers
     private incomingStreams: Map<string, { chunks: BlobPart[], received: number, total: number, name: string, dbId?: number, encrypted?: boolean }> = new Map();
     private connectionQuality: Map<string, "direct" | "relay" | "unknown"> = new Map();
+    private presence: Map<string, { status: "online" | "away" | "offline", lastSeen: number, profile?: any }> = new Map();
+    private heartbeatTimer: NodeJS.Timeout | null = null;
 
     private myId: string | null = null;
     private packetListeners: Set<(packet: NandixPacket) => void> = new Set();
@@ -60,6 +62,7 @@ export class NandixMesh {
     private onBotAnnounceCallback?: (peerId: string, botData: any) => void;
     private onConnectionCallback?: (peerId: string) => void;
     private onMessageCallback?: (peerId: string, text: string) => void;
+    private onPresenceCallback?: (peerId: string, status: string) => void;
 
     private constructor() {
         this.ydoc = new Y.Doc();
@@ -402,11 +405,11 @@ export class NandixMesh {
                 // 🔐 Send our public key for E2E encryption
                 const pubKey = sovereignCrypto.getPublicKey();
                 if (pubKey) {
-                    // Direct send needs manual encoding because it bypasses this.send()
                     const packet: NandixPacket = { wire: "RED", type: "KEY_EXCHANGE", payload: { publicKey: pubKey } };
                     conn.send(BinaryProtocol.encode(packet));
-                    console.log(`[CRYPTO] 🔑 Sent public key to ${conn.peer.substring(0, 12)}`);
                 }
+                // 📡 Targeted Presence Exchange
+                this.sendPresenceTo(conn.peer);
                 if (this.onConnectionCallback) this.onConnectionCallback(conn.peer);
             }
             if (wire === "BLUE") this.fileConnections.set(conn.peer, conn);
@@ -598,11 +601,43 @@ export class NandixMesh {
             // 🛡️ TRUST: Trust Vouches
             if (packet.type === "TRUST_VOUCH") {
                 console.log(`[TRUST] 🛡️ Received trust vouch for ${packet.payload.targetId} from ${conn.peer.substring(0, 12)}`);
-                await trustEngine.processIncomingVouch(packet.payload);
-                if (this.onTrustVouchCallback) {
-                    this.onTrustVouchCallback(packet.payload);
+                if (this.onTrustVouchCallback) this.onTrustVouchCallback(packet.payload);
+                return;
+            }
+
+            // 🟢 PRESENCE: Real-time status heartbeat
+            if (packet.type === "PRESENCE_UPDATE") {
+                const { status, profile, roomId } = packet.payload;
+                this.presence.set(conn.peer, { status, profile, lastSeen: Date.now() });
+                if (this.onPresenceCallback) this.onPresenceCallback(conn.peer, status);
+
+                // Update DB contacts
+                touchContact(conn.peer).catch(() => { });
+                if (profile) {
+                    db.contacts.update(conn.peer, {
+                        username: profile.username,
+                        avatar: profile.avatar,
+                        bio: profile.bio
+                    }).catch(() => { });
+                }
+
+                // 🏰 ROOM SYNC: Auto-add to room members if roomId matches current or is provided
+                if (roomId) {
+                    db.rooms.get(roomId).then(room => {
+                        if (room && !room.members.includes(conn.peer)) {
+                            db.rooms.update(roomId, {
+                                members: [...room.members, conn.peer],
+                                lastActivity: Date.now()
+                            });
+                            console.log(`[ROOM] 🏰 Auto-synced ${conn.peer.substring(0, 8)} to room: ${room.name}`);
+                        }
+                    });
                 }
                 return;
+            }
+            await trustEngine.processIncomingVouch(packet.payload);
+            if (this.onTrustVouchCallback) {
+                this.onTrustVouchCallback(packet.payload);
             }
 
             // 🤖 AUTOMATION: Bot Announcements
@@ -838,9 +873,10 @@ export class NandixMesh {
 
     /**
      * High-Performance Binary Streamer (BLUE WIRE)
+     * Optimized for 100MB+ transfers with robust flow control.
      */
     public async streamFile(file: File) {
-        const chunkSize = 16384;
+        const chunkSize = 65536; // 64KB chunks for higher throughput
         const totalChunks = Math.ceil(file.size / chunkSize);
         const fileId = `${file.name}-${Date.now()}`;
 
@@ -868,8 +904,6 @@ export class NandixMesh {
 
             // 🔐 Encrypt chunk if keys exist
             if (isEncrypted) {
-                // For simplicity in this broadcast model, we use the first available key
-                // Real implementation should probably per-peer encrypt but BLUE wire is a stream
                 const peerId = connections.find(c => sovereignCrypto.hasKeyFor(c.peer))?.peer;
                 if (peerId) {
                     const encrypted = await sovereignCrypto.encryptBuffer(peerId, buffer);
@@ -879,10 +913,29 @@ export class NandixMesh {
 
             this.send("BLUE", buffer, "BLUE_CHUNK");
             offset += chunkSize;
+
+            // 📊 Progress
             if (this.onStreamProgress) {
                 this.onStreamProgress(((i + 1) / totalChunks) * 100, file.name);
             }
-            await new Promise(r => setTimeout(r, 2));
+
+            // 🌊 FLOW CONTROL: Prevent DC Buffer Overflow
+            // We wait if any connection has > 1MB buffered
+            let backoff = false;
+            for (const conn of connections) {
+                // @ts-ignore - bufferedAmount exists on DataConnection's peerConnection
+                if (conn.dataChannel?.bufferedAmount > 1024 * 1024) {
+                    backoff = true;
+                    break;
+                }
+            }
+
+            if (backoff) {
+                await new Promise(r => setTimeout(r, 50));
+            } else {
+                // Minimal yield to keep UI responsive
+                if (i % 5 === 0) await new Promise(r => setTimeout(r, 0));
+            }
         }
 
         if (dbId) await updateFileStatus(dbId, "completed");
@@ -962,12 +1015,25 @@ export class NandixMesh {
         connections.forEach(conn => {
             if (conn.open) {
                 conn.send(encoded);
-            } else {
-                console.warn(`[TRIDENT] ⚠️ Skipping closed ${wire} conn to ${conn.peer}`);
             }
         });
     }
 
+    /**
+     * Send packet to a SPECIFIC peer.
+     */
+    public sendTo(peerId: string, wire: TridentWire, payload: any, type: string = "DATA") {
+        const connections = wire === "RED" ? this.chatConnections : this.fileConnections;
+        const conn = connections.get(peerId);
+        if (conn && conn.open) {
+            const packet: NandixPacket = { wire, type, payload };
+            try {
+                conn.send(BinaryProtocol.encode(packet));
+            } catch (e) {
+                console.error(`[TRIDENT] ❌ Failed to sendTo ${peerId}:`, e);
+            }
+        }
+    }
     /**
      * Join Swarm (GREEN WIRE - Discovery)
      * Guarded: won't re-create if already in the same swarm.
@@ -984,6 +1050,8 @@ export class NandixMesh {
             password: `trident-${topic}`
         });
         console.log(`[TRIDENT] 🌐 Joined swarm: ${topic}`);
+        // 🏁 Alert the swarm of our arrival
+        this.broadcastPresence();
     }
 
     public getDoc(): Y.Doc { return this.ydoc; }
@@ -1021,6 +1089,43 @@ export class NandixMesh {
 
     public getQuality(peerId: string): "direct" | "relay" | "unknown" {
         return this.connectionQuality.get(peerId) || "unknown";
+    }
+
+    /**
+     * PRESENCE 2.0: The Heartbeat Engine
+     */
+    public startHeartbeat(interval: number = 30000) {
+        if (this.heartbeatTimer) clearInterval(this.heartbeatTimer);
+        this.heartbeatTimer = setInterval(() => this.broadcastPresence(), interval);
+        this.broadcastPresence(); // Initial pulse
+    }
+
+    public async broadcastPresence() {
+        if (!this.myId) return;
+        const profile = await db.settings.get("profile");
+        const payload = {
+            status: "online",
+            profile: profile?.value,
+            roomId: this.currentSwarm
+        };
+        this.send("RED", payload, "PRESENCE_UPDATE");
+    }
+
+    public async sendPresenceTo(peerId: string) {
+        const profile = await db.settings.get("profile");
+        const payload = {
+            status: "online",
+            profile: profile?.value,
+            roomId: this.currentSwarm
+        };
+        this.sendTo(peerId, "RED", payload, "PRESENCE_UPDATE");
+    }
+
+    public onPresence(callback: (peerId: string, status: string) => void) {
+        this.onPresenceCallback = callback;
+    }
+    public getPresence(peerId: string) {
+        return this.presence.get(peerId);
     }
 }
 

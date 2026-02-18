@@ -38,6 +38,9 @@ export const MeshProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 setConnectedPeers(count);
                 console.log(`[SOVEREIGN] Peers: ${count}`);
             });
+
+            // 💓 Start the Heartbeat (30s interval)
+            mesh.startHeartbeat();
         } catch (err) {
             console.error("[SOVEREIGN] ❌ Mesh boot failed:", err);
 
