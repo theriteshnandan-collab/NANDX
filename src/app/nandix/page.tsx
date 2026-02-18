@@ -1832,60 +1832,95 @@ function VoidStats() {
     const msgCount = useLiveQuery(() => db.messages.count(), []);
 
     const stats = [
-        { label: "Memory", value: `${(fileCount ?? 0) + (msgCount ?? 0)}`, icon: <Database className="w-3 h-3" />, color: "violet", delay: 0.6 },
-        { label: "Files", value: `${fileCount ?? 0}`, icon: <ArrowUpRight className="w-3 h-3" />, color: "cyan", delay: 0.75 },
-        { label: "Msgs", value: `${msgCount ?? 0}`, icon: <Send className="w-3 h-3" />, color: "emerald", delay: 0.9 },
-        { label: "Network", value: `${connectedPeers}`, icon: <Wifi className="w-3 h-3" />, color: "rose", delay: 1.05 },
+        { label: "Neural Load", value: `${(fileCount ?? 0) + (msgCount ?? 0)}`, icon: <Database className="w-3 h-3" />, color: "violet", delay: 0.6 },
+        { label: "Blue Wire", value: `${fileCount ?? 0}`, icon: <Database className="w-3 h-3" />, color: "cyan", delay: 0.7 },
+        { label: "Green Wire", value: `${msgCount ?? 0}`, icon: <Share2 className="w-3 h-3" />, color: "emerald", delay: 0.8 },
+        { label: "Mesh Pulse", value: `${connectedPeers}`, icon: <Wifi className="w-3 h-3" />, color: "rose", delay: 0.9 },
     ];
 
     return (
         <motion.div
-            initial={{ x: -30, opacity: 0 }}
+            initial={{ x: -100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.5, type: "spring", stiffness: 200, damping: 20 }}
-            className="fixed left-6 top-1/2 -translate-y-1/2 z-30 space-y-3"
+            transition={{ delay: 0.4, type: "spring", stiffness: 100, damping: 20 }}
+            className="fixed left-7 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-4"
         >
-            {stats.map((s) => (
-                <StatShard key={s.label} {...s} />
+            {stats.map((s, i) => (
+                <StatShard key={s.label} {...s} index={i} />
             ))}
         </motion.div>
     );
 }
 
-function StatShard({ label, value, icon, color, delay }: { label: string; value: string; icon: React.ReactNode; color: string; delay: number }) {
-    const colorClasses: Record<string, { text: string; border: string; ring: string }> = {
-        violet: { text: "text-violet-400/60", border: "border-violet-500/10", ring: "bg-violet-500" },
-        cyan: { text: "text-cyan-400/60", border: "border-cyan-500/10", ring: "bg-cyan-500" },
-        emerald: { text: "text-emerald-400/60", border: "border-emerald-500/10", ring: "bg-emerald-500" },
+function StatShard({ label, value, icon, color, delay, index }: { label: string; value: string; icon: React.ReactNode; color: string; delay: number; index: number }) {
+    const colorClasses: Record<string, { text: string; border: string; ring: string; shadow: string; glow: string }> = {
+        violet: { text: "text-violet-400", border: "border-violet-500/20", ring: "bg-violet-500", shadow: "shadow-violet-500/10", glow: "from-violet-500/20 to-transparent" },
+        cyan: { text: "text-cyan-400", border: "border-cyan-500/20", ring: "bg-cyan-500", shadow: "shadow-cyan-500/10", glow: "from-cyan-500/20 to-transparent" },
+        emerald: { text: "text-emerald-400", border: "border-emerald-500/20", ring: "bg-emerald-500", shadow: "shadow-emerald-500/10", glow: "from-emerald-500/20 to-transparent" },
+        rose: { text: "text-rose-400", border: "border-rose-500/20", ring: "bg-rose-500", shadow: "shadow-rose-500/10", glow: "from-rose-500/20 to-transparent" },
+        amber: { text: "text-amber-400", border: "border-amber-500/20", ring: "bg-amber-500", shadow: "shadow-amber-500/10", glow: "from-amber-500/20 to-transparent" },
     };
     const c = colorClasses[color] || colorClasses.violet;
 
     return (
         <motion.div
-            initial={{ x: -20, opacity: 0, scale: 0.8 }}
-            animate={{ x: 0, opacity: 1, scale: 1 }}
-            transition={{ delay, type: "spring", stiffness: 300, damping: 22 }}
-            whileHover={{ scale: 1.12, x: 6 }}
-            className={`relative w-14 h-14 rounded-2xl bg-zinc-950/50 backdrop-blur-2xl border ${c.border} flex flex-col items-center justify-center gap-1 cursor-default group`}
+            initial={{ x: -40, opacity: 0, scale: 0.5, rotateY: -45 }}
+            animate={{ x: 0, opacity: 1, scale: 1, rotateY: 0 }}
+            transition={{ delay, type: "spring", stiffness: 200, damping: 25 }}
+            whileHover={{
+                scale: 1.1,
+                x: 10,
+                transition: { type: "spring", stiffness: 400, damping: 10 }
+            }}
+            className={`relative w-16 h-16 rounded-3xl bg-zinc-950/40 backdrop-blur-3xl border-t border-white/10 border-b border-black shadow-[0_8px_32px_rgba(0,0,0,0.4)] ${c.border} flex flex-col items-center justify-center gap-1.5 cursor-pointer group isolation-auto`}
         >
-            {/* Breathing Ring */}
+            {/* Inner Glow Gradient */}
+            <div className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${c.glow} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+
+            {/* Neural Breathing Ring */}
             <motion.div
-                animate={{ scale: [1, 1.8, 1], opacity: [0.15, 0, 0.15] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: delay * 2 }}
-                className={`absolute inset-0 rounded-2xl ${c.ring} opacity-10`}
+                animate={{
+                    scale: [0.9, 1.6, 0.9],
+                    opacity: [0.2, 0, 0.2]
+                }}
+                transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: index * 0.5
+                }}
+                className={`absolute inset-0 rounded-3xl ${c.ring} blur-md`}
             />
 
-            <span className={c.text}>{icon}</span>
-            <span className="text-[9px] font-black text-zinc-500 group-hover:text-zinc-300 transition-colors">{value}</span>
-
-            {/* Tooltip on hover */}
+            {/* Micro Pulse Core */}
             <motion.div
-                initial={{ opacity: 0, x: 10, scale: 0.9 }}
-                whileHover={{ opacity: 1, x: 0, scale: 1 }}
-                className="absolute left-[calc(100%+8px)] px-3 py-1.5 rounded-lg bg-zinc-900/90 backdrop-blur-xl border border-white/5 pointer-events-none whitespace-nowrap"
+                animate={{ scale: [1, 1.2, 1] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                className={c.text}
             >
-                <span className="text-[9px] font-bold uppercase tracking-widest text-zinc-400">{label}</span>
+                {icon}
             </motion.div>
+
+            <span className="text-[10px] font-mono font-bold text-zinc-400 group-hover:text-white transition-colors duration-300 tracking-tighter tabular-nums">
+                {value}
+            </span>
+
+            {/* High-Fidelity Tooltip */}
+            <div className="absolute left-[calc(100%+14px)] opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 pointer-events-none z-50">
+                <div className="relative px-4 py-2 rounded-2xl bg-zinc-950/90 backdrop-blur-2xl border border-white/5 shadow-2xl overflow-hidden min-w-[120px]">
+                    {/* Tooltip Accent */}
+                    <div className={`absolute left-0 top-0 bottom-0 w-1 ${c.ring}`} />
+
+                    <div className="text-[8px] font-black uppercase tracking-[0.4em] text-zinc-600 mb-0.5">{color.toUpperCase()} MODULE</div>
+                    <div className="text-[11px] font-bold text-white tracking-tight">{label}</div>
+
+                    {/* Scanline Effect */}
+                    <div className="absolute inset-0 bg-scanline opacity-[0.03] pointer-events-none" />
+                </div>
+
+                {/* Arrow */}
+                <div className="absolute right-full top-1/2 -translate-y-1/2 w-2 h-2 rotate-45 bg-zinc-950/90 border-l border-b border-white/5 -mr-[5px]" />
+            </div>
         </motion.div>
     );
 }
