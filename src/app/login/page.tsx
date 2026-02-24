@@ -3,123 +3,303 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { motion } from "framer-motion";
-import { Eye, EyeOff, Shield, ArrowRight, Key } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Shield, ArrowRight, ArrowLeft, Key, Smartphone, Mail, Lock } from "lucide-react";
 import { toast } from "sonner";
+import { identity } from "@/lib/crypto/Identity";
 
-// 🛡️ Login Schema
-const loginSchema = z.object({
-    email: z.string().email("Invalid handle."),
-    password: z.string().min(1, "Key required."),
-});
+/* ────────────────────────────────────────────────────────────
+   🔑 SOUL RECOVERY
+   Two paths:
+   1. Mnemonic Entry (12 words)
+   2. Sovereign Bridge (Phone/Email)
+   ──────────────────────────────────────────────────────────── */
 
-type LoginFormValues = z.infer<typeof loginSchema>;
+const fadeUp = {
+    initial: { opacity: 0, y: 24 },
+    animate: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: -16 },
+    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+};
+
+type Mode = "CHOICE" | "MNEMONIC" | "BRIDGE";
 
 export default function LoginPage() {
     const router = useRouter();
-    const [showPassword, setShowPassword] = useState(false);
+    const [mode, setMode] = useState<Mode>("CHOICE");
+    const [words, setWords] = useState<string[]>(Array(12).fill(""));
+    const [bridgeType, setBridgeType] = useState<"PHONE" | "EMAIL">("EMAIL");
+    const [bridgeValue, setBridgeValue] = useState("");
+    const [isRestoring, setIsRestoring] = useState(false);
 
-    const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<LoginFormValues>({
-        resolver: zodResolver(loginSchema)
-    });
+    /* ── MNEMONIC RECOVERY ────────────────────────────── */
+    const handleMnemonicRecover = () => {
+        const mnemonic = words.join(" ").trim().toLowerCase();
 
-    const onSubmit = async (data: LoginFormValues) => {
-        // Simulate Auth
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        if (words.some((w) => !w.trim())) {
+            toast.error("Please fill in all 12 words.");
+            return;
+        }
 
-        toast.success("Identity Verified.", {
-            description: "Decrypted session keys successfully.",
-        });
+        const profile = identity.recover(mnemonic);
 
-        router.push("/nandix");
+        if (profile) {
+            toast.success("Identity Restored.", {
+                description: `Welcome back, ${profile.id.substring(0, 20)}...`,
+            });
+            router.push("/nandix");
+        } else {
+            toast.error("Invalid mnemonic.", {
+                description: "Please check your words and try again.",
+            });
+        }
+    };
+
+    /* ── BRIDGE RECOVERY ──────────────────────────────── */
+    const handleBridgeRecover = async () => {
+        if (!bridgeValue.trim()) {
+            toast.error("Please enter your contact.");
+            return;
+        }
+
+        setIsRestoring(true);
+        const success = await identity.restoreFromBridge(bridgeValue);
+
+        setTimeout(() => {
+            setIsRestoring(false);
+            if (success) {
+                toast.success("Identity Restored via Sovereign Bridge.");
+                router.push("/nandix");
+            } else {
+                toast.error("Identity not found.", {
+                    description: "No identity is linked to this contact on the mesh.",
+                });
+            }
+        }, 2000);
+    };
+
+    /* ── UPDATE WORD ──────────────────────────────────── */
+    const updateWord = (index: number, value: string) => {
+        const newWords = [...words];
+        newWords[index] = value.toLowerCase().trim();
+        setWords(newWords);
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center p-4 relative bg-[#F3F4F7]">
-            {/* 💡 Ambient Light Source (Top Left) */}
-            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/60 via-transparent to-slate-200/20 pointer-events-none" />
+        <div className="min-h-screen bg-[#FAFBFE] flex flex-col items-center justify-center p-4 relative overflow-hidden">
+            {/* Background Blobs */}
+            <div className="blob-lavender w-[500px] h-[500px] -top-40 -left-40 fixed" />
+            <div className="blob-mint w-[400px] h-[400px] bottom-0 -right-40 fixed" />
 
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="w-full max-w-md relative z-10"
+            {/* Back to landing */}
+            <Link
+                href="/"
+                className="absolute top-6 left-6 flex items-center gap-2 text-sm text-slate-400 hover:text-slate-700 transition-colors z-20"
             >
-                {/* 🧱 CLAY CARD (Levitating) */}
-                <div className="bg-[#F3F4F7] rounded-[32px] p-8 shadow-levitate border border-white/50 relative overflow-hidden">
-                    {/* Sage Glow Header Overlay */}
-                    <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-tactile-sage/10 to-transparent pointer-events-none" />
+                <Shield className="w-4 h-4" /> NANDIX
+            </Link>
 
-                    <div className="relative z-10 text-center mb-10">
-                        <Link href="/">
-                            <div className="inline-flex justify-center items-center w-16 h-16 rounded-2xl bg-[#F3F4F7] shadow-convex mb-4 text-tactile-text group cursor-pointer active:scale-95 transition-transform">
-                                <Key className="w-8 h-8 opacity-80 group-hover:rotate-12 transition-transform" />
+            <div className="w-full max-w-lg relative z-10">
+                <AnimatePresence mode="wait">
+                    {/* ═══════════════════════════════════════════════════
+              THE CHOICE
+              ═══════════════════════════════════════════════════ */}
+                    {mode === "CHOICE" && (
+                        <motion.div key="choice" {...fadeUp} className="space-y-6">
+                            <div className="text-center mb-8">
+                                <div className="w-16 h-16 rounded-2xl bg-[#0F0F1A] flex items-center justify-center mx-auto mb-6">
+                                    <Key className="w-8 h-8 text-white" />
+                                </div>
+                                <h1 className="text-3xl font-black tracking-tight mb-3">
+                                    Restore Your Soul
+                                </h1>
+                                <p className="text-slate-500 text-base max-w-sm mx-auto">
+                                    Choose how you want to recover your sovereign identity.
+                                </p>
                             </div>
-                        </Link>
-                        <h1 className="text-2xl font-bold text-tactile-text tracking-tight uppercase">Access Node</h1>
-                        <p className="text-sm text-tactile-leaf mt-2 font-medium">Verify your Sovereign Identity</p>
-                    </div>
 
-                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                        {/* 🧱 CONCAVE INPUT: Handle */}
-                        <div className="space-y-2">
-                            <label className="text-[10px] font-black text-tactile-leaf uppercase tracking-[0.2em] ml-2">Handle</label>
-                            <input
-                                {...register("email")}
-                                className="input-tactile py-4 font-medium"
-                                placeholder="identity@mesh.net"
-                            />
-                            {errors.email && <p className="text-red-500 text-xs ml-2">{errors.email.message}</p>}
-                        </div>
+                            {/* Mnemonic Recovery */}
+                            <button
+                                onClick={() => setMode("MNEMONIC")}
+                                className="w-full card-elevated p-6 text-left group cursor-pointer flex items-center gap-4"
+                            >
+                                <div className="w-12 h-12 rounded-2xl bg-emerald-50 group-hover:bg-emerald-100 flex items-center justify-center text-emerald-600 transition-colors shrink-0">
+                                    <Key className="w-6 h-6" />
+                                </div>
+                                <div className="flex-1">
+                                    <h3 className="font-bold text-lg mb-1">12 Magic Words</h3>
+                                    <p className="text-sm text-slate-400">
+                                        Enter the mnemonic seed phrase you saved during identity forging.
+                                    </p>
+                                </div>
+                                <ArrowRight className="w-5 h-5 text-slate-300 group-hover:text-slate-600 transition-colors" />
+                            </button>
 
-                        {/* 🧱 CONCAVE INPUT: Password */}
-                        <div className="space-y-2">
-                            <div className="flex justify-between items-center px-2">
-                                <label className="text-[10px] font-black text-tactile-leaf uppercase tracking-[0.2em]">Master Key</label>
-                                <Link href="/recover" className="text-[10px] font-black text-tactile-leaf uppercase tracking-wider hover:text-tactile-text transition-colors">Lost?</Link>
+                            {/* Bridge Recovery */}
+                            <button
+                                onClick={() => setMode("BRIDGE")}
+                                className="w-full card-elevated p-6 text-left group cursor-pointer flex items-center gap-4"
+                            >
+                                <div className="w-12 h-12 rounded-2xl bg-violet-50 group-hover:bg-violet-100 flex items-center justify-center text-violet-600 transition-colors shrink-0">
+                                    <Lock className="w-6 h-6" />
+                                </div>
+                                <div className="flex-1">
+                                    <h3 className="font-bold text-lg mb-1">Sovereign Bridge</h3>
+                                    <p className="text-sm text-slate-400">
+                                        Recover using a linked phone number or email address.
+                                    </p>
+                                </div>
+                                <ArrowRight className="w-5 h-5 text-slate-300 group-hover:text-slate-600 transition-colors" />
+                            </button>
+
+                            {/* New Identity */}
+                            <div className="text-center pt-4 border-t border-slate-100">
+                                <p className="text-sm text-slate-400">
+                                    New to the mesh?{" "}
+                                    <Link href="/signup" className="font-bold text-[#0F0F1A] hover:underline">
+                                        Forge a New Identity
+                                    </Link>
+                                </p>
                             </div>
-                            <div className="relative">
-                                <input
-                                    type={showPassword ? "text" : "password"}
-                                    {...register("password")}
-                                    className="input-tactile py-4 font-medium pr-12"
-                                    placeholder="••••••••"
-                                />
+                        </motion.div>
+                    )}
+
+                    {/* ═══════════════════════════════════════════════════
+              MNEMONIC ENTRY
+              ═══════════════════════════════════════════════════ */}
+                    {mode === "MNEMONIC" && (
+                        <motion.div key="mnemonic" {...fadeUp} className="space-y-6">
+                            <button
+                                onClick={() => setMode("CHOICE")}
+                                className="flex items-center gap-2 text-sm text-slate-400 hover:text-slate-700 transition-colors mb-4"
+                            >
+                                <ArrowLeft className="w-4 h-4" /> Back
+                            </button>
+
+                            <div className="text-center mb-6">
+                                <h1 className="text-3xl font-black tracking-tight mb-3">
+                                    Enter Your 12 Words
+                                </h1>
+                                <p className="text-slate-500 text-base max-w-sm mx-auto">
+                                    Type each word in order exactly as you wrote them down.
+                                </p>
+                            </div>
+
+                            {/* Word Grid */}
+                            <div className="card-elevated p-6">
+                                <div className="grid grid-cols-3 gap-3">
+                                    {words.map((word, i) => (
+                                        <div key={i} className="relative">
+                                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] font-bold text-slate-300">
+                                                {i + 1}.
+                                            </span>
+                                            <input
+                                                type="text"
+                                                value={word}
+                                                onChange={(e) => updateWord(i, e.target.value)}
+                                                className="w-full pl-8 pr-3 py-3 text-sm font-mono font-bold bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-emerald-300 focus:ring-2 focus:ring-emerald-100 transition-all"
+                                                placeholder="..."
+                                                autoComplete="off"
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Recover Button */}
+                            <motion.button
+                                whileTap={{ scale: 0.98 }}
+                                onClick={handleMnemonicRecover}
+                                className="w-full btn-primary !py-4 text-base font-bold rounded-2xl flex items-center justify-center gap-2"
+                            >
+                                Restore Identity <ArrowRight className="w-5 h-5" />
+                            </motion.button>
+                        </motion.div>
+                    )}
+
+                    {/* ═══════════════════════════════════════════════════
+              SOVEREIGN BRIDGE
+              ═══════════════════════════════════════════════════ */}
+                    {mode === "BRIDGE" && (
+                        <motion.div key="bridge" {...fadeUp} className="space-y-6">
+                            <button
+                                onClick={() => setMode("CHOICE")}
+                                className="flex items-center gap-2 text-sm text-slate-400 hover:text-slate-700 transition-colors mb-4"
+                            >
+                                <ArrowLeft className="w-4 h-4" /> Back
+                            </button>
+
+                            <div className="text-center mb-6">
+                                <h1 className="text-3xl font-black tracking-tight mb-3">
+                                    Sovereign Bridge
+                                </h1>
+                                <p className="text-slate-500 text-base max-w-sm mx-auto">
+                                    We&apos;ll use a blinded relay to find your identity. Your contact is never stored.
+                                </p>
+                            </div>
+
+                            {/* Bridge Type Toggle */}
+                            <div className="flex gap-2 p-1.5 rounded-2xl bg-slate-100">
                                 <button
-                                    type="button"
-                                    onClick={() => setShowPassword(!showPassword)}
-                                    className="absolute right-4 top-1/2 -translate-y-1/2 text-tactile-leaf hover:text-tactile-text transition-colors"
+                                    onClick={() => setBridgeType("EMAIL")}
+                                    className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold transition-all ${bridgeType === "EMAIL"
+                                            ? "bg-white shadow-sm text-[#0F0F1A]"
+                                            : "text-slate-400 hover:text-slate-600"
+                                        }`}
                                 >
-                                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                    <Mail className="w-4 h-4" /> Email
+                                </button>
+                                <button
+                                    onClick={() => setBridgeType("PHONE")}
+                                    className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold transition-all ${bridgeType === "PHONE"
+                                            ? "bg-white shadow-sm text-[#0F0F1A]"
+                                            : "text-slate-400 hover:text-slate-600"
+                                        }`}
+                                >
+                                    <Smartphone className="w-4 h-4" /> Phone
                                 </button>
                             </div>
-                            {errors.password && <p className="text-red-500 text-xs ml-2">{errors.password.message}</p>}
-                        </div>
 
-                        {/* 🧱 CONVEX BUTTON (Tactile Press) */}
-                        <motion.button
-                            whileHover={{ scale: 1.01 }}
-                            whileTap={{ scale: 0.98 }}
-                            type="submit"
-                            disabled={isSubmitting}
-                            className="btn-tactile w-full py-4 mt-4 bg-white text-tactile-text font-black uppercase tracking-[0.2em] flex items-center justify-center gap-2 relative overflow-hidden group shadow-convex disabled:opacity-50"
-                        >
-                            <span className="relative z-10 flex items-center gap-2">
-                                {isSubmitting ? "DECRYPTING..." : "ENTER MESH"}
-                                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                            </span>
-                        </motion.button>
-                    </form>
+                            {/* Bridge Input */}
+                            <div className="card-elevated p-6">
+                                <input
+                                    type={bridgeType === "EMAIL" ? "email" : "tel"}
+                                    value={bridgeValue}
+                                    onChange={(e) => setBridgeValue(e.target.value)}
+                                    placeholder={
+                                        bridgeType === "EMAIL"
+                                            ? "sovereign@nandix.xyz"
+                                            : "+1 (555) 000-0000"
+                                    }
+                                    className="w-full px-4 py-4 text-base font-medium bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-emerald-300 focus:ring-2 focus:ring-emerald-100 transition-all"
+                                />
+                                <p className="mt-3 text-xs text-slate-400 leading-relaxed">
+                                    Your {bridgeType.toLowerCase()} is hashed locally and compared against the blinded relay. It is never stored on-chain or off-chain.
+                                </p>
+                            </div>
 
-                    <div className="mt-10 text-center">
-                        <p className="text-xs text-tactile-leaf font-bold uppercase tracking-widest">
-                            New Ghost? <Link href="/signup" className="text-tactile-text border-b border-tactile-text/20 hover:border-tactile-text transition-all">Forge Identity</Link>
-                        </p>
-                    </div>
-                </div>
-            </motion.div>
+                            {/* Restore Button */}
+                            <motion.button
+                                whileTap={{ scale: 0.98 }}
+                                onClick={handleBridgeRecover}
+                                disabled={isRestoring || !bridgeValue.trim()}
+                                className="w-full btn-primary !py-4 text-base font-bold rounded-2xl flex items-center justify-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed"
+                            >
+                                {isRestoring ? (
+                                    <>
+                                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                        Searching Relay...
+                                    </>
+                                ) : (
+                                    <>
+                                        Restore via Bridge <ArrowRight className="w-5 h-5" />
+                                    </>
+                                )}
+                            </motion.button>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </div>
         </div>
     );
 }
