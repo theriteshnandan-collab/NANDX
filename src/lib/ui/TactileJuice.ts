@@ -170,7 +170,7 @@ export const TOAST_VARIANTS: Variants = {
     animate: {
         x: 0,
         opacity: 1,
-        transition: TACTILE_BOUNCE,
+        transition: { type: "spring" as const, stiffness: 500, damping: 15 },
     },
     exit: {
         x: 300,

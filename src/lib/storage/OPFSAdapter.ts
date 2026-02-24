@@ -38,7 +38,8 @@ export class OPFSAdapter {
         try {
             const fileHandle = await this.root.getFileHandle(fileName, { create: true });
             const writable = await fileHandle.createWritable();
-            await writable.write(data);
+            const buffer: ArrayBuffer = data instanceof Uint8Array ? data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength) as ArrayBuffer : data;
+            await writable.write(buffer);
             await writable.close();
             console.log(`[OPFS] ✅ Written: ${fileName} (${data.byteLength} bytes)`);
             return true;
@@ -58,7 +59,8 @@ export class OPFSAdapter {
             const fileHandle = await this.root.getFileHandle(fileName, { create: true });
             const writable = await fileHandle.createWritable({ keepExistingData: true });
             await writable.seek(offset);
-            await writable.write(chunk);
+            const buffer = chunk.buffer.slice(chunk.byteOffset, chunk.byteOffset + chunk.byteLength) as ArrayBuffer;
+            await writable.write(buffer);
             await writable.close();
             return true;
         } catch (err) {
