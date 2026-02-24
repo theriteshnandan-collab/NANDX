@@ -4,96 +4,119 @@
 
 @layer base {
   :root {
-    --void: #050505;
-    --canvas: #F3F4F7;
-    --clay-dark: #D1D5DB;
-    --clay-light: #FFFFFF;
+    --canvas: #FAFBFE;
+    --midnight: #0F0F1A;
+    --slate: #64748B;
+    --silver: #94A3B8;
+    --emerald: #10B981;
+    --emerald-glow: #34D399;
+    --violet: #8B5CF6;
+    --frost: #E2E8F0;
+    --mint-mist: #ECFDF5;
+    --lavender-mist: #EDE9FE;
   }
 
   body {
-    @apply text-[#2D3436] antialiased;
+    @apply text-[#0F0F1A] antialiased;
     background-color: var(--canvas);
-    /* Soft directional light source from top-left */
-    background-image: radial-gradient(circle at 0% 0%, var(--clay-light) 0%, var(--canvas) 60%, #E2E8F0 100%);
-    background-attachment: fixed;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  ::selection {
+    background: rgba(16, 185, 129, 0.15);
   }
 }
 
 @layer components {
   /* TACTILE INPUT (The "Milled" Look) */
   .input-tactile {
-    @apply w-full px-4 py-3 bg-[#F3F4F7] border border-transparent rounded-xl text-[#2D3436] outline-none;
+    @apply w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-[#0F0F1A] outline-none;
     @apply transition-all duration-200;
-    box-shadow: inset 2px 2px 5px rgba(0,0,0,0.05), inset -2px -2px 5px rgba(255,255,255,1);
   }
   
   .input-tactile:focus {
-    @apply border-gray-200 bg-white;
-    box-shadow: inset 1px 1px 3px rgba(0,0,0,0.05), inset -1px -1px 3px rgba(255,255,255,0.8);
+    @apply border-emerald-300 ring-2 ring-emerald-100;
   }
 
-  /* TACTILE BUTTON (The "Cast" Look) */
-  .btn-tactile {
-    @apply px-6 py-3 rounded-xl font-semibold transition-all duration-200 active:scale-[0.98];
-    background: #F3F4F7;
-    box-shadow: 5px 5px 10px rgba(0,0,0,0.05), -5px -5px 10px rgba(255,255,255,0.8);
+  /* TACTILE BUTTON — Primary */
+  .btn-primary {
+    @apply px-8 py-4 rounded-xl font-semibold transition-all duration-200;
+    @apply bg-[#0F0F1A] text-white hover:bg-[#1a1a2e];
+    @apply active:scale-[0.98] shadow-lg shadow-slate-900/10;
   }
 
-  .btn-tactile:hover {
-    box-shadow: 8px 8px 15px rgba(0,0,0,0.07), -8px -8px 15px rgba(255,255,255,1);
-    transform: translateY(-1px);
+  /* TACTILE BUTTON — Ghost */
+  .btn-ghost {
+    @apply px-6 py-3 rounded-xl font-semibold transition-all duration-200;
+    @apply bg-transparent text-slate-600 hover:text-[#0F0F1A] hover:bg-slate-100;
+    @apply active:scale-[0.98];
   }
 
-  .btn-tactile:active {
-    box-shadow: inset 2px 2px 5px rgba(0,0,0,0.05), inset -2px -2px 5px rgba(255,255,255,1);
-    transform: translateY(0px);
+  /* CARD */
+  .card-elevated {
+    @apply bg-white rounded-3xl border border-slate-200/60;
+    @apply transition-all duration-300;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
+  }
+  .card-elevated:hover {
+    @apply border-slate-200;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.06), 0 8px 16px rgba(0,0,0,0.04);
+    transform: translateY(-4px);
   }
 
-  /* ✨ GLASS BORDERS: "Light Catcher" Gradients */
-  .glass-border {
-    position: relative;
-    border: 1px solid transparent;
-    background-clip: padding-box;
+  /* GRADIENT BLOBS */
+  .blob-mint {
+    @apply absolute rounded-full pointer-events-none;
+    background: radial-gradient(circle, rgba(16,185,129,0.12) 0%, transparent 70%);
+    filter: blur(80px);
   }
-  .glass-border::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(
-      135deg,
-      rgba(255,255,255,0.8) 0%,
-      rgba(255,255,255,0.2) 40%,
-      rgba(255,255,255,0) 50%,
-      rgba(255,255,255,0.1) 80%,
-      rgba(255,255,255,0.6) 100%
-    );
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
+  .blob-lavender {
+    @apply absolute rounded-full pointer-events-none;
+    background: radial-gradient(circle, rgba(139,92,246,0.10) 0%, transparent 70%);
+    filter: blur(80px);
   }
 
-  /* 🧊 GLASS CARD: Frosted Glass with Light Catcher */
-  .glass-card {
-    @apply rounded-3xl backdrop-blur-xl;
-    background: rgba(255, 255, 255, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.6);
-    box-shadow:
-      0 8px 32px rgba(0, 0, 0, 0.04),
-      inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  /* GLASS NAV */
+  .glass-nav {
+    @apply bg-white/70 backdrop-blur-2xl border-b border-slate-200/50;
   }
 
-  /* SHADOW UTILITIES (for use with Tailwind) */
+  /* DARK SECTION INVERT */
+  .section-dark {
+    @apply bg-[#0F0F1A] text-white;
+  }
+
+  /* MARQUEE */
+  .marquee-track {
+    @apply flex gap-12 animate-marquee;
+  }
+  
+  /* SHADOW UTILITIES */
   .shadow-convex {
-    box-shadow: 8px 8px 16px rgba(163, 177, 198, 0.4), -8px -8px 16px rgba(255, 255, 255, 0.8);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.08);
   }
   .shadow-concave {
-    box-shadow: inset 6px 6px 12px rgba(163, 177, 198, 0.5), inset -6px -6px 12px rgba(255, 255, 255, 0.8);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
   }
   .shadow-levitate {
-    box-shadow: 20px 20px 60px rgba(163, 177, 198, 0.2), -20px -20px 60px rgba(255, 255, 255, 0.8);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.06), 0 8px 16px rgba(0,0,0,0.04);
+  }
+
+  /* GLASS CARD (kept for compatibility) */
+  .glass-card {
+    @apply rounded-3xl backdrop-blur-xl;
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+  }
+}
+
+@layer utilities {
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .animate-marquee {
+    animation: marquee 30s linear infinite;
   }
 }

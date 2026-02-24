@@ -34,23 +34,30 @@ const config: Config = {
           DEFAULT: "var(--accent)",
           foreground: "var(--accent-foreground)",
         },
-        // 🔱 SOVEREIGN APEX PALETTE
-        // 🧱 SOVEREIGN TACTILE PALETTE
+        // 🌙 LUNAR GLASS PALETTE
+        lunar: {
+          canvas: "#FAFBFE",
+          midnight: "#0F0F1A",
+          slate: "#64748B",
+          silver: "#94A3B8",
+          frost: "#E2E8F0",
+          mint: "#ECFDF5",
+          lavender: "#EDE9FE",
+        },
+        // 🔱 SOVEREIGN TACTILE PALETTE (legacy compatibility)
         tactile: {
-          canvas: "#F3F4F7",    // Cool Grey Clay
-          sage: "#E3F0AF",      // Primary Glass
-          steel: "#AABCCE",     // Secondary Glass
-          bone: "#F5F0E6",      // Warm Accent
-          text: "#2D3436",      // Dark Gunmetal
+          canvas: "#FAFBFE",
+          sage: "#E3F0AF",
+          steel: "#AABCCE",
+          bone: "#F5F0E6",
+          text: "#0F0F1A",
+          leaf: "#64748B",
         },
       },
       boxShadow: {
-        // The "Levitation" (Card Surface)
-        'levitate': '0 20px 40px -5px rgba(0,0,0,0.05), 0 1px 3px 0 rgba(0,0,0,0.02)',
-        // The "Concave" (Inputs)
-        'concave': 'inset 2px 2px 5px rgba(0,0,0,0.05), inset -2px -2px 5px rgba(255,255,255,1)',
-        // The "Convex" (Buttons)
-        'convex': '5px 5px 10px rgba(0,0,0,0.05), -5px -5px 10px rgba(255,255,255,0.8)',
+        'levitate': '0 20px 40px rgba(0,0,0,0.06), 0 8px 16px rgba(0,0,0,0.04)',
+        'concave': 'inset 0 2px 4px rgba(0,0,0,0.06)',
+        'convex': '0 4px 12px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.08)',
       },
       borderRadius: {
         lg: "var(--radius)",
