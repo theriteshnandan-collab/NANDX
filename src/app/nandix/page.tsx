@@ -26,7 +26,8 @@ import {
     Wifi, Shield, Check, Zap, Copy, Users,
     Key, Eye, EyeOff, RefreshCw, AlertTriangle,
     Plus, Hash, ChevronLeft, Trash2, Image as ImageIcon, Mic, X, Play, Pause, Clock, CheckCheck,
-    Settings, QrCode, Edit3, Phone, PhoneOff, VideoOff, Volume2, VolumeX, Video, Globe
+    Settings, QrCode, Edit3, Phone, PhoneOff, VideoOff, Volume2, VolumeX, Video, Globe,
+    Sparkles, BarChart3, Signal, Layers, MessageCircle, HardDrive, Upload, Download, Crosshair
 } from "lucide-react";
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -260,6 +261,32 @@ export default function NandixOS() {
                 }}
             />
 
+            {/* DOT GRID PATTERN */}
+            <div
+                className="absolute inset-0 z-0 pointer-events-none opacity-[0.04]"
+                style={{
+                    backgroundImage: `radial-gradient(circle, rgba(255,255,255,0.3) 1px, transparent 1px)`,
+                    backgroundSize: "24px 24px",
+                }}
+            />
+
+            {/* AMBIENT GRADIENT ORBS — Floating energy signatures */}
+            <motion.div
+                animate={{ x: [0, 30, -20, 0], y: [0, -40, 20, 0] }}
+                transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute top-[15%] left-[10%] w-[300px] h-[300px] rounded-full bg-emerald-500/[0.04] blur-[120px] pointer-events-none z-0"
+            />
+            <motion.div
+                animate={{ x: [0, -40, 30, 0], y: [0, 20, -30, 0] }}
+                transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute bottom-[20%] right-[15%] w-[250px] h-[250px] rounded-full bg-violet-500/[0.03] blur-[100px] pointer-events-none z-0"
+            />
+            <motion.div
+                animate={{ x: [0, 20, -10, 0], y: [0, -20, 40, 0] }}
+                transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute top-[50%] right-[30%] w-[200px] h-[200px] rounded-full bg-cyan-500/[0.025] blur-[80px] pointer-events-none z-0"
+            />
+
             {/* Wire-Responsive Ambient Glow */}
             <AnimatePresence>
                 {streamProgress.percent > 0 && (
@@ -276,35 +303,67 @@ export default function NandixOS() {
             </AnimatePresence>
 
             {/* STATUS BAR: Sovereign Identity */}
-            <header className="absolute top-0 left-0 right-0 z-40 flex items-center justify-between px-8 h-14">
+            <header className="absolute top-0 left-0 right-0 z-40 flex items-center justify-between px-4 md:px-8 h-14 border-b border-white/[0.02]">
                 <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(34,197,94,0.5)]" />
-                    <span className="text-[9px] font-black uppercase tracking-[0.4em] text-zinc-600">
+                    <div className="relative">
+                        <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(34,197,94,0.5)]" />
+                        <motion.div
+                            animate={{ scale: [1, 2, 1], opacity: [0.5, 0, 0.5] }}
+                            transition={{ duration: 3, repeat: Infinity }}
+                            className="absolute inset-0 rounded-full bg-emerald-500"
+                        />
+                    </div>
+                    <span className="text-[11px] font-black uppercase tracking-[0.3em] text-zinc-500">
+                        NANDIX
+                    </span>
+                    <div className="hidden md:block h-3 w-px bg-zinc-800" />
+                    <span className="hidden md:block text-[9px] font-mono text-zinc-700 uppercase tracking-wider">
                         Sovereign Mesh
                     </span>
                 </div>
-                <div className="flex items-center gap-4">
-                    <span className="text-[8px] font-mono text-zinc-700 tracking-wider">
-                        {myId ? myId.substring(0, 12) + "..." : "Initializing..."}
-                    </span>
-                    <div className="w-6 h-6 rounded-lg bg-zinc-900/60 border border-white/5 flex items-center justify-center">
-                        <Shield className="w-3 h-3 text-zinc-600" />
-                    </div>
-                </div>
 
-                {/* ☢️ REACTOR HUD */}
-                <div className="absolute top-14 left-8 flex items-center gap-6">
-                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/5 border border-emerald-500/10 backdrop-blur-md">
-                        <Zap className="w-3 h-3 text-emerald-500 animate-pulse" />
-                        <span className="text-[9px] font-black uppercase tracking-widest text-emerald-400">Reactor Online</span>
+                <div className="flex items-center gap-2 md:gap-4">
+                    {/* System Clock */}
+                    <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-zinc-900/40 border border-white/[0.03]">
+                        <Clock className="w-2.5 h-2.5 text-zinc-600" />
+                        <span className="text-[10px] font-mono text-zinc-500 tabular-nums">
+                            {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        </span>
                     </div>
-                    {/* ⚙️ KERNEL HEARTBEAT */}
-                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan-500/5 border border-cyan-500/10 backdrop-blur-md">
-                        <Activity className="w-3 h-3 text-cyan-500 animate-pulse" />
-                        <span className="text-[9px] font-black uppercase tracking-widest text-cyan-400">Kernel: {kernel.getUptime()}ms</span>
+
+                    {/* Peer Counter */}
+                    <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg border ${connectedPeers > 0 ? 'bg-emerald-500/5 border-emerald-500/10' : 'bg-zinc-900/40 border-white/[0.03]'}`}>
+                        <Users className={`w-2.5 h-2.5 ${connectedPeers > 0 ? 'text-emerald-500' : 'text-zinc-700'}`} />
+                        <span className={`text-[10px] font-mono tabular-nums ${connectedPeers > 0 ? 'text-emerald-400' : 'text-zinc-600'}`}>
+                            {connectedPeers}
+                        </span>
+                    </div>
+
+                    {/* Identity Chip */}
+                    <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-zinc-900/40 border border-white/[0.03]">
+                        <Crosshair className="w-2.5 h-2.5 text-zinc-600" />
+                        <span className="text-[9px] font-mono text-zinc-600 tracking-wider">
+                            {myId ? myId.substring(0, 10) + "…" : "…"}
+                        </span>
+                    </div>
+
+                    <div className="w-7 h-7 rounded-lg bg-zinc-900/60 border border-white/5 flex items-center justify-center hover:border-white/10 transition-all cursor-pointer">
+                        <Shield className="w-3.5 h-3.5 text-zinc-600" />
                     </div>
                 </div>
             </header>
+
+            {/* ☢️ REACTOR HUD (Desktop only) */}
+            <div className="hidden md:flex absolute top-14 left-8 z-40 items-center gap-3 mt-1">
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/5 border border-emerald-500/10 backdrop-blur-md">
+                    <Zap className="w-3 h-3 text-emerald-500 animate-pulse" />
+                    <span className="text-[9px] font-black uppercase tracking-widest text-emerald-400">Reactor</span>
+                </div>
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan-500/5 border border-cyan-500/10 backdrop-blur-md">
+                    <Activity className="w-3 h-3 text-cyan-500 animate-pulse" />
+                    <span className="text-[9px] font-black uppercase tracking-widest text-cyan-400">Kernel: {kernel.getUptime()}ms</span>
+                </div>
+            </div>
 
             {/* STREAM HUD */}
             <AnimatePresence>
@@ -907,9 +966,10 @@ function TalkView({ messages, sendMessage, sendMediaMessage, myId, activeTopic, 
 function DropView({ streamProgress }: any) {
     const [dragging, setDragging] = useState(false);
     const recentFiles = useLiveQuery(
-        () => (db as any).files.orderBy("timestamp").reverse().limit(5).toArray(),
+        () => (db as any).files.orderBy("timestamp").reverse().limit(10).toArray(),
         []
     );
+    const totalFiles = useLiveQuery(() => (db as any).files.count(), []);
 
     const handleDrop = (e: React.DragEvent) => {
         e.preventDefault();
@@ -918,8 +978,6 @@ function DropView({ streamProgress }: any) {
         if (file) mesh.streamFile(file);
     };
 
-    // 🧠 LEARNING: Circular progress using SVG.
-    // dasharray = circumference. dashoffset = 1 - percentage.
     const radius = 90;
     const circumference = 2 * Math.PI * radius;
     const offset = circumference - (streamProgress.percent / 100) * circumference;
@@ -929,30 +987,73 @@ function DropView({ streamProgress }: any) {
             initial={{ opacity: 0, scale: 0.97 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 1.03 }}
-            className="h-full flex flex-col items-center px-6 md:px-12 custom-scrollbar overflow-y-auto"
+            className="h-full flex flex-col items-center px-4 md:px-12 custom-scrollbar overflow-y-auto max-w-3xl mx-auto"
         >
-            {/* Drop Zone: The Wormhole */}
-            <div className="flex-1 flex items-center justify-center w-full max-w-2xl py-8 md:py-12">
+            {/* ═══ STAT CARDS ROW ═══ */}
+            <div className="w-full grid grid-cols-3 gap-3 pt-6 pb-4">
+                {[
+                    { label: "Transfers", value: totalFiles ?? 0, icon: <Layers className="w-3.5 h-3.5" />, color: "cyan" },
+                    { label: "Active", value: streamProgress.percent > 0 ? "1" : "0", icon: <Zap className="w-3.5 h-3.5" />, color: "emerald" },
+                    { label: "Status", value: streamProgress.percent > 0 ? "Live" : "Idle", icon: <Signal className="w-3.5 h-3.5" />, color: "violet" },
+                ].map((stat, i) => (
+                    <motion.div
+                        key={stat.label}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: i * 0.1 }}
+                        className={`p-4 rounded-2xl bg-white/[0.02] backdrop-blur-xl border border-white/[0.04] hover:border-white/[0.08] transition-all group`}
+                    >
+                        <div className={`text-${stat.color}-500/60 mb-2 group-hover:text-${stat.color}-400 transition-colors`}>
+                            {stat.icon}
+                        </div>
+                        <div className="text-[18px] font-black text-white tabular-nums">{stat.value}</div>
+                        <div className="text-[8px] font-black uppercase tracking-[0.3em] text-zinc-600 mt-0.5">{stat.label}</div>
+                    </motion.div>
+                ))}
+            </div>
+
+            {/* ═══ WORMHOLE CENTER ═══ */}
+            <div className="flex-1 flex items-center justify-center w-full py-4 md:py-8">
                 <motion.div
                     onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
                     onDragLeave={() => setDragging(false)}
                     onDrop={handleDrop}
-                    className="relative w-64 h-64 md:w-80 md:h-80 flex items-center justify-center group"
+                    className="relative w-56 h-56 md:w-72 md:h-72 flex items-center justify-center group cursor-pointer"
+                    onClick={() => {
+                        const input = document.createElement("input");
+                        input.type = "file";
+                        input.onchange = (e) => {
+                            const file = (e.target as HTMLInputElement).files?.[0];
+                            if (file) mesh.streamFile(file);
+                        };
+                        input.click();
+                    }}
                 >
-                    {/* Liquid Progress Ring */}
+                    {/* Outer Orbital Ring */}
+                    <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                        className="absolute inset-0"
+                    >
+                        {[0, 1, 2, 3, 4, 5].map((i) => (
+                            <div
+                                key={i}
+                                className={`absolute w-2 h-2 rounded-full ${dragging ? 'bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.6)]' : 'bg-zinc-700'} transition-colors duration-500`}
+                                style={{
+                                    top: `${50 + 46 * Math.sin((i * Math.PI * 2) / 6)}%`,
+                                    left: `${50 + 46 * Math.cos((i * Math.PI * 2) / 6)}%`,
+                                    transform: "translate(-50%, -50%)",
+                                }}
+                            />
+                        ))}
+                    </motion.div>
+
+                    {/* Progress Ring SVG */}
                     <svg className="absolute inset-0 w-full h-full -rotate-90">
-                        <circle
-                            cx="50%" cy="50%" r="40%"
-                            fill="transparent"
-                            stroke="rgba(255,255,255,0.02)"
-                            strokeWidth="2"
-                        />
+                        <circle cx="50%" cy="50%" r="40%" fill="transparent" stroke="rgba(255,255,255,0.03)" strokeWidth="1.5" />
                         <motion.circle
                             cx="50%" cy="50%" r="40%"
-                            fill="transparent"
-                            stroke="url(#blue-gradient)"
-                            strokeWidth="3"
-                            strokeLinecap="round"
+                            fill="transparent" stroke="url(#blue-gradient)" strokeWidth="3" strokeLinecap="round"
                             initial={{ strokeDashoffset: circumference }}
                             animate={{ strokeDashoffset: offset }}
                             style={{ strokeDasharray: circumference }}
@@ -967,65 +1068,96 @@ function DropView({ streamProgress }: any) {
                     </svg>
 
                     {/* Ambient Glow */}
-                    <div className={`absolute inset-0 rounded-full blur-[60px] transition-all duration-1000 ${dragging ? 'bg-cyan-500/10 scale-125' : 'bg-white/[0.02] scale-100'
-                        }`} />
+                    <motion.div
+                        animate={{ scale: dragging ? 1.3 : 1, opacity: dragging ? 0.15 : 0.03 }}
+                        className="absolute inset-[-20%] rounded-full bg-cyan-500 blur-[80px] transition-all"
+                    />
 
-                    {/* Core Shard */}
-                    <div className="relative z-10 flex flex-col items-center gap-4">
+                    {/* Core */}
+                    <div className="relative z-10 flex flex-col items-center gap-3">
                         <motion.div
                             animate={{
-                                backgroundColor: dragging ? "rgba(34,211,238,0.1)" : "rgba(255,255,255,0.02)",
+                                backgroundColor: dragging ? "rgba(34,211,238,0.12)" : "rgba(255,255,255,0.02)",
                                 scale: dragging ? 1.1 : 1,
-                                rotate: dragging ? 45 : 0
+                                rotate: dragging ? 45 : 0,
+                                borderColor: dragging ? "rgba(34,211,238,0.3)" : "rgba(255,255,255,0.08)",
                             }}
-                            className="w-24 h-24 rounded-[2rem] border border-white/10 flex items-center justify-center backdrop-blur-3xl shadow-[0_0_50px_rgba(0,0,0,0.5)]"
+                            className="w-20 h-20 md:w-24 md:h-24 rounded-[2rem] border flex items-center justify-center backdrop-blur-3xl shadow-[0_0_50px_rgba(0,0,0,0.5)]"
                         >
-                            <Share2 className={`w-8 h-8 ${dragging ? 'text-cyan-400' : 'text-zinc-600'}`} />
+                            <motion.div animate={{ rotate: dragging ? 180 : 0 }} transition={{ duration: 0.5 }}>
+                                <Share2 className={`w-7 h-7 ${dragging ? 'text-cyan-400' : 'text-zinc-600'}`} />
+                            </motion.div>
                         </motion.div>
                         <div className="text-center">
-                            <h2 className="text-[11px] font-black uppercase tracking-[0.5em] text-zinc-300">
-                                {streamProgress.percent > 0 ? `${streamProgress.percent}%` : "Wormhole"}
+                            <h2 className="text-[12px] font-black uppercase tracking-[0.4em] text-zinc-300">
+                                {streamProgress.percent > 0 ? `${streamProgress.percent.toFixed(0)}%` : "Wormhole"}
                             </h2>
-                            <p className="text-[8px] text-zinc-700 font-bold uppercase tracking-widest mt-1">
-                                {dragging ? "Release to Send" : "Drop Files"}
+                            <p className="text-[9px] text-zinc-600 font-bold uppercase tracking-widest mt-1">
+                                {dragging ? "Release to Send" : "Drop or Tap to Send"}
                             </p>
                         </div>
                     </div>
                 </motion.div>
             </div>
 
-            {/* Ghost Log */}
-            {recentFiles && recentFiles.length > 0 && (
-                <div className="w-full max-w-2xl pb-12 space-y-3">
-                    <div className="flex items-center justify-between mb-6">
-                        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/5 to-transparent" />
-                        <span className="px-6 text-[9px] font-black tracking-[0.6em] text-zinc-800 uppercase">Archive</span>
-                        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/5 to-transparent" />
+            {/* ═══ TRANSFER HISTORY ═══ */}
+            <div className="w-full pb-12">
+                <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-2">
+                        <HardDrive className="w-3 h-3 text-zinc-700" />
+                        <span className="text-[9px] font-black tracking-[0.4em] text-zinc-600 uppercase">Transfer Log</span>
                     </div>
-                    {recentFiles.map((file: any, i: number) => (
-                        <motion.div
-                            key={file.id}
-                            initial={{ opacity: 0, x: -10 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: i * 0.05 }}
-                            className="flex items-center gap-6 px-7 py-4 rounded-3xl bg-zinc-950/20 border border-white/[0.02] hover:border-white/5 group transition-all"
-                        >
-                            <div className="w-10 h-10 rounded-2xl bg-zinc-900/50 border border-white/5 flex items-center justify-center">
-                                {file.direction === "sent"
-                                    ? <ArrowUpRight className="w-4 h-4 text-cyan-500/50" />
-                                    : <ArrowDownLeft className="w-4 h-4 text-emerald-500/50" />
-                                }
-                            </div>
-                            <div className="flex-1 min-w-0">
-                                <div className="text-[13px] font-bold text-zinc-300 truncate tracking-tight">{file.name}</div>
-                                <div className="text-[9px] text-zinc-700 font-mono mt-0.5">
-                                    {(file.size / (1024 * 1024)).toFixed(2)} MB · {file.status}
-                                </div>
-                            </div>
-                        </motion.div>
-                    ))}
+                    <span className="text-[9px] font-mono text-zinc-800">{totalFiles ?? 0} total</span>
                 </div>
-            )}
+
+                {(!recentFiles || recentFiles.length === 0) ? (
+                    <div className="py-12 text-center">
+                        <motion.div
+                            animate={{ y: [0, -6, 0] }}
+                            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                            className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-white/[0.02] border border-white/[0.04] flex items-center justify-center"
+                        >
+                            <Upload className="w-6 h-6 text-zinc-800" />
+                        </motion.div>
+                        <p className="text-[10px] text-zinc-700 uppercase tracking-[0.3em] font-bold">No transfers yet</p>
+                        <p className="text-[9px] text-zinc-800 mt-1">Drop a file onto the wormhole to begin</p>
+                    </div>
+                ) : (
+                    <div className="space-y-2">
+                        {recentFiles.map((file: any, i: number) => (
+                            <motion.div
+                                key={file.id}
+                                initial={{ opacity: 0, x: -10 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: i * 0.04 }}
+                                className="flex items-center gap-4 px-5 py-3.5 rounded-2xl bg-white/[0.015] border border-white/[0.03] hover:border-white/[0.06] group transition-all"
+                            >
+                                <div className={`w-9 h-9 rounded-xl border flex items-center justify-center shrink-0 ${file.direction === "sent"
+                                    ? "bg-cyan-500/5 border-cyan-500/15"
+                                    : "bg-emerald-500/5 border-emerald-500/15"
+                                    }`}>
+                                    {file.direction === "sent"
+                                        ? <ArrowUpRight className="w-3.5 h-3.5 text-cyan-500/60" />
+                                        : <ArrowDownLeft className="w-3.5 h-3.5 text-emerald-500/60" />
+                                    }
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                    <div className="text-[12px] font-semibold text-zinc-300 truncate">{file.name}</div>
+                                    <div className="text-[9px] text-zinc-700 font-mono mt-0.5">
+                                        {(file.size / (1024 * 1024)).toFixed(2)} MB
+                                    </div>
+                                </div>
+                                <div className={`px-2 py-0.5 rounded-md text-[8px] font-black uppercase tracking-wider ${file.status === "complete" ? "bg-emerald-500/10 text-emerald-500" :
+                                    file.status === "sending" ? "bg-cyan-500/10 text-cyan-400" :
+                                        "bg-zinc-900 text-zinc-600"
+                                    }`}>
+                                    {file.status || "done"}
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+                )}
+            </div>
         </motion.div>
     );
 }
@@ -1629,6 +1761,9 @@ function ProfileView({ profile, onSave, shards, onToggleShard }: { profile: User
     const [username, setUsername] = useState(profile?.username || "");
     const [bio, setBio] = useState(profile?.bio || "");
     const [copied, setCopied] = useState(false);
+    const msgCount = useLiveQuery(() => db.messages.count(), []);
+    const fileCount = useLiveQuery(() => (db as any).files.count(), []);
+    const contactCount = useLiveQuery(() => db.contacts.count(), []);
 
     useEffect(() => {
         if (profile) {
@@ -1657,92 +1792,134 @@ function ProfileView({ profile, onSave, shards, onToggleShard }: { profile: User
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="h-full max-w-2xl mx-auto px-4 md:px-6 pt-6 md:pt-12 pb-32"
+            className="h-full max-w-2xl mx-auto px-4 md:px-6 pt-4 md:pt-8 pb-32 overflow-y-auto custom-scrollbar"
         >
-            <div className="space-y-6 md:space-y-8">
-                {/* ═══ QR SHARD ═══ */}
-                <div className="relative group mx-auto w-64 h-64">
-                    <div className="absolute -inset-4 bg-violet-600/10 rounded-[2.5rem] blur-2xl group-hover:bg-violet-600/20 transition-all duration-700" />
-                    <div className="relative w-full h-full p-4 rounded-[2rem] bg-zinc-950/40 backdrop-blur-3xl border border-violet-500/10 flex items-center justify-center overflow-hidden">
-                        {qrData ? (
-                            <img src={qrData} alt="QR Identity" className="w-full h-full opacity-80 group-hover:opacity-100 transition-opacity" />
-                        ) : (
-                            <div className="animate-pulse w-full h-full bg-zinc-900 rounded-xl" />
-                        )}
-                        <div className="absolute inset-0 bg-gradient-to-t from-violet-600/10 to-transparent pointer-events-none" />
+            <div className="space-y-5 md:space-y-6">
+                {/* ═══ HERO: QR + IDENTITY ═══ */}
+                <div className="relative p-6 rounded-[2rem] bg-white/[0.02] backdrop-blur-xl border border-violet-500/10 overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-br from-violet-500/[0.03] to-transparent pointer-events-none" />
+                    <div className="relative flex flex-col md:flex-row items-center gap-6">
+                        {/* QR */}
+                        <div className="relative group w-36 h-36 md:w-40 md:h-40 shrink-0">
+                            <div className="absolute -inset-2 bg-violet-600/10 rounded-2xl blur-xl group-hover:bg-violet-600/20 transition-all duration-700" />
+                            <div className="relative w-full h-full p-2 rounded-2xl bg-black/40 border border-violet-500/10 flex items-center justify-center">
+                                {qrData ? (
+                                    <img src={qrData} alt="QR Identity" className="w-full h-full opacity-80 group-hover:opacity-100 transition-opacity" />
+                                ) : (
+                                    <div className="animate-pulse w-full h-full bg-zinc-900 rounded-xl" />
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Identity Info */}
+                        <div className="flex-1 text-center md:text-left">
+                            <h2 className="text-[22px] font-black tracking-tight text-white">@{username}</h2>
+                            <p className="text-[10px] font-mono text-zinc-600 mt-1 break-all">{profile.peerId.substring(0, 24)}…</p>
+                            <div className="flex items-center justify-center md:justify-start gap-2 mt-3">
+                                <button
+                                    onClick={handleCopy}
+                                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-[9px] font-mono uppercase tracking-wider transition-all ${copied ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400" : "bg-zinc-900/60 border-white/[0.04] text-zinc-500 hover:text-white"}`}
+                                >
+                                    {copied ? <Check className="w-2.5 h-2.5" /> : <Copy className="w-2.5 h-2.5" />}
+                                    {copied ? "Copied" : "Copy"}
+                                </button>
+                                <button
+                                    onClick={() => { if (navigator.share) navigator.share({ title: "NANDIX ID", text: profile.peerId }); else handleCopy(); }}
+                                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-900/60 border border-white/[0.04] text-[9px] font-mono uppercase tracking-wider text-zinc-500 hover:text-white transition-all"
+                                >
+                                    <Share2 className="w-2.5 h-2.5" />
+                                    Share
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                {/* ═══ IDENTITY DATA ═══ */}
-                <div className="space-y-6">
-                    <div className="text-center">
-                        <h2 className="text-[24px] font-black tracking-tighter text-white">@{username}</h2>
-                        <button
-                            onClick={handleCopy}
-                            className="text-[10px] font-mono text-zinc-600 hover:text-violet-400 transition-all uppercase tracking-widest mt-1 flex items-center gap-2 mx-auto"
+                {/* ═══ STATS DASHBOARD ═══ */}
+                <div className="grid grid-cols-4 gap-2">
+                    {[
+                        { label: "Trust", value: "100", icon: <Shield className="w-3 h-3" />, color: "emerald" },
+                        { label: "Messages", value: `${msgCount ?? 0}`, icon: <MessageCircle className="w-3 h-3" />, color: "cyan" },
+                        { label: "Files", value: `${fileCount ?? 0}`, icon: <HardDrive className="w-3 h-3" />, color: "violet" },
+                        { label: "Contacts", value: `${contactCount ?? 0}`, icon: <Users className="w-3 h-3" />, color: "rose" },
+                    ].map((stat, i) => (
+                        <motion.div
+                            key={stat.label}
+                            initial={{ opacity: 0, y: 15 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.1 + i * 0.05 }}
+                            className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:border-white/[0.08] transition-all text-center"
                         >
-                            {copied ? "Copied" : profile.peerId.substring(0, 16) + "..."}
-                            <Copy className="w-3 h-3" />
-                        </button>
-                    </div>
+                            <div className={`text-${stat.color}-500/50 mx-auto mb-1.5`}>{stat.icon}</div>
+                            <div className="text-[16px] font-black text-white tabular-nums">{stat.value}</div>
+                            <div className="text-[7px] font-black uppercase tracking-[0.2em] text-zinc-600">{stat.label}</div>
+                        </motion.div>
+                    ))}
+                </div>
 
-                    <div className="p-7 rounded-[2.2rem] bg-zinc-950/40 backdrop-blur-3xl border border-white/[0.03] space-y-5">
-                        <div className="space-y-2">
-                            <label className="text-[9px] font-black uppercase tracking-[0.4em] text-zinc-700 block ml-1">Username</label>
+                {/* ═══ EDIT PROFILE CARD ═══ */}
+                <div className="p-6 rounded-[2rem] bg-white/[0.02] backdrop-blur-xl border border-white/[0.03]">
+                    <div className="flex items-center gap-2 mb-4">
+                        <Edit3 className="w-3 h-3 text-violet-500/60" />
+                        <span className="text-[9px] font-black uppercase tracking-[0.3em] text-zinc-600">Edit Profile</span>
+                    </div>
+                    <div className="space-y-4">
+                        <div className="space-y-1.5">
+                            <label className="text-[9px] font-black uppercase tracking-[0.3em] text-zinc-700 block ml-1">Username</label>
                             <input
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
-                                className="w-full bg-zinc-900/60 rounded-xl px-4 py-3 text-[14px] text-zinc-300 outline-none border border-white/5 focus:border-violet-500/30 transition-all"
+                                className="w-full bg-black/30 rounded-xl px-4 py-3 text-[14px] text-zinc-300 outline-none border border-white/[0.04] focus:border-violet-500/30 transition-all"
                                 placeholder="Enter username..."
                             />
                         </div>
-
-                        <div className="space-y-2">
-                            <label className="text-[9px] font-black uppercase tracking-[0.4em] text-zinc-700 block ml-1">Bio</label>
+                        <div className="space-y-1.5">
+                            <label className="text-[9px] font-black uppercase tracking-[0.3em] text-zinc-700 block ml-1">Bio</label>
                             <textarea
                                 value={bio}
                                 onChange={(e) => setBio(e.target.value)}
-                                className="w-full bg-zinc-900/60 rounded-xl px-4 py-3 text-[14px] text-zinc-300 outline-none border border-white/5 focus:border-violet-500/30 transition-all resize-none"
-                                placeholder="Tell the void about yourself..."
-                                rows={3}
+                                className="w-full bg-black/30 rounded-xl px-4 py-3 text-[14px] text-zinc-300 outline-none border border-white/[0.04] focus:border-violet-500/30 transition-all resize-none"
+                                placeholder="Tell the mesh about yourself..."
+                                rows={2}
                             />
                         </div>
-
                         <button
                             onClick={() => onSave({ ...profile, username, bio })}
-                            className="w-full py-4 rounded-2xl bg-violet-600 text-violet-950 text-[11px] font-black uppercase tracking-[0.2em] shadow-[0_0_30px_rgba(168,85,247,0.3)] hover:shadow-[0_0_50px_rgba(168,85,247,0.5)] transition-all"
+                            className="w-full py-3.5 rounded-2xl bg-violet-600 text-violet-950 text-[11px] font-black uppercase tracking-[0.2em] shadow-[0_0_30px_rgba(168,85,247,0.2)] hover:shadow-[0_0_50px_rgba(168,85,247,0.4)] transition-all active:scale-[0.98]"
                         >
-                            Sync Soul
+                            Save Changes
                         </button>
-
-                        <div className="pt-4 border-t border-white/5">
-                            <LinkingShard myId={profile.peerId} />
-                        </div>
-
-                        <div className="pt-6 border-t border-white/5">
-                            <ReputationShard peerId={profile.peerId} isMe={true} />
-                        </div>
-
-                        <div className="pt-6 border-t border-white/5">
-                            <BotLaboratory shards={shards} onToggle={onToggleShard} />
-                        </div>
                     </div>
+                </div>
 
-                    {/* Meta Info */}
-                    <div className="flex items-center justify-center gap-8 mt-12">
-                        <div className="flex flex-col items-center gap-1">
-                            <Shield className="w-4 h-4 text-emerald-500/40" />
-                            <span className="text-[8px] font-black uppercase tracking-widest text-zinc-700">Encrypted</span>
+                {/* ═══ CROSS-LINK MODULE ═══ */}
+                <div className="p-6 rounded-[2rem] bg-white/[0.02] backdrop-blur-xl border border-white/[0.03]">
+                    <LinkingShard myId={profile.peerId} />
+                </div>
+
+                {/* ═══ REPUTATION ═══ */}
+                <div className="p-6 rounded-[2rem] bg-white/[0.02] backdrop-blur-xl border border-white/[0.03]">
+                    <ReputationShard peerId={profile.peerId} isMe={true} />
+                </div>
+
+                {/* ═══ BOT LABORATORY ═══ */}
+                <div className="p-6 rounded-[2rem] bg-white/[0.02] backdrop-blur-xl border border-white/[0.03]">
+                    <BotLaboratory shards={shards} onToggle={onToggleShard} />
+                </div>
+
+                {/* ═══ TECH STACK FOOTER ═══ */}
+                <div className="grid grid-cols-3 gap-3 pt-2 pb-8">
+                    {[
+                        { icon: <Shield className="w-4 h-4 text-emerald-500/40" />, label: "E2E Encrypted", sub: "AES-256-GCM" },
+                        { icon: <Wifi className="w-4 h-4 text-violet-500/40" />, label: "P2P Mesh", sub: "WebRTC" },
+                        { icon: <Database className="w-4 h-4 text-cyan-500/40" />, label: "Local DB", sub: "IndexedDB" },
+                    ].map((item) => (
+                        <div key={item.label} className="flex flex-col items-center gap-1.5 py-3 rounded-xl bg-white/[0.01] border border-white/[0.02]">
+                            {item.icon}
+                            <span className="text-[8px] font-black uppercase tracking-widest text-zinc-600">{item.label}</span>
+                            <span className="text-[7px] font-mono text-zinc-800">{item.sub}</span>
                         </div>
-                        <div className="flex flex-col items-center gap-1">
-                            <Zap className="w-4 h-4 text-violet-500/40" />
-                            <span className="text-[8px] font-black uppercase tracking-widest text-zinc-700">P2P Mesh</span>
-                        </div>
-                        <div className="flex flex-col items-center gap-1">
-                            <Database className="w-4 h-4 text-cyan-500/40" />
-                            <span className="text-[8px] font-black uppercase tracking-widest text-zinc-700">Local DB</span>
-                        </div>
-                    </div>
+                    ))}
                 </div>
             </div>
         </motion.div>
