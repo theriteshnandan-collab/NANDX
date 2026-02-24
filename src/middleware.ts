@@ -25,11 +25,9 @@ export function middleware(request: NextRequest) {
         response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
     }
 
-    // === 3. DECENTRALIZED REDIRECT (The Wormhole) ===
-    // Redirect root to NANDIX OS
-    if (request.nextUrl.pathname === '/') {
-        return NextResponse.redirect(new URL('/nandix', request.url));
-    }
+    // === 3. LANDING PAGE ===
+    // Root '/' now serves the Supreme Landing Page directly.
+    // Users access the app via '/nandix' or by clicking "Launch App" CTA.
 
     // === 4. RATE LIMITING (The Valve) ===
     // Limit: 100 requests per minute per IP for API routes
