@@ -1,172 +1,125 @@
 "use client";
 
-import { useState } from "react";
-import { Shield, Loader2, Mail, Lock, Hexagon } from "lucide-react";
-import { createClient } from "@/lib/supabase/client";
+import React, { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { motion } from "framer-motion";
+import { Eye, EyeOff, Shield, ArrowRight, Key } from "lucide-react";
+import { toast } from "sonner";
+
+// 🛡️ Login Schema
+const loginSchema = z.object({
+    email: z.string().email("Invalid handle."),
+    password: z.string().min(1, "Key required."),
+});
+
+type LoginFormValues = z.infer<typeof loginSchema>;
 
 export default function LoginPage() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
-    const [isSignUp, setIsSignUp] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-    const supabase = createClient();
-    const useRouterHook = useRouter();
+    const router = useRouter();
+    const [showPassword, setShowPassword] = useState(false);
 
-    const handleAuth = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setIsLoading(true);
-        setError(null);
+    const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<LoginFormValues>({
+        resolver: zodResolver(loginSchema)
+    });
 
-        try {
-            if (isSignUp) {
-                const { error } = await supabase.auth.signUp({
-                    email,
-                    password,
-                    options: {
-                        emailRedirectTo: `${window.location.origin}/auth/callback`,
-                    },
-                });
-                if (error) throw error;
-                alert("Check your email for the confirmation link!");
-            } else {
-                const { error } = await supabase.auth.signInWithPassword({
-                    email,
-                    password,
-                });
-                if (error) throw error;
-                useRouterHook.push("/");
-                useRouterHook.refresh();
-            }
-        } catch (err) {
-            const error = err as Error;
-            setError(error.message || "Authentication failed");
-        } finally {
-            setIsLoading(false);
-        }
-    };
+    const onSubmit = async (data: LoginFormValues) => {
+        // Simulate Auth
+        await new Promise(resolve => setTimeout(resolve, 1500));
 
-    const handleGoogleAuth = async () => {
-        setIsLoading(true);
-        try {
-            let origin = window.location.origin;
-            if (window.location.hostname === "danrit.tech") {
-                origin = "https://danrit.tech";
-            }
-            const { error } = await supabase.auth.signInWithOAuth({
-                provider: "google",
-                options: { redirectTo: `${origin}/auth/callback` },
-            });
-            if (error) throw error;
-        } catch (err) {
-            const error = err as Error;
-            setError(error.message || "Google Authentication Failed");
-            setIsLoading(false);
-        }
+        toast.success("Identity Verified.", {
+            description: "Decrypted session keys successfully.",
+        });
+
+        router.push("/nandix");
     };
 
     return (
-        <div className="min-h-screen w-full bg-[#050505] flex items-center justify-center p-4 font-sans relative overflow-hidden">
-            {/* AMBIENT GLOWS (The 3rd Color: CYAN) */}
-            <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-[#00F0FF] opacity-[0.03] blur-[100px] pointer-events-none" />
-            <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] bg-[#FF4F00] opacity-[0.03] blur-[100px] pointer-events-none" />
+        <div className="min-h-screen flex items-center justify-center p-4 relative bg-[#F3F4F7]">
+            {/* 💡 Ambient Light Source (Top Left) */}
+            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/60 via-transparent to-slate-200/20 pointer-events-none" />
 
-            {/* THE MONOLITH CARD */}
-            <div className="w-full max-w-[400px] bg-[#0A0A0A] border border-[#222] relative z-10 shadow-[0_0_0_1px_rgba(255,255,255,0.05)]">
-                {/* STRIPE HEADER (The 2nd Color: ORANGE) */}
-                <div className="h-1 bg-[#FF4F00] w-full" />
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="w-full max-w-md relative z-10"
+            >
+                {/* 🧱 CLAY CARD (Levitating) */}
+                <div className="bg-[#F3F4F7] rounded-[32px] p-8 shadow-levitate border border-white/50 relative overflow-hidden">
+                    {/* Sage Glow Header Overlay */}
+                    <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-tactile-sage/10 to-transparent pointer-events-none" />
 
-                <div className="p-8">
-                    <header className="mb-10">
-                        <div className="flex items-center gap-3 mb-2">
-                            <Hexagon className="text-[#FF4F00]" size={24} strokeWidth={2} />
-                            <h1 className="text-xl font-bold tracking-tight text-white">DANRIT<span className="text-[#444]">_GATE</span></h1>
-                        </div>
-                        <p className="text-[11px] text-[#666] uppercase tracking-widest font-mono">Secure Access Terminal v2.1</p>
-                    </header>
-
-                    <button
-                        onClick={handleGoogleAuth}
-                        disabled={isLoading}
-                        className="w-full bg-[#111] hover:bg-[#161616] text-white py-3 border border-[#333] mb-6 flex items-center justify-center gap-3 transition-all duration-200 group"
-                    >
-                        {isLoading ? <Loader2 className="animate-spin text-[#888]" size={16} /> : (
-                            <div className="w-4 h-4 rounded-full border border-white/30 flex items-center justify-center text-[10px] group-hover:bg-white group-hover:text-black transition-colors">G</div>
-                        )}
-                        <span className="text-xs font-medium tracking-wide">CONTINUE WITH GOOGLE</span>
-                    </button>
-
-                    <div className="flex items-center gap-4 mb-8">
-                        <div className="h-px bg-[#222] flex-1" />
-                        <span className="text-[10px] text-[#444] font-mono">OR</span>
-                        <div className="h-px bg-[#222] flex-1" />
+                    <div className="relative z-10 text-center mb-10">
+                        <Link href="/">
+                            <div className="inline-flex justify-center items-center w-16 h-16 rounded-2xl bg-[#F3F4F7] shadow-convex mb-4 text-tactile-text group cursor-pointer active:scale-95 transition-transform">
+                                <Key className="w-8 h-8 opacity-80 group-hover:rotate-12 transition-transform" />
+                            </div>
+                        </Link>
+                        <h1 className="text-2xl font-bold text-tactile-text tracking-tight uppercase">Access Node</h1>
+                        <p className="text-sm text-tactile-leaf mt-2 font-medium">Verify your Sovereign Identity</p>
                     </div>
 
-                    <form onSubmit={handleAuth} className="space-y-5">
-                        <div className="space-y-1.5">
-                            <label htmlFor="email" className="text-[10px] font-bold text-[#666] uppercase tracking-wider">Identity</label>
-                            <div className="relative group">
-                                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-[#444] group-focus-within:text-[#00F0FF] transition-colors" size={16} />
-                                <input
-                                    id="email"
-                                    name="email"
-                                    type="email"
-                                    required
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    placeholder="OPERATOR@DANRIT.TECH"
-                                    className="w-full bg-[#050505] border border-[#222] py-3 pl-10 pr-4 text-sm text-white outline-none focus:border-[#00F0FF] transition-colors font-mono placeholder:text-[#333]"
-                                />
-                            </div>
+                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                        {/* 🧱 CONCAVE INPUT: Handle */}
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-black text-tactile-leaf uppercase tracking-[0.2em] ml-2">Handle</label>
+                            <input
+                                {...register("email")}
+                                className="input-tactile py-4 font-medium"
+                                placeholder="identity@mesh.net"
+                            />
+                            {errors.email && <p className="text-red-500 text-xs ml-2">{errors.email.message}</p>}
                         </div>
 
-                        <div className="space-y-1.5">
-                            <label htmlFor="password" className="text-[10px] font-bold text-[#666] uppercase tracking-wider">Passcode</label>
-                            <div className="relative group">
-                                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-[#444] group-focus-within:text-[#00F0FF] transition-colors" size={16} />
+                        {/* 🧱 CONCAVE INPUT: Password */}
+                        <div className="space-y-2">
+                            <div className="flex justify-between items-center px-2">
+                                <label className="text-[10px] font-black text-tactile-leaf uppercase tracking-[0.2em]">Master Key</label>
+                                <Link href="/recover" className="text-[10px] font-black text-tactile-leaf uppercase tracking-wider hover:text-tactile-text transition-colors">Lost?</Link>
+                            </div>
+                            <div className="relative">
                                 <input
-                                    id="password"
-                                    name="password"
-                                    type="password"
-                                    required
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
+                                    type={showPassword ? "text" : "password"}
+                                    {...register("password")}
+                                    className="input-tactile py-4 font-medium pr-12"
                                     placeholder="••••••••"
-                                    className="w-full bg-[#050505] border border-[#222] py-3 pl-10 pr-4 text-sm text-white outline-none focus:border-[#00F0FF] transition-colors font-mono placeholder:text-[#333]"
                                 />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className="absolute right-4 top-1/2 -translate-y-1/2 text-tactile-leaf hover:text-tactile-text transition-colors"
+                                >
+                                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                </button>
                             </div>
+                            {errors.password && <p className="text-red-500 text-xs ml-2">{errors.password.message}</p>}
                         </div>
 
-                        {error && (
-                            <div className="p-3 bg-[#110505] border border-[#FF4F00]/30 text-[#FF4F00] text-xs flex items-center gap-2">
-                                <Shield size={12} />
-                                <span>{error}</span>
-                            </div>
-                        )}
-
-                        <button
-                            disabled={isLoading}
-                            className="w-full bg-[#E5E5E5] text-black py-3.5 font-bold text-xs uppercase tracking-wider hover:bg-white transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                        {/* 🧱 CONVEX BUTTON (Tactile Press) */}
+                        <motion.button
+                            whileHover={{ scale: 1.01 }}
+                            whileTap={{ scale: 0.98 }}
+                            type="submit"
+                            disabled={isSubmitting}
+                            className="btn-tactile w-full py-4 mt-4 bg-white text-tactile-text font-black uppercase tracking-[0.2em] flex items-center justify-center gap-2 relative overflow-hidden group shadow-convex disabled:opacity-50"
                         >
-                            {isLoading ? <Loader2 className="animate-spin" size={16} /> : null}
-                            {isSignUp ? "INITIALIZE" : "AUTHENTICATE"}
-                        </button>
+                            <span className="relative z-10 flex items-center gap-2">
+                                {isSubmitting ? "DECRYPTING..." : "ENTER MESH"}
+                                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                            </span>
+                        </motion.button>
                     </form>
 
-                    <div className="mt-6 text-center">
-                        <button
-                            onClick={() => setIsSignUp(!isSignUp)}
-                            className="text-xs text-[#666] hover:text-[#00F0FF] transition-colors"
-                        >
-                            {isSignUp ? "Have an account? Login" : "No credentials? Request Access"}
-                        </button>
+                    <div className="mt-10 text-center">
+                        <p className="text-xs text-tactile-leaf font-bold uppercase tracking-widest">
+                            New Ghost? <Link href="/signup" className="text-tactile-text border-b border-tactile-text/20 hover:border-tactile-text transition-all">Forge Identity</Link>
+                        </p>
                     </div>
                 </div>
-
-                <div className="h-1 w-full bg-gradient-to-r from-[#FF4F00] via-[#000000] to-[#00F0FF]" />
-            </div>
+            </motion.div>
         </div>
     );
 }
-

@@ -210,6 +210,33 @@ export class SovereignIdentity {
         const publicKey = ed25519.getPublicKey(privateKey);
         return { publicKey, privateKey };
     }
+
+    // ── Sovereign Bridge Extensions ──────────────────────────────
+
+    /**
+     * Link this identity to a Phone/Email via the Sovereign Bridge.
+     */
+    public async linkToBridge(contact: string): Promise<boolean> {
+        const mnemonic = this.getMnemonic();
+        if (!mnemonic) return false;
+
+        const { sovereignBridge } = await import("./SovereignBridge");
+        return sovereignBridge.link(contact, mnemonic);
+    }
+
+    /**
+     * Restore identity using the Sovereign Bridge.
+     */
+    public async restoreFromBridge(contact: string): Promise<boolean> {
+        const { sovereignBridge } = await import("./SovereignBridge");
+        const mnemonic = await sovereignBridge.restore(contact);
+
+        if (mnemonic) {
+            this.recover(mnemonic);
+            return true;
+        }
+        return false;
+    }
 }
 
 export const identity = new SovereignIdentity();

@@ -1035,6 +1035,31 @@ export class NandixMesh {
         }
     }
     /**
+     * 🏎️ RAW SEND: Used by the TridentScheduler to push pre-encoded
+     * packets directly through the mesh. If peerId is null, broadcast
+     * to all peers on RED wire.
+     *
+     * 🎓 WHY "RAW"?
+     * The Scheduler has already encoded and prioritized the packet.
+     * We don't want to re-encode it. This is the fastest path from
+     * the Scheduler's queue to the WebRTC data channel.
+     */
+    public sendRaw(peerId: string | null, data: ArrayBuffer | NandixPacket) {
+        if (peerId) {
+            // Targeted send to a specific peer
+            const conn = this.chatConnections.get(peerId) || this.fileConnections.get(peerId);
+            if (conn?.open) {
+                conn.send(data);
+            }
+        } else {
+            // Broadcast to all RED wire connections
+            this.chatConnections.forEach(conn => {
+                if (conn.open) conn.send(data);
+            });
+        }
+    }
+
+    /**
      * Join Swarm (GREEN WIRE - Discovery)
      * Guarded: won't re-create if already in the same swarm.
      */

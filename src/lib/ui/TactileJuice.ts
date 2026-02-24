@@ -1,0 +1,105 @@
+import { Variants } from "framer-motion";
+
+/**
+ * 🏎️ TACTILE JUICE: THE PHYSICS ENGINE
+ * 
+ * 🎓 MISSION: Provide a consistent, premium, and "milled" motion feel.
+ * 
+ * DESIGN PRINCIPLE: "Spring over Easing."
+ * We avoid generic cubic-bezier curves. Instead, we use spring physics
+ * (stiffness, damping, mass) to make the UI feel like real hardware.
+ */
+
+export const TACTILE_SPRING = {
+    stiffness: 400,
+    damping: 30,
+    mass: 1,
+};
+
+export const TACTILE_BOUNCE = {
+    type: "spring",
+    stiffness: 500,
+    damping: 15,
+};
+
+export const TACTILE_GLIDE = {
+    type: "spring",
+    stiffness: 100,
+    damping: 20,
+};
+
+/**
+ * 🎭 VARIANTS: High-fidelity motion presets
+ */
+
+export const TACTILE_VARIANTS: Record<string, Variants> = {
+    // Convex / Concave transitions
+    milled: {
+        initial: { scale: 0.98, opacity: 0 },
+        animate: {
+            scale: 1,
+            opacity: 1,
+            transition: TACTILE_SPRING
+        },
+        exit: {
+            scale: 0.98,
+            opacity: 0,
+            transition: { duration: 0.2 }
+        }
+    },
+
+    // Light-catching slide
+    slideUp: {
+        initial: { y: 20, opacity: 0 },
+        animate: {
+            y: 0,
+            opacity: 1,
+            transition: TACTILE_SPRING
+        }
+    },
+
+    // Micro-interaction: Press
+    press: {
+        rest: { scale: 1 },
+        tap: { scale: 0.97, transition: { type: "spring", stiffness: 400, damping: 20 } },
+        hover: { scale: 1.02, transition: { type: "spring", stiffness: 400, damping: 20 } }
+    },
+
+    // Ghost Shard float
+    float: {
+        initial: { y: 0 },
+        animate: {
+            y: [0, -10, 0],
+            rotate: [0, 2, 0, -2, 0],
+            transition: {
+                duration: 6,
+                repeat: Infinity,
+                ease: "easeInOut"
+            }
+        }
+    },
+
+    // Reactor Pulse
+    pulse: {
+        initial: { scale: 1, opacity: 0.8 },
+        animate: {
+            scale: [1, 1.05, 1],
+            opacity: [0.8, 1, 0.8],
+            transition: {
+                duration: 3,
+                repeat: Infinity,
+                ease: "linear"
+            }
+        }
+    }
+};
+
+/**
+ * 🧱 CONVEX & CONCAVE HELPERS
+ * CSS Shadow layers for the "Tactile" look.
+ */
+export const TACTILE_SHADOWS = {
+    convex: "8px 8px 16px rgba(163, 177, 198, 0.4), -8px -8px 16px rgba(255, 255, 255, 0.8)",
+    concave: "inset 6px 6px 12px rgba(163, 177, 198, 0.5), inset -6px -6px 12px rgba(255, 255, 255, 0.8)",
+    levitate: "20px 20px 60px rgba(163, 177, 198, 0.2), -20px -20px 60px rgba(255, 255, 255, 0.8)",
+};

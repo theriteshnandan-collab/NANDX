@@ -10,6 +10,7 @@ import { mesh } from "@/lib/p2p/NandixMesh";
 import { RegistryView } from "@/components/Social/RegistryView";
 import { LinkPreview } from "@/components/Chat/LinkPreview";
 import { sovereignCrypto } from "@/lib/crypto/SovereignCrypto";
+import { kernel } from "@/lib/core/NandixKernel";
 import { identity, UserProfile, getMyProfile, setMyProfile } from "@/lib/crypto/Identity";
 import { db, saveContact, removeContact, createRoom, deleteRoom, ChatRoom, updateRoomPrivacy } from "@/lib/db/NandixDB";
 import { BotManager, BotShard } from "@/lib/agents/BotShards";
@@ -20,7 +21,7 @@ import { motion, AnimatePresence } from "framer-motion";
 // import { vectorEngine } from "@/lib/ghost/VectorEngine";
 import QRCode from "qrcode";
 import {
-    Send, Share2, Radio, User, Cpu,
+    Send, Share2, Radio, User, Cpu, Activity,
     ArrowUpRight, ArrowDownLeft, Database,
     Wifi, Shield, Check, Zap, Copy, Users,
     Key, Eye, EyeOff, RefreshCw, AlertTriangle,
@@ -62,40 +63,25 @@ export default function NandixOS() {
     // Error & Toast State
     const [lastError, setLastError] = useState<string | null>(null);
 
-    // Load/Sync Profile
+    // 🚀 SOVEREIGN BOOT SEQUENCE (AAA Standard)
     useEffect(() => {
         if (myId) {
+            // Instead of scattered initialization, we call the Kernel.
+            // This ensures every module starts in the correct order.
+            kernel.boot();
+
             getMyProfile(myId).then(setMyProfileState);
 
-            // Initialize Bot Manager
+            // The Kernel now handles BotManager and Mesh orchestration
             if (!botManagerRef.current) {
                 botManagerRef.current = new BotManager(mesh);
                 setBotShards(botManagerRef.current.getShards());
             }
 
-            // Hook Mesh Events
+            // Hook Mesh Events (Eventually moved to Kernel subscribers)
             mesh.onConnection((peerId) => {
                 botManagerRef.current?.handleConnection(peerId);
             });
-
-            mesh.onMessage((peerId, text) => {
-                botManagerRef.current?.handleMessage(peerId, text);
-            });
-
-            mesh.onConnectionError((peerId, err) => {
-                console.error(`[UI] Connection error with ${peerId}:`, err);
-                setLastError(`Connection to ${peerId.substring(0, 8)} failed. Retrying...`);
-                setTimeout(() => setLastError(null), 5000);
-            });
-
-            // Handle incoming trust vouches
-            mesh.onTrustVouch(() => {
-                console.log("[UI] 🛡️ Trust metrics updated via mesh vouch");
-            });
-
-            // ☢️ BOOT REACTOR
-            // reactorPipeline.start();
-            // vectorEngine.initialize();
         }
     }, [myId]);
 
@@ -307,9 +293,16 @@ export default function NandixOS() {
                 </div>
 
                 {/* ☢️ REACTOR HUD */}
-                <div className="absolute top-14 left-8 flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/5 border border-emerald-500/10 backdrop-blur-md">
-                    <Zap className="w-3 h-3 text-emerald-500 animate-pulse" />
-                    <span className="text-[9px] font-black uppercase tracking-widest text-emerald-400">Reactor Online</span>
+                <div className="absolute top-14 left-8 flex items-center gap-6">
+                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/5 border border-emerald-500/10 backdrop-blur-md">
+                        <Zap className="w-3 h-3 text-emerald-500 animate-pulse" />
+                        <span className="text-[9px] font-black uppercase tracking-widest text-emerald-400">Reactor Online</span>
+                    </div>
+                    {/* ⚙️ KERNEL HEARTBEAT */}
+                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan-500/5 border border-cyan-500/10 backdrop-blur-md">
+                        <Activity className="w-3 h-3 text-cyan-500 animate-pulse" />
+                        <span className="text-[9px] font-black uppercase tracking-widest text-cyan-400">Kernel: {kernel.getUptime()}ms</span>
+                    </div>
                 </div>
             </header>
 
