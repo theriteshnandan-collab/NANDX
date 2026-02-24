@@ -143,12 +143,12 @@ const features = [
     gradient: "from-rose-500 to-red-600",
     span: "",
     mockup: (
-      <div className="mt-4 p-3 rounded-xl bg-slate-50 border border-slate-100">
+      <div className="mt-4 p-3 rounded-xl bg-white/[0.03] border border-white/[0.05]">
         <div className="flex items-center gap-2 mb-2">
           <Lock className="w-3 h-3 text-emerald-500" />
-          <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-wider">Encrypted Channel</span>
+          <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider">Encrypted Channel</span>
         </div>
-        <div className="font-mono text-[10px] text-slate-400 break-all">
+        <div className="font-mono text-[10px] text-zinc-500 break-all">
           U2FsdGVkX1+vupppZk...xNzQwMjE=
         </div>
       </div>
@@ -180,15 +180,15 @@ const features = [
       <div className="mt-4 flex items-center gap-4">
         <div className="flex-1 space-y-2">
           {["Alice", "Bob", "Charlie"].map((name, i) => (
-            <div key={name} className="flex items-center gap-3 p-2 rounded-xl bg-slate-50">
+            <div key={name} className="flex items-center gap-3 p-2 rounded-xl bg-white/[0.02] border border-white/[0.04]">
               <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold ${i === 0 ? "bg-cyan-500" : i === 1 ? "bg-blue-500" : "bg-indigo-500"}`}>{name[0]}</div>
               <div className="flex-1">
-                <div className="text-xs font-bold">{name}</div>
-                <div className="h-1 w-full bg-slate-200 rounded-full overflow-hidden">
+                <div className="text-xs font-bold text-zinc-300">{name}</div>
+                <div className="h-1 w-full bg-black/40 rounded-full overflow-hidden">
                   <div className={`h-full bg-cyan-400 rounded-full`} style={{ width: `${60 + i * 15}%` }} />
                 </div>
               </div>
-              <Volume2 className="w-3 h-3 text-slate-400" />
+              <Volume2 className="w-3 h-3 text-zinc-600" />
             </div>
           ))}
         </div>
@@ -280,44 +280,80 @@ const useCases = [
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-[#FAFBFE] text-[#0F0F1A] overflow-x-hidden">
+    <div className="min-h-screen bg-[#050508] text-zinc-300 selection:bg-emerald-500/30 selection:text-emerald-200 overflow-x-hidden relative">
+      {/* 🏛️ VOID AMBIENCE — Visual Density Injection */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        {/* Physical Noise Layer */}
+        <div
+          className="absolute inset-0 opacity-[0.02]"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+            backgroundSize: "128px 128px",
+          }}
+        />
+
+        {/* Dot Grid */}
+        <div
+          className="absolute inset-0 opacity-[0.04]"
+          style={{
+            backgroundImage: `radial-gradient(circle, rgba(255,255,255,0.3) 1px, transparent 1px)`,
+            backgroundSize: "32px 32px",
+          }}
+        />
+
+        {/* AMBIENT ORBS */}
+        <motion.div
+          animate={{ x: [0, 40, -30, 0], y: [0, -60, 40, 0] }}
+          transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[10%] left-[5%] w-[500px] h-[500px] rounded-full bg-emerald-500/[0.04] blur-[150px]"
+        />
+        <motion.div
+          animate={{ x: [0, -50, 40, 0], y: [0, 30, -50, 0] }}
+          transition={{ duration: 35, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute bottom-[15%] right-[5%] w-[450px] h-[450px] rounded-full bg-violet-500/[0.04] blur-[130px]"
+        />
+        <motion.div
+          animate={{ x: [0, 30, -20, 0], y: [0, -30, 60, 0] }}
+          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[50%] right-[25%] w-[400px] h-[400px] rounded-full bg-cyan-500/[0.03] blur-[110px]"
+        />
+      </div>
 
       {/* ═══════════════════════════════════════════════════════
           SECTION 1: NAVBAR
           ═══════════════════════════════════════════════════════ */}
-      <nav className="fixed top-0 left-0 right-0 z-50 glass-nav">
-        <div className="max-w-7xl mx-auto h-16 flex items-center justify-between px-6 lg:px-12">
-          <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-[#0F0F1A] flex items-center justify-center">
-              <Shield className="w-5 h-5 text-white" />
-            </div>
-            <span className="font-extrabold text-lg tracking-tight">NANDIX</span>
+      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 lg:px-12 h-20 backdrop-blur-xl border-b border-white/[0.03]">
+        <Link href="/" className="flex items-center gap-3 group">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-cyan-600 flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.3)] group-hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] transition-all">
+            <Shield className="w-5 h-5 text-white" />
           </div>
+          <span className="text-xl font-black tracking-[0.2em] text-white">NANDIX</span>
+        </Link>
 
-          <div className="hidden md:flex items-center gap-8 text-sm text-slate-500 font-medium">
-            <a href="#about" className="hover:text-[#0F0F1A] transition-colors">About</a>
-            <a href="#features" className="hover:text-[#0F0F1A] transition-colors">Features</a>
-            <a href="#security" className="hover:text-[#0F0F1A] transition-colors">Security</a>
-            <a href="#use-cases" className="hover:text-[#0F0F1A] transition-colors">Use Cases</a>
-            <Link href="/manifesto" className="hover:text-[#0F0F1A] transition-colors">Manifesto</Link>
-          </div>
-
-          <Link
-            href="/signup"
-            className="btn-primary !px-5 !py-2.5 text-sm font-semibold rounded-full flex items-center gap-2"
-          >
-            Get Started <ArrowRight className="w-4 h-4" />
-          </Link>
+        <div className="hidden md:flex items-center gap-8 text-[11px] font-black uppercase tracking-[0.2em] text-zinc-500">
+          <a href="#about" className="hover:text-emerald-400 transition-colors">About</a>
+          <a href="#features" className="hover:text-emerald-400 transition-colors">Features</a>
+          <a href="#security" className="hover:text-emerald-400 transition-colors">Security</a>
+          <a href="#use-cases" className="hover:text-[#0F0F1A] transition-colors">Use Cases</a>
+          <Link href="/manifesto" className="hover:text-[#0F0F1A] transition-colors">Manifesto</Link>
         </div>
-      </nav>
 
-      {/* ═══════════════════════════════════════════════════════
+        <Link
+          href="/signup"
+          className="btn-primary !px-5 !py-2.5 text-sm font-semibold rounded-full flex items-center gap-2"
+        >
+          Get Started <ArrowRight className="w-4 h-4" />
+        </Link>
+    </div>
+      </nav >
+
+  {/* ═══════════════════════════════════════════════════════
           SECTION 2: HERO (Particle Background)
           ═══════════════════════════════════════════════════════ */}
-      <section className="relative min-h-screen flex items-center justify-center px-6 lg:px-12 overflow-hidden">
-        <ParticleHero />
+    < section className = "relative min-h-screen flex items-center justify-center px-6 lg:px-12 overflow-hidden" >
+      <ParticleHero />
 
-        {/* Gradient overlays for depth */}
+  {/* Gradient overlays for depth */ }
         <div className="absolute inset-0 bg-gradient-to-b from-[#FAFBFE] via-transparent to-[#FAFBFE] pointer-events-none z-[1]" />
         <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-emerald-100/30 rounded-full blur-[120px] pointer-events-none" />
         <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-violet-100/30 rounded-full blur-[120px] pointer-events-none" />
@@ -377,192 +413,194 @@ export default function LandingPage() {
             </Link>
           </motion.div>
         </div>
-      </section>
+      </section >
 
-      {/* ═══════════════════════════════════════════════════════
+  {/* ═══════════════════════════════════════════════════════
           SECTION 3: PRODUCT DEMO (Dark Container)
           ═══════════════════════════════════════════════════════ */}
-      <section className="px-6 lg:px-12 -mt-20 relative z-20">
-        <motion.div {...fadeUp} className="max-w-6xl mx-auto">
-          <div className="rounded-[32px] bg-[#0F0F1A] p-2 shadow-2xl shadow-slate-900/20 overflow-hidden border border-slate-800/50">
-            <div className="rounded-[28px] bg-gradient-to-br from-slate-900 to-slate-950 p-6 lg:p-8 relative overflow-hidden">
-              {/* Faint grid pattern */}
-              <div className="absolute inset-0 opacity-5" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='40' height='40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h40v40H0z' fill='none'/%3E%3Cpath d='M0 40V0h1v40zm40 0V0h1' stroke='%23fff' stroke-width='0.5'/%3E%3Cpath d='M0 0h40v1H0zm0 40h40v1' stroke='%23fff' stroke-width='0.5'/%3E%3C/svg%3E\")" }} />
+    < section className = "px-6 lg:px-12 -mt-20 relative z-20" >
+      <motion.div {...fadeUp} className="max-w-6xl mx-auto">
+        <div className="rounded-[32px] bg-[#0F0F1A] p-2 shadow-2xl shadow-slate-900/20 overflow-hidden border border-slate-800/50">
+          <div className="rounded-[28px] bg-gradient-to-br from-slate-900 to-slate-950 p-6 lg:p-8 relative overflow-hidden">
+            {/* Faint grid pattern */}
+            <div className="absolute inset-0 opacity-5" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='40' height='40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h40v40H0z' fill='none'/%3E%3Cpath d='M0 40V0h1v40zm40 0V0h1' stroke='%23fff' stroke-width='0.5'/%3E%3Cpath d='M0 0h40v1H0zm0 40h40v1' stroke='%23fff' stroke-width='0.5'/%3E%3C/svg%3E\")" }} />
 
-              {/* Mock IDE / Dashboard */}
-              <div className="flex gap-4 relative z-10">
-                {/* Left Panel */}
-                <div className="hidden lg:block w-48 shrink-0">
-                  <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-3">Channels</div>
-                  {["# general", "# engineering", "# random", "# direct-msg"].map((ch, i) => (
-                    <div key={ch} className={`flex items-center gap-2 px-3 py-2 rounded-lg mb-1 text-xs font-medium ${i === 0 ? "bg-white/5 text-white" : "text-slate-500 hover:text-slate-300"}`}>
-                      <span>{ch}</span>
-                      {i === 0 && <div className="ml-auto w-4 h-4 rounded-full bg-emerald-500 text-[8px] text-white flex items-center justify-center font-bold">3</div>}
-                    </div>
-                  ))}
-                  <div className="mt-6 text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-3">Peers Online</div>
-                  {[{ name: "Alice", color: "bg-emerald-500" }, { name: "Bob", color: "bg-blue-500" }, { name: "Charlie", color: "bg-violet-500" }].map((p) => (
-                    <div key={p.name} className="flex items-center gap-2 px-3 py-1.5 text-xs text-slate-400">
-                      <div className={`w-2 h-2 rounded-full ${p.color}`} />
-                      {p.name}
-                    </div>
+            {/* Mock IDE / Dashboard */}
+            <div className="flex gap-4 relative z-10">
+              {/* Left Panel */}
+              <div className="hidden lg:block w-48 shrink-0">
+                <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-3">Channels</div>
+                {["# general", "# engineering", "# random", "# direct-msg"].map((ch, i) => (
+                  <div key={ch} className={`flex items-center gap-2 px-3 py-2 rounded-lg mb-1 text-xs font-medium ${i === 0 ? "bg-white/5 text-white" : "text-slate-500 hover:text-slate-300"}`}>
+                    <span>{ch}</span>
+                    {i === 0 && <div className="ml-auto w-4 h-4 rounded-full bg-emerald-500 text-[8px] text-white flex items-center justify-center font-bold">3</div>}
+                  </div>
+                ))}
+                <div className="mt-6 text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-3">Peers Online</div>
+                {[{ name: "Alice", color: "bg-emerald-500" }, { name: "Bob", color: "bg-blue-500" }, { name: "Charlie", color: "bg-violet-500" }].map((p) => (
+                  <div key={p.name} className="flex items-center gap-2 px-3 py-1.5 text-xs text-slate-400">
+                    <div className={`w-2 h-2 rounded-full ${p.color}`} />
+                    {p.name}
+                  </div>
+                ))}
+              </div>
+
+              {/* Main Chat Area */}
+              <div className="flex-1 min-h-[300px] lg:min-h-[400px] flex flex-col">
+                <div className="flex items-center gap-2 pb-4 border-b border-white/5 mb-4">
+                  <span className="text-sm font-bold text-white"># general</span>
+                  <Lock className="w-3 h-3 text-emerald-500" />
+                  <span className="text-[10px] text-emerald-500 font-medium">E2E Encrypted</span>
+                </div>
+                <div className="flex-1 space-y-4">
+                  {[
+                    { user: "Alice", color: "bg-emerald-500", msg: "The mesh is growing! Just connected 3 new nodes from Berlin 🇩🇪", time: "2:14 PM" },
+                    { user: "Bob", color: "bg-blue-500", msg: "Ghost AI just summarized 200 messages in 0.3s — all local inference 🧠", time: "2:15 PM" },
+                    { user: "Charlie", color: "bg-violet-500", msg: "File transfer hitting 12MB/s over direct WebRTC. Zero relay needed.", time: "2:16 PM" },
+                  ].map((m, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, x: -10 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.15 }}
+                      viewport={{ once: true }}
+                      className="flex gap-3"
+                    >
+                      <div className={`w-8 h-8 rounded-full ${m.color} shrink-0 flex items-center justify-center text-white text-xs font-bold`}>{m.user[0]}</div>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs font-bold text-white">{m.user}</span>
+                          <span className="text-[10px] text-slate-600">{m.time}</span>
+                        </div>
+                        <p className="text-sm text-slate-400 mt-0.5">{m.msg}</p>
+                      </div>
+                    </motion.div>
                   ))}
                 </div>
-
-                {/* Main Chat Area */}
-                <div className="flex-1 min-h-[300px] lg:min-h-[400px] flex flex-col">
-                  <div className="flex items-center gap-2 pb-4 border-b border-white/5 mb-4">
-                    <span className="text-sm font-bold text-white"># general</span>
-                    <Lock className="w-3 h-3 text-emerald-500" />
-                    <span className="text-[10px] text-emerald-500 font-medium">E2E Encrypted</span>
-                  </div>
-                  <div className="flex-1 space-y-4">
-                    {[
-                      { user: "Alice", color: "bg-emerald-500", msg: "The mesh is growing! Just connected 3 new nodes from Berlin 🇩🇪", time: "2:14 PM" },
-                      { user: "Bob", color: "bg-blue-500", msg: "Ghost AI just summarized 200 messages in 0.3s — all local inference 🧠", time: "2:15 PM" },
-                      { user: "Charlie", color: "bg-violet-500", msg: "File transfer hitting 12MB/s over direct WebRTC. Zero relay needed.", time: "2:16 PM" },
-                    ].map((m, i) => (
-                      <motion.div
-                        key={i}
-                        initial={{ opacity: 0, x: -10 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ delay: i * 0.15 }}
-                        viewport={{ once: true }}
-                        className="flex gap-3"
-                      >
-                        <div className={`w-8 h-8 rounded-full ${m.color} shrink-0 flex items-center justify-center text-white text-xs font-bold`}>{m.user[0]}</div>
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <span className="text-xs font-bold text-white">{m.user}</span>
-                            <span className="text-[10px] text-slate-600">{m.time}</span>
-                          </div>
-                          <p className="text-sm text-slate-400 mt-0.5">{m.msg}</p>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
-                  <div className="mt-4 flex items-center gap-2 p-3 rounded-xl bg-white/5 border border-white/5">
-                    <input type="text" placeholder="Type into the sovereign mesh..." className="flex-1 bg-transparent text-sm text-white placeholder-slate-600 outline-none" readOnly />
-                    <div className="flex items-center gap-1">
-                      <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-slate-500"><Sparkles className="w-4 h-4" /></div>
-                      <div className="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center text-white"><ArrowRight className="w-4 h-4" /></div>
-                    </div>
+                <div className="mt-4 flex items-center gap-2 p-3 rounded-xl bg-white/5 border border-white/5">
+                  <input type="text" placeholder="Type into the sovereign mesh..." className="flex-1 bg-transparent text-sm text-white placeholder-slate-600 outline-none" readOnly />
+                  <div className="flex items-center gap-1">
+                    <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-slate-500"><Sparkles className="w-4 h-4" /></div>
+                    <div className="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center text-white"><ArrowRight className="w-4 h-4" /></div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </motion.div>
-      </section>
+        </div>
+      </motion.div>
+      </section >
 
-      {/* ═══════════════════════════════════════════════════════
+  {/* ═══════════════════════════════════════════════════════
           SECTION 4: TECH ICONS ROW
           ═══════════════════════════════════════════════════════ */}
-      <section className="py-16 px-6 lg:px-12 max-w-6xl mx-auto">
-        <motion.div {...fadeUp} className="flex flex-wrap justify-center gap-4">
-          {techIcons.map((item, i) => (
-            <motion.div
-              key={i}
-              whileHover={{ scale: 1.1, y: -2 }}
-              className="flex flex-col items-center gap-1.5 w-16"
-            >
-              <div className="w-12 h-12 rounded-2xl bg-white border border-slate-200/60 flex items-center justify-center text-slate-500 shadow-sm hover:shadow-md hover:text-[#0F0F1A] transition-all cursor-default">
-                {item.icon}
+    < section className = "py-16 px-6 lg:px-12 max-w-6xl mx-auto relative z-10" >
+      <motion.div {...fadeUp} className="flex flex-wrap justify-center gap-4">
+        {techIcons.map((item, i) => (
+          <motion.div
+            key={i}
+            whileHover={{ scale: 1.1, y: -2 }}
+            className="flex flex-col items-center gap-1.5 w-16"
+          >
+            <div className="w-12 h-12 rounded-2xl bg-white/[0.02] border border-white/[0.05] flex items-center justify-center text-zinc-500 shadow-sm hover:shadow-lg hover:text-white hover:border-white/[0.1] transition-all cursor-default backdrop-blur-3xl">
+              {item.icon}
+            </div>
+            <span className="text-[10px] font-black uppercase tracking-widest text-zinc-600">{item.label}</span>
+          </motion.div>
+        ))}
+      </motion.div>
+    </section >
+
+  {/* ═══════════════════════════════════════════════════════
+          SECTION 5: MISSION STATEMENT
+          ═══════════════════════════════════════════════════════ */}
+    < section className = "py-24 px-6 lg:px-12 relative overflow-hidden z-10" >
+      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent" />
+      <motion.div {...fadeUp} className="max-w-4xl mx-auto text-center relative z-10">
+        <p className="text-3xl lg:text-[52px] font-black tracking-tight leading-[1.1] text-white">
+          <span className="text-emerald-500">Nandix</span> is the sovereign mesh —
+          evolving communication into the <span className="bg-gradient-to-r from-emerald-500 to-cyan-500 bg-clip-text text-transparent">post-server era</span>.
+          <span className="inline-block w-[4px] h-[40px] bg-emerald-500 ml-3 animate-pulse align-middle" />
+        </p>
+      </motion.div>
+      <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent" />
+    </section >
+
+  {/* ═══════════════════════════════════════════════════════
+          SECTION 6: ABOUT US
+          ═══════════════════════════════════════════════════════ */}
+    < section id = "about" className = "py-24 lg:py-36 px-6 lg:px-12 max-w-7xl mx-auto relative z-10" >
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+        <motion.div {...fadeUp}>
+          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[10px] font-black uppercase tracking-[0.2em] text-emerald-400 mb-6">
+            <Globe className="w-3 h-3" /> Genesis Protocol
+          </span>
+          <h2 className="text-4xl lg:text-7xl font-black tracking-tight leading-[1.05] mb-8 text-white">
+            We Are the Architects of{" "}
+            <span className="bg-gradient-to-r from-emerald-500 to-emerald-400 bg-clip-text text-transparent">
+              Sovereign Tech.
+            </span>
+          </h2>
+          <div className="space-y-5 text-lg text-zinc-500 leading-relaxed">
+            <p>
+              Nandix was born from a single belief: <strong className="text-white">communication is a human right, not a SaaS subscription.</strong>
+            </p>
+            <p>
+              Founded in 2024, we set out to build what Big Tech refuses to: a communication platform with zero central servers, zero data collection, and zero compromise.
+            </p>
+          </div>
+        </motion.div>
+
+        {/* Stats Cards */}
+        <motion.div {...stagger} className="grid grid-cols-2 gap-4">
+          {[
+            { value: "0", label: "Central Servers", icon: <Server className="w-5 h-5" />, color: "text-emerald-500" },
+            { value: "256", label: "Bit AES Encryption", icon: <Lock className="w-5 h-5" />, color: "text-blue-500" },
+            { value: "60fps", label: "Binary Protocol", icon: <Zap className="w-5 h-5" />, color: "text-amber-500" },
+            { value: "∞", label: "Maximum Nodes", icon: <Globe className="w-5 h-5" />, color: "text-violet-500" },
+          ].map((stat, i) => (
+            <motion.div key={i} {...staggerChild} className="p-8 rounded-3xl bg-white/[0.02] border border-white/[0.04] text-center hover:border-white/[0.08] transition-all group backdrop-blur-3xl">
+              <div className={`w-12 h-12 rounded-2xl bg-black/40 border border-white/5 flex items-center justify-center mx-auto mb-4 ${stat.color}`}>
+                {stat.icon}
               </div>
-              <span className="text-[10px] font-semibold text-slate-400">{item.label}</span>
+              <div className={`text-4xl font-black tracking-tight mb-1 text-white tabular-nums`}>{stat.value}</div>
+              <div className="text-[10px] text-zinc-600 font-bold uppercase tracking-widest">{stat.label}</div>
             </motion.div>
           ))}
         </motion.div>
-      </section>
+      </div>
+    </section >
 
-      {/* ═══════════════════════════════════════════════════════
-          SECTION 5: MISSION STATEMENT
-          ═══════════════════════════════════════════════════════ */}
-      <section className="py-20 px-6 lg:px-12 bg-white border-y border-slate-100">
-        <motion.div {...fadeUp} className="max-w-4xl mx-auto text-center">
-          <p className="text-3xl lg:text-[44px] font-bold tracking-tight leading-[1.2] text-[#0F0F1A]">
-            <span className="font-extrabold">Nandix</span> is our sovereign development mesh —
-            evolving communication into the <span className="bg-gradient-to-r from-emerald-500 to-cyan-500 bg-clip-text text-transparent">post-server era</span>.
-            <span className="inline-block w-[3px] h-[36px] bg-emerald-500 ml-2 animate-pulse align-middle" />
-          </p>
-        </motion.div>
-      </section>
-
-      {/* ═══════════════════════════════════════════════════════
-          SECTION 6: ABOUT US
-          ═══════════════════════════════════════════════════════ */}
-      <section id="about" className="py-24 lg:py-36 px-6 lg:px-12 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <motion.div {...fadeUp}>
-            <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200/50 text-xs font-semibold text-emerald-700 uppercase tracking-wider mb-6">
-              <Globe className="w-3.5 h-3.5" /> Who We Are
-            </span>
-            <h2 className="text-4xl lg:text-6xl font-black tracking-tight leading-[1.05] mb-8">
-              We Are the Architects of{" "}
-              <span className="bg-gradient-to-r from-emerald-500 to-emerald-400 bg-clip-text text-transparent">
-                Sovereign Technology.
-              </span>
-            </h2>
-            <div className="space-y-5 text-lg text-slate-500 leading-relaxed">
-              <p>
-                Nandix was born from a single belief: <strong className="text-[#0F0F1A]">communication is a human right, not a SaaS subscription.</strong>
-              </p>
-              <p>
-                Founded in 2024, we set out to build what Big Tech refuses to: a communication platform with zero central servers, zero data collection, and zero compromise.
-              </p>
-            </div>
-          </motion.div>
-
-          {/* Stats Cards */}
-          <motion.div {...stagger} className="grid grid-cols-2 gap-4">
-            {[
-              { value: "0", label: "Central Servers", icon: <Server className="w-5 h-5" />, color: "text-emerald-600" },
-              { value: "256", label: "Bit AES Encryption", icon: <Lock className="w-5 h-5" />, color: "text-blue-600" },
-              { value: "60fps", label: "Binary Protocol", icon: <Zap className="w-5 h-5" />, color: "text-amber-600" },
-              { value: "∞", label: "Maximum Nodes", icon: <Globe className="w-5 h-5" />, color: "text-violet-600" },
-            ].map((stat, i) => (
-              <motion.div key={i} {...staggerChild} className="card-elevated p-6 text-center">
-                <div className={`w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center mx-auto mb-3 ${stat.color}`}>
-                  {stat.icon}
-                </div>
-                <div className={`text-3xl font-black tracking-tight mb-1 ${stat.color}`}>{stat.value}</div>
-                <div className="text-xs text-slate-400 font-medium">{stat.label}</div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ═══════════════════════════════════════════════════════
+  {/* ═══════════════════════════════════════════════════════
           SECTION 7: MARQUEE
           ═══════════════════════════════════════════════════════ */}
-      <section className="py-5 bg-slate-50/80 border-y border-slate-100 overflow-hidden">
-        <div className="marquee-track whitespace-nowrap">
-          {[...Array(2)].map((_, setIdx) => (
-            <React.Fragment key={setIdx}>
-              {["100% Open Source", "Zero Central Servers", "End-to-End Encrypted", "P2P Mesh Architecture", "Sovereign Identity", "Local AI Processing", "No Phone Number Required", "256-bit AES-GCM", "Binary Protocol", "60fps Tick Rate"].map((item, i) => (
-                <span key={`${setIdx}-${i}`} className="text-sm text-slate-400 font-medium tracking-wide mx-8 inline-flex items-center gap-3">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                  {item}
-                </span>
-              ))}
-            </React.Fragment>
-          ))}
-        </div>
-      </section>
+    < section className = "py-8 bg-white/[0.02] border-y border-white/[0.04] overflow-hidden relative z-10" >
+      <div className="marquee-track whitespace-nowrap">
+        {[...Array(2)].map((_, setIdx) => (
+          <React.Fragment key={setIdx}>
+            {["100% Open Source", "Zero Central Servers", "End-to-End Encrypted", "P2P Mesh Architecture", "Sovereign Identity", "Local AI Processing", "No Phone Number Required", "256-bit AES-GCM", "Binary Protocol", "60fps Tick Rate"].map((item, i) => (
+              <span key={`${setIdx}-${i}`} className="text-[10px] text-zinc-600 font-black uppercase tracking-[0.3em] mx-12 inline-flex items-center gap-3">
+                <div className="w-1 h-1 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
+                {item}
+              </span>
+            ))}
+          </React.Fragment>
+        ))}
+      </div>
+      </section >
 
-      {/* ═══════════════════════════════════════════════════════
+  {/* ═══════════════════════════════════════════════════════
           SECTION 8: FEATURE BENTO GRID (with mockups)
           ═══════════════════════════════════════════════════════ */}
-      <section id="features" className="py-24 lg:py-36 px-6 lg:px-12 max-w-7xl mx-auto">
+    < section id = "features" className = "py-24 lg:py-36 px-6 lg:px-12 max-w-7xl mx-auto relative z-10" >
         <motion.div {...fadeUp} className="text-center mb-16">
-          <h2 className="text-4xl lg:text-6xl font-black tracking-tight leading-[1.05] mb-6">
+          <h2 className="text-4xl lg:text-7xl font-black tracking-tight leading-[1.05] mb-6 text-white">
             Built for the{" "}
             <span className="bg-gradient-to-r from-emerald-500 to-cyan-500 bg-clip-text text-transparent">
-              Sovereign Individual.
+              Sovereign User.
             </span>
           </h2>
-          <p className="text-lg text-slate-500 max-w-2xl mx-auto">
+          <p className="text-lg text-zinc-500 max-w-2xl mx-auto">
             Every feature exists to put power back in your hands. No compromises. No fine print.
           </p>
         </motion.div>
@@ -572,26 +610,29 @@ export default function LandingPage() {
             <motion.div
               key={i}
               {...staggerChild}
-              className={`card-elevated p-8 group cursor-default overflow-hidden ${feat.span}`}
+              className={`p-10 rounded-[2.5rem] bg-white/[0.02] border border-white/[0.04] backdrop-blur-3xl group cursor-default overflow-hidden relative ${feat.span} hover:border-white/[0.08] transition-all`}
             >
-              <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${feat.gradient} flex items-center justify-center text-white mb-6 shadow-lg`}>
+              <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent pointer-events-none" />
+              <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${feat.gradient} flex items-center justify-center text-white mb-8 shadow-xl relative z-10`}>
                 {feat.icon}
               </div>
-              <h3 className="text-xl font-bold mb-3">{feat.title}</h3>
-              <p className="text-slate-500 leading-relaxed text-sm">{feat.desc}</p>
-              {feat.mockup}
+              <h3 className="text-2xl font-black mb-4 text-white relative z-10">{feat.title}</h3>
+              <p className="text-zinc-500 leading-relaxed text-sm relative z-10">{feat.desc}</p>
+              <div className="relative z-10 mt-2">
+                {feat.mockup}
+              </div>
             </motion.div>
           ))}
         </motion.div>
-      </section>
+      </section >
 
-      {/* ═══════════════════════════════════════════════════════
+  {/* ═══════════════════════════════════════════════════════
           SECTION 9: SECURITY (Dark Inversion)
           ═══════════════════════════════════════════════════════ */}
-      <section id="security" className="section-dark py-24 lg:py-36 px-6 lg:px-12 relative overflow-hidden">
+    < section id = "security" className = "section-dark py-24 lg:py-36 px-6 lg:px-12 relative overflow-hidden" >
         <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent" />
         <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent" />
-        {/* Grid pattern */}
+  {/* Grid pattern */ }
         <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h60v60H0z' fill='none'/%3E%3Ccircle cx='30' cy='30' r='1' fill='%23fff'/%3E%3C/svg%3E\")" }} />
 
         <div className="max-w-7xl mx-auto relative z-10">
@@ -619,12 +660,12 @@ export default function LandingPage() {
             ))}
           </motion.div>
         </div>
-      </section>
+      </section >
 
-      {/* ═══════════════════════════════════════════════════════
+  {/* ═══════════════════════════════════════════════════════
           SECTION 10: HOW IT WORKS
           ═══════════════════════════════════════════════════════ */}
-      <section className="py-24 lg:py-36 px-6 lg:px-12 max-w-7xl mx-auto">
+    < section className = "py-24 lg:py-36 px-6 lg:px-12 max-w-7xl mx-auto" >
         <motion.div {...fadeUp} className="text-center mb-20">
           <h2 className="text-4xl lg:text-6xl font-black tracking-tight leading-[1.05] mb-6">
             Three Steps to Sovereignty.
@@ -649,194 +690,201 @@ export default function LandingPage() {
             </motion.div>
           ))}
         </motion.div>
-      </section>
+      </section >
 
-      {/* ═══════════════════════════════════════════════════════
+  {/* ═══════════════════════════════════════════════════════
           SECTION 11: USE CASES
           ═══════════════════════════════════════════════════════ */}
-      <section id="use-cases" className="py-24 lg:py-36 px-6 lg:px-12 bg-white border-y border-slate-100">
-        <div className="max-w-7xl mx-auto">
-          <motion.div {...fadeUp} className="text-center mb-16">
-            <h2 className="text-4xl lg:text-5xl font-black tracking-tight mb-6">
-              Built For Everyone Who Values Freedom.
-            </h2>
-          </motion.div>
+    < section id = "use-cases" className = "py-24 lg:py-36 px-6 lg:px-12 bg-black/20 border-y border-white/[0.03] relative z-10" >
+      <div className="max-w-7xl mx-auto">
+        <motion.div {...fadeUp} className="text-center mb-16">
+          <h2 className="text-4xl lg:text-7xl font-black tracking-tight mb-6 text-white text-center">
+            Built For Everyone Who Values <span className="text-emerald-500 animate-pulse">Freedom.</span>
+          </h2>
+        </motion.div>
 
-          <motion.div {...stagger} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {useCases.map((uc, i) => (
-              <motion.div key={i} {...staggerChild} className="group">
-                <div className={`h-40 rounded-t-3xl bg-gradient-to-br ${uc.gradient} flex items-center justify-center relative overflow-hidden`}>
-                  <div className="absolute inset-0 bg-black/10" />
-                  <div className="relative text-white">{React.cloneElement(uc.icon, { className: "w-12 h-12" })}</div>
-                </div>
-                <div className="p-6 border border-t-0 border-slate-200/60 rounded-b-3xl bg-white group-hover:shadow-lg transition-shadow">
-                  <h3 className="font-bold text-lg mb-2">{uc.title}</h3>
-                  <p className="text-sm text-slate-500 leading-relaxed mb-4">{uc.desc}</p>
-                  <span className="text-sm font-semibold text-emerald-600 flex items-center gap-1 group-hover:gap-2 transition-all">
-                    Learn more <ChevronRight className="w-4 h-4" />
-                  </span>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+        <motion.div {...stagger} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {useCases.map((uc, i) => (
+            <motion.div key={i} {...staggerChild} className="group">
+              <div className={`h-48 rounded-t-[2.5rem] bg-gradient-to-br ${uc.gradient} flex items-center justify-center relative overflow-hidden transition-all group-hover:scale-[1.02]`}>
+                <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px]" />
+                <div className="relative text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.3)]">{React.cloneElement(uc.icon, { className: "w-16 h-16" })}</div>
+              </div>
+              <div className="p-8 border border-t-0 border-white/[0.04] rounded-b-[2.5rem] bg-white/[0.01] backdrop-blur-3xl group-hover:bg-white/[0.03] transition-all group-hover:border-white/[0.08]">
+                <h3 className="font-black text-xl mb-3 text-white">{uc.title}</h3>
+                <p className="text-sm text-zinc-500 leading-relaxed mb-6 h-20">{uc.desc}</p>
+                <span className="text-[10px] font-black uppercase tracking-widest text-emerald-400 flex items-center gap-2 group-hover:gap-3 transition-all cursor-pointer">
+                  Protocol Details <ChevronRight className="w-3.5 h-3.5" />
+                </span>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+    </section >
 
-      {/* ═══════════════════════════════════════════════════════
+  {/* ═══════════════════════════════════════════════════════
           SECTION 12: COMPARISON TABLE
           ═══════════════════════════════════════════════════════ */}
-      <section className="py-24 lg:py-36 px-6 lg:px-12 max-w-5xl mx-auto">
-        <motion.div {...fadeUp} className="text-center mb-16">
-          <h2 className="text-4xl lg:text-5xl font-black tracking-tight mb-6">Why Nandix?</h2>
-          <p className="text-lg text-slate-500">See how we compare to the platforms you already know.</p>
-        </motion.div>
+    < section className = "py-24 lg:py-36 px-6 lg:px-12 max-w-5xl mx-auto relative z-10" >
+      <motion.div {...fadeUp} className="text-center mb-20">
+        <h2 className="text-4xl lg:text-7xl font-black tracking-tight mb-6 text-white">Why Nandix?</h2>
+        <p className="text-lg text-zinc-500">See how we compare to the platforms of the old era.</p>
+      </motion.div>
 
-        <motion.div {...fadeUp} className="overflow-hidden rounded-3xl border border-slate-200 shadow-sm">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="bg-slate-50 border-b border-slate-200">
-                <th className="text-left py-4 px-6 font-semibold text-slate-500">Feature</th>
-                <th className="py-4 px-6 font-bold text-emerald-700 bg-emerald-50/50">Nandix</th>
-                <th className="py-4 px-6 font-semibold text-slate-500">WhatsApp</th>
-                <th className="py-4 px-6 font-semibold text-slate-500">Signal</th>
+      <motion.div {...fadeUp} className="overflow-hidden rounded-[2.5rem] border border-white/[0.04] bg-white/[0.01] backdrop-blur-3xl shadow-2xl">
+        <table className="w-full text-xs">
+          <thead>
+            <tr className="bg-white/[0.03] border-b border-white/[0.04]">
+              <th className="text-left py-6 px-8 font-black uppercase tracking-widest text-zinc-600">Sovereign Feature</th>
+              <th className="py-6 px-8 font-black uppercase tracking-widest text-emerald-400 bg-emerald-500/5">Nandix</th>
+              <th className="py-6 px-8 font-black uppercase tracking-widest text-zinc-600">WhatsApp</th>
+              <th className="py-6 px-8 font-black uppercase tracking-widest text-zinc-600">Signal</th>
+            </tr>
+          </thead>
+          <tbody>
+            {comparison.map((row, i) => (
+              <tr key={i} className={`border-b border-white/[0.02] ${i % 2 === 0 ? "bg-white/[0.01]" : "bg-transparent"} hover:bg-white/[0.03] transition-colors`}>
+                <td className="py-5 px-8 font-bold text-zinc-300">{row.feature}</td>
+                <td className="py-5 px-8 text-center bg-emerald-500/5">
+                  {row.nandix ? <Check className="w-5 h-5 text-emerald-400 mx-auto drop-shadow-[0_0_8px_rgba(52,211,153,0.4)]" /> : <X className="w-5 h-5 text-zinc-800 mx-auto" />}
+                </td>
+                <td className="py-5 px-8 text-center">
+                  {row.whatsapp ? <Check className="w-5 h-5 text-emerald-400/60 mx-auto" /> : <X className="w-5 h-5 text-zinc-800 mx-auto" />}
+                </td>
+                <td className="py-5 px-8 text-center">
+                  {row.signal ? <Check className="w-5 h-5 text-emerald-400/60 mx-auto" /> : <X className="w-5 h-5 text-zinc-800 mx-auto" />}
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {comparison.map((row, i) => (
-                <tr key={i} className={`border-b border-slate-100 ${i % 2 === 0 ? "bg-white" : "bg-slate-50/30"}`}>
-                  <td className="py-4 px-6 font-medium text-slate-700">{row.feature}</td>
-                  <td className="py-4 px-6 text-center bg-emerald-50/30">
-                    {row.nandix ? <Check className="w-5 h-5 text-emerald-500 mx-auto" /> : <X className="w-5 h-5 text-slate-300 mx-auto" />}
-                  </td>
-                  <td className="py-4 px-6 text-center">
-                    {row.whatsapp ? <Check className="w-5 h-5 text-emerald-500 mx-auto" /> : <X className="w-5 h-5 text-slate-300 mx-auto" />}
-                  </td>
-                  <td className="py-4 px-6 text-center">
-                    {row.signal ? <Check className="w-5 h-5 text-emerald-500 mx-auto" /> : <X className="w-5 h-5 text-slate-300 mx-auto" />}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </motion.div>
-      </section>
+            ))}
+          </tbody>
+        </table>
+      </motion.div>
+    </section >
 
-      {/* ═══════════════════════════════════════════════════════
+  {/* ═══════════════════════════════════════════════════════
           SECTION 13: MANIFESTO PULLQUOTE
           ═══════════════════════════════════════════════════════ */}
-      <section className="py-24 lg:py-32 px-6 lg:px-12 bg-slate-50/50 border-y border-slate-100 relative">
-        <motion.div {...fadeUp} className="max-w-4xl mx-auto text-center relative">
-          <span className="text-[180px] font-black text-slate-100 absolute -top-20 left-1/2 -translate-x-1/2 select-none pointer-events-none leading-none">&ldquo;</span>
-          <p className="text-2xl lg:text-4xl font-bold text-slate-600 italic leading-snug relative z-10">
-            We believe communication is a human right,<br />
-            not a SaaS subscription.
-          </p>
-          <div className="mt-8 text-sm text-slate-400 font-semibold uppercase tracking-wider">
-            — The Nandix Manifesto
-          </div>
-        </motion.div>
-      </section>
+    < section className = "py-32 lg:py-48 px-6 lg:px-12 bg-black/40 border-y border-white/[0.03] relative z-10 overflow-hidden" >
+      <motion.div {...fadeUp} className="max-w-4xl mx-auto text-center relative z-10">
+        <span className="text-[200px] font-black text-white/[0.02] absolute -top-32 left-1/2 -translate-x-1/2 select-none pointer-events-none leading-none">&ldquo;</span>
+        <p className="text-2xl lg:text-5xl font-black text-white italic leading-[1.2] relative z-10 drop-shadow-lg">
+          We believe communication is a human right,<br />
+          not a <span className="text-emerald-500 animate-pulse">SaaS subscription.</span>
+        </p>
+        <div className="mt-12 text-[10px] text-zinc-500 font-black uppercase tracking-[0.4em]">
+          — The Nandix Manifesto
+        </div>
+      </motion.div>
+    </section >
 
-      {/* ═══════════════════════════════════════════════════════
+  {/* ═══════════════════════════════════════════════════════
           SECTION 14: THE VISION
           ═══════════════════════════════════════════════════════ */}
-      <section className="py-24 lg:py-36 px-6 lg:px-12">
-        <motion.div {...fadeUp} className="max-w-3xl mx-auto text-center">
-          <h2 className="text-4xl lg:text-6xl font-black tracking-tight leading-[1.05] mb-10">
-            We&apos;re Not Building an App.{" "}
-            <span className="bg-gradient-to-r from-violet-500 to-blue-500 bg-clip-text text-transparent">
-              We&apos;re Building a Protocol for Human Freedom.
-            </span>
-          </h2>
-          <div className="space-y-6 text-lg text-slate-500 leading-relaxed">
-            <p>
-              In a world where every message is surveilled, every file is scanned, and every identity is owned by a corporation — we chose to build differently.
-            </p>
-            <p className="text-[#0F0F1A] font-semibold text-xl">
-              Nandix is the protocol. You are the network. Together, we are unstoppable.
-            </p>
-          </div>
-        </motion.div>
-      </section>
+    < section className = "py-24 lg:py-48 px-6 lg:px-12 relative z-10" >
+      <motion.div {...fadeUp} className="max-w-4xl mx-auto text-center">
+        <h2 className="text-4xl lg:text-8xl font-black tracking-tight leading-[1.0] mb-12 text-white">
+          We&apos;re Not Building an App.{" "}
+          <span className="bg-gradient-to-r from-violet-500 to-blue-500 bg-clip-text text-transparent">
+            We&apos;re Building a Protocol.
+          </span>
+        </h2>
+        <div className="space-y-8 text-xl text-zinc-500 leading-relaxed max-w-2xl mx-auto">
+          <p>
+            In a world where every message is surveilled and every identity is owned by a corporation — we chose to build the opposite.
+          </p>
+          <p className="text-white font-black text-2xl tracking-tight">
+            Nandix is the mesh. You are the node. Together, we are sovereign.
+          </p>
+        </div>
+      </motion.div>
+    </section >
 
-      {/* ═══════════════════════════════════════════════════════
+  {/* ═══════════════════════════════════════════════════════
           SECTION 15: FINAL CTA (Dark)
           ═══════════════════════════════════════════════════════ */}
-      <section className="mx-6 lg:mx-12 mb-24">
-        <div className="rounded-[32px] bg-[#0F0F1A] py-20 lg:py-28 px-8 text-center relative overflow-hidden">
-          {/* Dot pattern */}
-          <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='20' height='20' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='10' cy='10' r='1' fill='%23fff'/%3E%3C/svg%3E\")" }} />
-          <div className="absolute top-10 right-20 w-[300px] h-[300px] bg-emerald-500/10 rounded-full blur-[80px] pointer-events-none" />
-          <div className="absolute bottom-10 left-20 w-[250px] h-[250px] bg-violet-500/10 rounded-full blur-[80px] pointer-events-none" />
+    < section className = "mx-6 lg:mx-12 mb-32 relative z-10" >
+      <div className="rounded-[3rem] bg-zinc-950 border border-white/[0.05] py-24 lg:py-36 px-8 text-center relative overflow-hidden shadow-2xl">
+        {/* Dot grid */}
+        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='20' height='20' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='10' cy='10' r='1' fill='%23fff'/%3E%3C/svg%3E\")" }} />
+        <div className="absolute -top-24 -right-24 w-96 h-96 bg-emerald-500/10 rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-violet-500/10 rounded-full blur-[100px] pointer-events-none" />
 
-          <motion.div {...fadeUp} className="relative z-10">
-            <h2 className="text-4xl lg:text-7xl font-black tracking-tight text-white leading-[1.05] mb-8">
-              Your Data.<br />
-              Your Mesh.<br />
-              Your Rules.
-            </h2>
-            <p className="text-lg text-slate-400 mb-12 max-w-xl mx-auto">
-              Join the sovereign mesh. Free, open source, and yours forever.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link href="/signup" className="px-12 py-5 bg-white text-[#0F0F1A] rounded-2xl text-lg font-bold hover:bg-slate-100 transition-colors flex items-center gap-3 shadow-xl">
-                <Sparkles className="w-5 h-5" /> Forge Your Identity
-              </Link>
-              <Link href="/manifesto" className="px-10 py-5 border border-white/20 text-white rounded-2xl text-lg font-semibold hover:bg-white/5 transition-colors flex items-center gap-3">
-                Read Manifesto <ArrowRight className="w-5 h-5" />
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+        <motion.div {...fadeUp} className="relative z-10">
+          <h2 className="text-5xl lg:text-8xl font-black tracking-tighter text-white leading-[0.9] mb-12">
+            YOUR PRIVACY.<br />
+            YOUR MESH.<br />
+            YOUR REVOLUTION.
+          </h2>
+          <p className="text-lg text-zinc-500 mb-16 max-w-xl mx-auto font-medium">
+            Join the sovereign movement. 100% open source. 0% compromise.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+            <Link href="/signup" className="px-14 py-6 bg-white text-black rounded-2xl text-xl font-black hover:scale-[1.02] transition-all flex items-center gap-3 shadow-[0_0_40px_rgba(255,255,255,0.2)]">
+              <Sparkles className="w-6 h-6" /> START FORGING
+            </Link>
+            <Link href="/manifesto" className="px-12 py-6 border border-white/10 text-white rounded-2xl text-xl font-black hover:bg-white/5 transition-all flex items-center gap-3">
+              MANIFESTO <ArrowRight className="w-6 h-6" />
+            </Link>
+          </div>
+        </motion.div>
+      </div>
+    </section >
 
-      {/* ═══════════════════════════════════════════════════════
+  {/* ═══════════════════════════════════════════════════════
           FOOTER
           ═══════════════════════════════════════════════════════ */}
-      <footer className="py-16 px-6 lg:px-12 border-t border-slate-200/50">
-        <div className="max-w-7xl mx-auto">
-          {/* Big Typography */}
-          <div className="mb-16 overflow-hidden">
-            <div className="text-[80px] lg:text-[160px] font-black tracking-tighter text-slate-100 leading-none select-none">
-              NANDIX
+    < footer className = "py-24 px-6 lg:px-12 border-t border-white/[0.03] bg-black/40 relative z-10" >
+      <div className="max-w-7xl mx-auto">
+        {/* Big Typography */}
+        <div className="mb-24 overflow-hidden">
+          <div className="text-[100px] lg:text-[220px] font-black tracking-tighter text-white/[0.01] leading-none select-none text-center">
+            NANDIX
+          </div>
+        </div>
+
+        <div className="flex flex-col md:flex-row items-start justify-between gap-16">
+          <div className="flex flex-col gap-6">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-cyan-600 flex items-center justify-center shadow-lg">
+                <Shield className="w-5 h-5 text-white" />
+              </div>
+              <span className="text-xl font-black tracking-widest text-white uppercase">NANDIX</span>
             </div>
+            <p className="text-zinc-500 text-sm max-w-xs leading-relaxed">
+              The first truly sovereign communication protocol. No servers. No masters. Just code.
+            </p>
           </div>
 
-          <div className="flex flex-col md:flex-row items-start justify-between gap-12">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-[#0F0F1A] flex items-center justify-center">
-                <Shield className="w-4 h-4 text-white" />
-              </div>
-              <span className="text-sm font-bold text-slate-400">Sovereign Mesh OS</span>
-            </div>
-
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-16 gap-y-4 text-sm">
-              {[
-                { label: "Product", items: ["Features", "Security", "Pricing", "Changelog"] },
-                { label: "Resources", items: ["Documentation", "GitHub", "Manifesto", "Blog"] },
-                { label: "Legal", items: ["Privacy", "Terms", "Open Source"] },
-              ].map((col) => (
-                <div key={col.label}>
-                  <div className="font-bold text-slate-900 mb-3">{col.label}</div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-20 gap-y-10 text-sm">
+            {[
+              { label: "Protocol", items: ["Features", "Security", "Whitepaper", "Mesh Map"] },
+              { label: "Forge", items: ["GitHub", "Agent SDK", "Kernel Docs", "Bounties"] },
+              { label: "Community", items: ["Manifesto", "Blog", "Nose-to-Tail Privacy", "Operational Status"] },
+            ].map((col) => (
+              <div key={col.label}>
+                <div className="font-black text-white uppercase tracking-widest text-[10px] mb-6">{col.label}</div>
+                <div className="space-y-3">
                   {col.items.map((item) => (
-                    <Link key={item} href="#" className="block text-slate-400 hover:text-slate-700 transition-colors py-1">
+                    <Link key={item} href="#" className="block text-zinc-600 hover:text-emerald-400 transition-colors text-[13px] font-medium">
                       {item}
                     </Link>
                   ))}
                 </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-16 pt-8 border-t border-slate-100">
-            <span className="text-xs text-slate-400">© 2024 Nandix Protocol. All rights reserved.</span>
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200/50">
-              <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-xs font-semibold text-emerald-700">All Systems Operational</span>
-            </div>
+              </div>
+            ))}
           </div>
         </div>
-      </footer>
-    </div>
+
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-6 mt-24 pt-10 border-t border-white/[0.03]">
+          <span className="text-[10px] font-bold text-zinc-700 uppercase tracking-widest">© 2024 NANDIX PROTOCOL — POST-SERVER ERA</span>
+          <div className="flex items-center gap-3 px-4 py-2 rounded-full bg-white/[0.02] border border-white/[0.05]">
+            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
+            <span className="text-[10px] font-black text-emerald-500 uppercase tracking-widest">Mesh Network Operational</span>
+          </div>
+        </div>
+      </div>
+    </footer > 鼓
+    </div >
   );
 }

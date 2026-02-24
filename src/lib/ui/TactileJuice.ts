@@ -99,9 +99,9 @@ export const TACTILE_VARIANTS: Record<string, Variants> = {
  * CSS Shadow layers for the "Tactile" look.
  */
 export const TACTILE_SHADOWS = {
-    convex: "8px 8px 16px rgba(163, 177, 198, 0.4), -8px -8px 16px rgba(255, 255, 255, 0.8)",
-    concave: "inset 6px 6px 12px rgba(163, 177, 198, 0.5), inset -6px -6px 12px rgba(255, 255, 255, 0.8)",
-    levitate: "20px 20px 60px rgba(163, 177, 198, 0.2), -20px -20px 60px rgba(255, 255, 255, 0.8)",
+    convex: "4px 4px 10px rgba(0, 0, 0, 0.4), -2px -2px 10px rgba(255, 255, 255, 0.02)",
+    concave: "inset 4px 4px 10px rgba(0, 0, 0, 0.6), inset -2px -2px 10px rgba(255, 255, 255, 0.01)",
+    levitate: "10px 10px 30px rgba(0, 0, 0, 0.5), -5px -5px 30px rgba(255, 255, 255, 0.02)",
 };
 
 /**

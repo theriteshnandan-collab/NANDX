@@ -16,7 +16,8 @@ export type ShardType =
     | "AGENT"
     | "KEY"
     | "VAULT"
-    | "TRANSFER";
+    | "TRANSFER"
+    | "TRUST";
 
 export interface DataShard {
     id: string;
@@ -30,61 +31,77 @@ export interface DataShard {
 }
 
 /**
- * 🎨 Visual styling tokens for each shard type.
+ * 🎨 Visual styling tokens for each shard type (Void Theme).
  */
 export const SHARD_STYLES: Record<ShardType, {
     icon: string;
     bgColor: string;
     borderColor: string;
     glowColor: string;
+    textColor: string;
 }> = {
     FILE: {
         icon: "📄",
-        bgColor: "bg-blue-50",
-        borderColor: "border-blue-200",
-        glowColor: "shadow-blue-100/50",
+        bgColor: "bg-blue-500/10",
+        borderColor: "border-blue-500/20",
+        glowColor: "shadow-blue-500/20",
+        textColor: "text-blue-400",
     },
     MESSAGE: {
         icon: "💬",
-        bgColor: "bg-green-50",
-        borderColor: "border-green-200",
-        glowColor: "shadow-green-100/50",
+        bgColor: "bg-emerald-500/10",
+        borderColor: "border-emerald-500/20",
+        glowColor: "shadow-emerald-500/20",
+        textColor: "text-emerald-400",
     },
     CONTACT: {
         icon: "👤",
-        bgColor: "bg-purple-50",
-        borderColor: "border-purple-200",
-        glowColor: "shadow-purple-100/50",
+        bgColor: "bg-violet-500/10",
+        borderColor: "border-violet-500/20",
+        glowColor: "shadow-violet-500/20",
+        textColor: "text-violet-400",
     },
     ROOM: {
         icon: "🏠",
-        bgColor: "bg-amber-50",
-        borderColor: "border-amber-200",
-        glowColor: "shadow-amber-100/50",
+        bgColor: "bg-amber-500/10",
+        borderColor: "border-amber-500/20",
+        glowColor: "shadow-amber-500/20",
+        textColor: "text-amber-400",
     },
     AGENT: {
         icon: "🤖",
-        bgColor: "bg-cyan-50",
-        borderColor: "border-cyan-200",
-        glowColor: "shadow-cyan-100/50",
+        bgColor: "bg-cyan-500/10",
+        borderColor: "border-cyan-500/20",
+        glowColor: "shadow-cyan-500/20",
+        textColor: "text-cyan-400",
     },
     KEY: {
         icon: "🔑",
-        bgColor: "bg-red-50",
-        borderColor: "border-red-200",
-        glowColor: "shadow-red-100/50",
+        bgColor: "bg-red-500/10",
+        borderColor: "border-red-500/20",
+        glowColor: "shadow-red-500/20",
+        textColor: "text-red-400",
     },
     VAULT: {
         icon: "🛡️",
-        bgColor: "bg-zinc-100",
-        borderColor: "border-zinc-300",
-        glowColor: "shadow-zinc-200/50",
+        bgColor: "bg-zinc-500/10",
+        borderColor: "border-zinc-500/20",
+        glowColor: "shadow-zinc-500/20",
+        textColor: "text-zinc-400",
     },
     TRANSFER: {
         icon: "📡",
-        bgColor: "bg-orange-50",
-        borderColor: "border-orange-200",
-        glowColor: "shadow-orange-100/50",
+        bgColor: "bg-orange-500/10",
+        borderColor: "border-orange-500/20",
+        glowColor: "shadow-orange-500/20",
+        textColor: "text-orange-400",
+    },
+    TRUST: {
+        icon: "🏛️",
+        bgColor: "bg-emerald-500/20",
+        borderColor: "border-emerald-500/30",
+        glowColor: "shadow-emerald-500/30",
+        textColor: "text-emerald-400",
     },
 };
 
@@ -159,6 +176,18 @@ export class ShardFactory {
             timestamp: Date.now(),
             status: progress >= 100 ? "ACTIVE" : "PENDING",
             metadata: { progress },
+        };
+    }
+
+    static createTrust(id: string, score: number, vouches: number): DataShard {
+        return {
+            id,
+            type: "TRUST",
+            label: `Trust Score: ${score}`,
+            sublabel: `${vouches} community vouches`,
+            timestamp: Date.now(),
+            status: "ACTIVE",
+            metadata: { score, vouches },
         };
     }
 

@@ -86,17 +86,37 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="min-h-screen bg-[#FAFBFE] flex flex-col items-center justify-center p-4 relative overflow-hidden">
-            {/* Background Blobs */}
-            <div className="blob-lavender w-[500px] h-[500px] -top-40 -left-40 fixed" />
-            <div className="blob-mint w-[400px] h-[400px] bottom-0 -right-40 fixed" />
+        <div className="min-h-screen bg-[#050508] text-zinc-300 flex flex-col items-center justify-center p-4 relative overflow-hidden selection:bg-emerald-500/30 selection:text-emerald-200">
+            {/* 🏛️ VOID AMBIENCE */}
+            <div className="fixed inset-0 z-0 pointer-events-none">
+                <div
+                    className="absolute inset-0 opacity-[0.04]"
+                    style={{
+                        backgroundImage: `radial-gradient(circle, rgba(255,255,255,0.3) 1px, transparent 1px)`,
+                        backgroundSize: "32px 32px",
+                    }}
+                />
+                <motion.div
+                    animate={{ x: [0, 30, -20, 0], y: [0, -40, 30, 0] }}
+                    transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute top-[10%] left-[10%] w-[400px] h-[400px] rounded-full bg-emerald-500/[0.03] blur-[120px]"
+                />
+                <motion.div
+                    animate={{ x: [0, -30, 20, 0], y: [0, 40, -30, 0] }}
+                    transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute bottom-[10%] right-[10%] w-[400px] h-[400px] rounded-full bg-violet-500/[0.03] blur-[120px]"
+                />
+            </div>
 
             {/* Back to landing */}
             <Link
                 href="/"
-                className="absolute top-6 left-6 flex items-center gap-2 text-sm text-slate-400 hover:text-slate-700 transition-colors z-20"
+                className="absolute top-8 left-8 flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.3em] text-zinc-600 hover:text-emerald-400 transition-all z-20 group"
             >
-                <Shield className="w-4 h-4" /> NANDIX
+                <div className="w-8 h-8 rounded-lg bg-white/[0.03] border border-white/[0.05] flex items-center justify-center group-hover:border-emerald-500/30 transition-all">
+                    <Shield className="w-4 h-4" />
+                </div>
+                NANDIX
             </Link>
 
             <div className="w-full max-w-lg relative z-10">
@@ -106,58 +126,62 @@ export default function LoginPage() {
               ═══════════════════════════════════════════════════ */}
                     {mode === "CHOICE" && (
                         <motion.div key="choice" {...fadeUp} className="space-y-6">
-                            <div className="text-center mb-8">
-                                <div className="w-16 h-16 rounded-2xl bg-[#0F0F1A] flex items-center justify-center mx-auto mb-6">
-                                    <Key className="w-8 h-8 text-white" />
-                                </div>
-                                <h1 className="text-3xl font-black tracking-tight mb-3">
+                            <div className="text-center mb-10">
+                                <motion.div
+                                    initial={{ scale: 0.9, opacity: 0 }}
+                                    animate={{ scale: 1, opacity: 1 }}
+                                    className="w-20 h-20 rounded-[2rem] bg-gradient-to-br from-emerald-500 to-cyan-600 flex items-center justify-center mx-auto mb-8 shadow-[0_0_30px_rgba(16,185,129,0.2)]"
+                                >
+                                    <Key className="w-10 h-10 text-white" />
+                                </motion.div>
+                                <h1 className="text-4xl lg:text-5xl font-black tracking-tighter mb-4 text-white">
                                     Restore Your Soul
                                 </h1>
-                                <p className="text-slate-500 text-base max-w-sm mx-auto">
-                                    Choose how you want to recover your sovereign identity.
+                                <p className="text-zinc-500 text-sm font-medium max-w-sm mx-auto">
+                                    Your identity is anchored to your device. Choose your recovery protocol.
                                 </p>
                             </div>
 
                             {/* Mnemonic Recovery */}
                             <button
                                 onClick={() => setMode("MNEMONIC")}
-                                className="w-full card-elevated p-6 text-left group cursor-pointer flex items-center gap-4"
+                                className="w-full p-8 rounded-[2.5rem] bg-white/[0.02] border border-white/[0.05] text-left group transition-all hover:bg-white/[0.04] hover:border-white/[0.1] hover:scale-[1.01] active:scale-[0.99] flex items-center gap-6"
                             >
-                                <div className="w-12 h-12 rounded-2xl bg-emerald-50 group-hover:bg-emerald-100 flex items-center justify-center text-emerald-600 transition-colors shrink-0">
-                                    <Key className="w-6 h-6" />
+                                <div className="w-14 h-14 rounded-2xl bg-black/40 border border-emerald-500/20 group-hover:border-emerald-500/40 flex items-center justify-center text-emerald-400 transition-all shrink-0">
+                                    <Key className="w-7 h-7" />
                                 </div>
                                 <div className="flex-1">
-                                    <h3 className="font-bold text-lg mb-1">12 Magic Words</h3>
-                                    <p className="text-sm text-slate-400">
+                                    <h3 className="font-black text-xl mb-1 text-white uppercase tracking-tight">12 Magic Words</h3>
+                                    <p className="text-sm text-zinc-500 leading-relaxed">
                                         Enter the mnemonic seed phrase you saved during identity forging.
                                     </p>
                                 </div>
-                                <ArrowRight className="w-5 h-5 text-slate-300 group-hover:text-slate-600 transition-colors" />
+                                <ArrowRight className="w-6 h-6 text-zinc-700 group-hover:text-emerald-400 transition-all" />
                             </button>
 
                             {/* Bridge Recovery */}
                             <button
                                 onClick={() => setMode("BRIDGE")}
-                                className="w-full card-elevated p-6 text-left group cursor-pointer flex items-center gap-4"
+                                className="w-full p-8 rounded-[2.5rem] bg-white/[0.02] border border-white/[0.05] text-left group transition-all hover:bg-white/[0.04] hover:border-white/[0.1] hover:scale-[1.01] active:scale-[0.99] flex items-center gap-6"
                             >
-                                <div className="w-12 h-12 rounded-2xl bg-violet-50 group-hover:bg-violet-100 flex items-center justify-center text-violet-600 transition-colors shrink-0">
-                                    <Lock className="w-6 h-6" />
+                                <div className="w-14 h-14 rounded-2xl bg-black/40 border-violet-500/20 group-hover:border-violet-500/40 flex items-center justify-center text-violet-400 transition-all shrink-0">
+                                    <Lock className="w-7 h-7" />
                                 </div>
                                 <div className="flex-1">
-                                    <h3 className="font-bold text-lg mb-1">Sovereign Bridge</h3>
-                                    <p className="text-sm text-slate-400">
+                                    <h3 className="font-black text-xl mb-1 text-white uppercase tracking-tight">Sovereign Bridge</h3>
+                                    <p className="text-sm text-zinc-500 leading-relaxed">
                                         Recover using a linked phone number or email address.
                                     </p>
                                 </div>
-                                <ArrowRight className="w-5 h-5 text-slate-300 group-hover:text-slate-600 transition-colors" />
+                                <ArrowRight className="w-6 h-6 text-zinc-700 group-hover:text-violet-400 transition-all" />
                             </button>
 
                             {/* New Identity */}
-                            <div className="text-center pt-4 border-t border-slate-100">
-                                <p className="text-sm text-slate-400">
+                            <div className="text-center pt-8">
+                                <p className="text-sm text-zinc-600 font-medium">
                                     New to the mesh?{" "}
-                                    <Link href="/signup" className="font-bold text-[#0F0F1A] hover:underline">
-                                        Forge a New Identity
+                                    <Link href="/signup" className="text-emerald-500 hover:text-emerald-400 font-black uppercase tracking-widest text-[11px] ml-2">
+                                        Forge a New Identity →
                                     </Link>
                                 </p>
                             </div>
@@ -168,36 +192,36 @@ export default function LoginPage() {
               MNEMONIC ENTRY
               ═══════════════════════════════════════════════════ */}
                     {mode === "MNEMONIC" && (
-                        <motion.div key="mnemonic" {...fadeUp} className="space-y-6">
+                        <motion.div key="mnemonic" {...fadeUp} className="space-y-8">
                             <button
                                 onClick={() => setMode("CHOICE")}
-                                className="flex items-center gap-2 text-sm text-slate-400 hover:text-slate-700 transition-colors mb-4"
+                                className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-zinc-500 hover:text-white transition-all mb-4"
                             >
-                                <ArrowLeft className="w-4 h-4" /> Back
+                                <ArrowLeft className="w-4 h-4" /> Go Back
                             </button>
 
-                            <div className="text-center mb-6">
-                                <h1 className="text-3xl font-black tracking-tight mb-3">
-                                    Enter Your 12 Words
+                            <div className="text-center mb-8">
+                                <h1 className="text-4xl font-black tracking-tighter mb-4 text-white">
+                                    The 12 Words
                                 </h1>
-                                <p className="text-slate-500 text-base max-w-sm mx-auto">
+                                <p className="text-zinc-500 text-sm font-medium max-w-sm mx-auto">
                                     Type each word in order exactly as you wrote them down.
                                 </p>
                             </div>
 
                             {/* Word Grid */}
-                            <div className="card-elevated p-6">
-                                <div className="grid grid-cols-3 gap-3">
+                            <div className="rounded-[2.5rem] bg-white/[0.02] border border-white/[0.05] p-8 shadow-2xl backdrop-blur-3xl">
+                                <div className="grid grid-cols-3 gap-4">
                                     {words.map((word, i) => (
-                                        <div key={i} className="relative">
-                                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] font-bold text-slate-300">
-                                                {i + 1}.
+                                        <div key={i} className="relative group">
+                                            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[9px] font-black text-zinc-700 group-focus-within:text-emerald-500 transition-all">
+                                                {i + 1 < 10 ? `0${i + 1}` : i + 1}
                                             </span>
                                             <input
                                                 type="text"
                                                 value={word}
                                                 onChange={(e) => updateWord(i, e.target.value)}
-                                                className="w-full pl-8 pr-3 py-3 text-sm font-mono font-bold bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-emerald-300 focus:ring-2 focus:ring-emerald-100 transition-all"
+                                                className="w-full pl-10 pr-3 py-4 text-sm font-mono font-black bg-black/40 border border-white/[0.03] rounded-2xl text-white outline-none focus:border-emerald-500/30 focus:bg-emerald-500/[0.02] transition-all placeholder-zinc-800"
                                                 placeholder="..."
                                                 autoComplete="off"
                                             />
@@ -210,9 +234,9 @@ export default function LoginPage() {
                             <motion.button
                                 whileTap={{ scale: 0.98 }}
                                 onClick={handleMnemonicRecover}
-                                className="w-full btn-primary !py-4 text-base font-bold rounded-2xl flex items-center justify-center gap-2"
+                                className="w-full py-6 rounded-[2rem] bg-white text-black text-xl font-black hover:scale-[1.02] transition-all shadow-[0_0_40px_rgba(255,255,255,0.1)] flex items-center justify-center gap-3"
                             >
-                                Restore Identity <ArrowRight className="w-5 h-5" />
+                                RESTORE IDENTITY <ArrowRight className="w-6 h-6" />
                             </motion.button>
                         </motion.div>
                     )}
@@ -221,61 +245,67 @@ export default function LoginPage() {
               SOVEREIGN BRIDGE
               ═══════════════════════════════════════════════════ */}
                     {mode === "BRIDGE" && (
-                        <motion.div key="bridge" {...fadeUp} className="space-y-6">
+                        <motion.div key="bridge" {...fadeUp} className="space-y-8">
                             <button
                                 onClick={() => setMode("CHOICE")}
-                                className="flex items-center gap-2 text-sm text-slate-400 hover:text-slate-700 transition-colors mb-4"
+                                className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-zinc-500 hover:text-white transition-all mb-4"
                             >
-                                <ArrowLeft className="w-4 h-4" /> Back
+                                <ArrowLeft className="w-4 h-4" /> Go Back
                             </button>
 
-                            <div className="text-center mb-6">
-                                <h1 className="text-3xl font-black tracking-tight mb-3">
+                            <div className="text-center mb-8">
+                                <h1 className="text-4xl font-black tracking-tighter mb-4 text-white">
                                     Sovereign Bridge
                                 </h1>
-                                <p className="text-slate-500 text-base max-w-sm mx-auto">
-                                    We&apos;ll use a blinded relay to find your identity. Your contact is never stored.
+                                <p className="text-zinc-500 text-sm font-medium max-w-sm mx-auto leading-relaxed">
+                                    Blinded relay recovery. Your personal data is never stored outside your local mesh kernel.
                                 </p>
                             </div>
 
                             {/* Bridge Type Toggle */}
-                            <div className="flex gap-2 p-1.5 rounded-2xl bg-slate-100">
+                            <div className="flex gap-2 p-2 rounded-3xl bg-white/[0.02] border border-white/[0.04]">
                                 <button
                                     onClick={() => setBridgeType("EMAIL")}
-                                    className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold transition-all ${bridgeType === "EMAIL"
-                                            ? "bg-white shadow-sm text-[#0F0F1A]"
-                                            : "text-slate-400 hover:text-slate-600"
+                                    className={`flex-1 flex items-center justify-center gap-3 py-4 rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all ${bridgeType === "EMAIL"
+                                        ? "bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.1)]"
+                                        : "text-zinc-600 hover:text-zinc-300"
                                         }`}
                                 >
-                                    <Mail className="w-4 h-4" /> Email
+                                    <Mail className="w-4 h-4" /> Email Relay
                                 </button>
                                 <button
                                     onClick={() => setBridgeType("PHONE")}
-                                    className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold transition-all ${bridgeType === "PHONE"
-                                            ? "bg-white shadow-sm text-[#0F0F1A]"
-                                            : "text-slate-400 hover:text-slate-600"
+                                    className={`flex-1 flex items-center justify-center gap-3 py-4 rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all ${bridgeType === "PHONE"
+                                        ? "bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.1)]"
+                                        : "text-zinc-600 hover:text-zinc-300"
                                         }`}
                                 >
-                                    <Smartphone className="w-4 h-4" /> Phone
+                                    <Smartphone className="w-4 h-4" /> SMS Tunnel
                                 </button>
                             </div>
 
                             {/* Bridge Input */}
-                            <div className="card-elevated p-6">
-                                <input
-                                    type={bridgeType === "EMAIL" ? "email" : "tel"}
-                                    value={bridgeValue}
-                                    onChange={(e) => setBridgeValue(e.target.value)}
-                                    placeholder={
-                                        bridgeType === "EMAIL"
-                                            ? "sovereign@nandix.xyz"
-                                            : "+1 (555) 000-0000"
-                                    }
-                                    className="w-full px-4 py-4 text-base font-medium bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-emerald-300 focus:ring-2 focus:ring-emerald-100 transition-all"
-                                />
-                                <p className="mt-3 text-xs text-slate-400 leading-relaxed">
-                                    Your {bridgeType.toLowerCase()} is hashed locally and compared against the blinded relay. It is never stored on-chain or off-chain.
-                                </p>
+                            <div className="rounded-[2.5rem] bg-white/[0.02] border border-white/[0.04] p-8 shadow-2xl backdrop-blur-3xl">
+                                <div className="space-y-4">
+                                    <label className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.2em] ml-2">IDENTITY ENDPOINT</label>
+                                    <input
+                                        type={bridgeType === "EMAIL" ? "email" : "tel"}
+                                        value={bridgeValue}
+                                        onChange={(e) => setBridgeValue(e.target.value)}
+                                        placeholder={
+                                            bridgeType === "EMAIL"
+                                                ? "your@identity.mesh"
+                                                : "+1 555-000-0000"
+                                        }
+                                        className="w-full px-6 py-5 text-lg font-black bg-black/40 border border-white/[0.03] rounded-2xl text-white outline-none focus:border-emerald-500/30 transition-all placeholder-zinc-800"
+                                    />
+                                </div>
+                                <div className="mt-6 flex items-start gap-3 p-4 rounded-2xl bg-white/[0.01] border border-white/[0.03]">
+                                    <Shield className="w-5 h-5 text-emerald-500/50 shrink-0" />
+                                    <p className="text-[11px] text-zinc-600 font-medium leading-relaxed">
+                                        Your {bridgeType.toLowerCase()} is blinded using SHA-256 before leaving your device. Total sovereignty maintained.
+                                    </p>
+                                </div>
                             </div>
 
                             {/* Restore Button */}
@@ -283,16 +313,16 @@ export default function LoginPage() {
                                 whileTap={{ scale: 0.98 }}
                                 onClick={handleBridgeRecover}
                                 disabled={isRestoring || !bridgeValue.trim()}
-                                className="w-full btn-primary !py-4 text-base font-bold rounded-2xl flex items-center justify-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed"
+                                className="w-full py-6 rounded-[2rem] bg-white text-black text-xl font-black hover:scale-[1.02] transition-all shadow-[0_0_40px_rgba(255,255,255,0.1)] flex items-center justify-center gap-3 disabled:opacity-30 disabled:grayscale"
                             >
                                 {isRestoring ? (
                                     <>
-                                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                                        Searching Relay...
+                                        <div className="w-6 h-6 border-4 border-black border-t-transparent rounded-full animate-spin" />
+                                        BRIDGING ...
                                     </>
                                 ) : (
                                     <>
-                                        Restore via Bridge <ArrowRight className="w-5 h-5" />
+                                        RESTORE VIA BRIDGE <ArrowRight className="w-6 h-6" />
                                     </>
                                 )}
                             </motion.button>
