@@ -49,4 +49,51 @@
     box-shadow: inset 2px 2px 5px rgba(0,0,0,0.05), inset -2px -2px 5px rgba(255,255,255,1);
     transform: translateY(0px);
   }
+
+  /* ✨ GLASS BORDERS: "Light Catcher" Gradients */
+  .glass-border {
+    position: relative;
+    border: 1px solid transparent;
+    background-clip: padding-box;
+  }
+  .glass-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      135deg,
+      rgba(255,255,255,0.8) 0%,
+      rgba(255,255,255,0.2) 40%,
+      rgba(255,255,255,0) 50%,
+      rgba(255,255,255,0.1) 80%,
+      rgba(255,255,255,0.6) 100%
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  /* 🧊 GLASS CARD: Frosted Glass with Light Catcher */
+  .glass-card {
+    @apply rounded-3xl backdrop-blur-xl;
+    background: rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.04),
+      inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  }
+
+  /* SHADOW UTILITIES (for use with Tailwind) */
+  .shadow-convex {
+    box-shadow: 8px 8px 16px rgba(163, 177, 198, 0.4), -8px -8px 16px rgba(255, 255, 255, 0.8);
+  }
+  .shadow-concave {
+    box-shadow: inset 6px 6px 12px rgba(163, 177, 198, 0.5), inset -6px -6px 12px rgba(255, 255, 255, 0.8);
+  }
+  .shadow-levitate {
+    box-shadow: 20px 20px 60px rgba(163, 177, 198, 0.2), -20px -20px 60px rgba(255, 255, 255, 0.8);
+  }
 }

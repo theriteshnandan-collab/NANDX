@@ -103,3 +103,91 @@ export const TACTILE_SHADOWS = {
     concave: "inset 6px 6px 12px rgba(163, 177, 198, 0.5), inset -6px -6px 12px rgba(255, 255, 255, 0.8)",
     levitate: "20px 20px 60px rgba(163, 177, 198, 0.2), -20px -20px 60px rgba(255, 255, 255, 0.8)",
 };
+
+/**
+ * 🏎️ FULL UI INTEGRATION: Stagger + Card + Input + Modal + Toast
+ * These variants ensure EVERY UI element in Nandix has physics-based motion.
+ */
+
+// Stagger container for list animations
+export const STAGGER_CONTAINER: Variants = {
+    initial: {},
+    animate: {
+        transition: {
+            staggerChildren: 0.08,
+            delayChildren: 0.1,
+        },
+    },
+};
+
+export const STAGGER_ITEM: Variants = {
+    initial: { opacity: 0, y: 12 },
+    animate: {
+        opacity: 1,
+        y: 0,
+        transition: TACTILE_SPRING,
+    },
+};
+
+// Card interaction (hover lift + shadow grow)
+export const CARD_INTERACTION: Variants = {
+    rest: {
+        y: 0,
+        boxShadow: TACTILE_SHADOWS.convex,
+    },
+    hover: {
+        y: -6,
+        boxShadow: TACTILE_SHADOWS.levitate,
+        transition: TACTILE_SPRING,
+    },
+    tap: {
+        y: -2,
+        boxShadow: TACTILE_SHADOWS.concave,
+        transition: { type: "spring", stiffness: 600, damping: 25 },
+    },
+};
+
+// Modal entrance
+export const MODAL_VARIANTS: Variants = {
+    initial: { scale: 0.95, opacity: 0, y: 10 },
+    animate: {
+        scale: 1,
+        opacity: 1,
+        y: 0,
+        transition: { ...TACTILE_SPRING, stiffness: 300 },
+    },
+    exit: {
+        scale: 0.95,
+        opacity: 0,
+        y: 10,
+        transition: { duration: 0.15 },
+    },
+};
+
+// Toast notification slide-in
+export const TOAST_VARIANTS: Variants = {
+    initial: { x: 300, opacity: 0 },
+    animate: {
+        x: 0,
+        opacity: 1,
+        transition: TACTILE_BOUNCE,
+    },
+    exit: {
+        x: 300,
+        opacity: 0,
+        transition: { duration: 0.2 },
+    },
+};
+
+// Data shard shimmer (for loading states)
+export const SHARD_SHIMMER: Variants = {
+    initial: { opacity: 0.5 },
+    animate: {
+        opacity: [0.5, 1, 0.5],
+        transition: {
+            duration: 1.5,
+            repeat: Infinity,
+            ease: "easeInOut",
+        },
+    },
+};

@@ -1,0 +1,404 @@
+﻿
+> danrit@0.1.0 build
+> next build
+
+  Γû▓ Next.js 14.2.14
+  - Environments: .env.local
+
+   Creating an optimized production build ...
+node.exe : <w> [webpa
+ck.cache.PackFileCach
+eStrategy] Skipped 
+not serializable 
+cache item 'Compilati
+on/modules|C:\Users\T
+heri\OneDrive\Desktop
+\HBBKHB\missionnandix
+\node_modules\next\di
+st\build\webpack\load
+ers\css-loader\src\in
+dex.js??ruleSet[1].ru
+les[14].oneOf[12].use
+[2]!C:\Users\Theri\On
+eDrive\Desktop\HBBKHB
+\missionnandix\node_m
+odules\next\dist\buil
+d\webpack\loaders\pos
+tcss-loader\src\index
+.js??ruleSet[1].rules
+[14].oneOf[12].use[3]
+!C:\Users\Theri\OneDr
+ive\Desktop\HBBKHB\mi
+ssionnandix\src\app\g
+lobals.css': No 
+serializer 
+registered for 
+PostCSSSyntaxError
+At line:1 char:1
++ & "C:\Program Files
+\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo 
+...
++ ~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~
+    + CategoryInfo   
+           : 
+NotSpecified: (<    
+w> 
+[webpack.ca...tCSS   
+ SyntaxError:String) 
+[    ], 
+RemoteException
+    + 
+FullyQualifiedError  
+  Id : 
+NativeCommandErr    
+or
+ 
+<w> while 
+serializing webpack/l
+ib/cache/PackFileCach
+eStrategy.PackContent
+Items -> webpack/lib/
+NormalModule -> webpa
+ck/lib/ModuleBuildErr
+or -> 
+PostCSSSyntaxError
+Failed to compile.
+
+./src/app/globals.css
+:38:5
+Syntax error: C:\User
+s\Theri\OneDrive\Desk
+top\HBBKHB\missionnan
+dix\src\app\globals.c
+ss The `rounded-xl` 
+class does not 
+exist. If 
+`rounded-xl` is a 
+custom class, make 
+sure it is defined 
+within a `@layer` 
+directive.
+
+ [90m 36 | [39m  
+[90m/* TACTILE 
+BUTTON (The "Cast" 
+Look) */[39m
+ [90m 37 | [39m  [
+33m.btn-tactile[39m 
+[33m{[39m
+[1m[31m>[39m[22m
+[90m 38 | [39m    
+[36m@apply[39m 
+px-6 py-3 rounded-xl 
+font-semibold 
+transition-all 
+duration-200 active[
+33m:[39mscale-[33m[
+[39m0.98[33m][39m
+[33m;[39m
+ [90m    | [39m    
+[1m[31m^[39m[22m
+ [90m 39 | [39m    
+background[33m:[39m
+ [35m#F3F4F7[39m[3
+3m;[39m
+ [90m 40 | [39m    
+box-shadow[33m:[39m
+ 5px 5px 10px [36mrg
+ba[39m[36m(0,0,0,0.
+05)[39m, -5px -5px 
+10px [36mrgba[39m[
+36m(255,255,255,0.8)
+[39m[33m;[39m
+
+./src/app/globals.css
+Syntax error: C:\User
+s\Theri\OneDrive\Desk
+top\HBBKHB\missionnan
+dix\src\app\globals.c
+ss The `rounded-xl` 
+class does not 
+exist. If 
+`rounded-xl` is a 
+custom class, make 
+sure it is defined 
+within a `@layer` 
+directive. (38:5)
+
+ [90m 36 | [39m  
+[90m/* TACTILE 
+BUTTON (The "Cast" 
+Look) */[39m
+ [90m 37 | [39m  [
+33m.btn-tactile[39m 
+[33m{[39m
+[1m[31m>[39m[22m
+[90m 38 | [39m    
+[36m@apply[39m 
+px-6 py-3 rounded-xl 
+font-semibold 
+transition-all 
+duration-200 active[
+33m:[39mscale-[33m[
+[39m0.98[33m][39m
+[33m;[39m
+ [90m    | [39m    
+[1m[31m^[39m[22m
+ [90m 39 | [39m    
+background[33m:[39m
+ [35m#F3F4F7[39m[3
+3m;[39m
+ [90m 40 | [39m    
+box-shadow[33m:[39m
+ 5px 5px 10px [36mrg
+ba[39m[36m(0,0,0,0.
+05)[39m, -5px -5px 
+10px [36mrgba[39m[
+36m(255,255,255,0.8)
+[39m[33m;[39m
+
+    at 
+tryRunOrWebpackError 
+(C:\Users\Theri\OneDr
+ive\Desktop\HBBKHB\mi
+ssionnandix\node_modu
+les\next\dist\compile
+d\webpack\bundle5.js:
+28:312989)
+    at __webpack_requ
+ire_module__ (C:\User
+s\Theri\OneDrive\Desk
+top\HBBKHB\missionnan
+dix\node_modules\next
+\dist\compiled\webpac
+k\bundle5.js:28:13116
+5)
+    at __nested_webpa
+ck_require_153728__ (
+C:\Users\Theri\OneDri
+ve\Desktop\HBBKHB\mis
+sionnandix\node_modul
+es\next\dist\compiled
+\webpack\bundle5.js:2
+8:130607)
+    at C:\Users\Theri
+\OneDrive\Desktop\HBB
+KHB\missionnandix\nod
+e_modules\next\dist\c
+ompiled\webpack\bundl
+e5.js:28:131454
+    at 
+symbolIterator (C:\Us
+ers\Theri\OneDrive\De
+sktop\HBBKHB\missionn
+andix\node_modules\ne
+xt\dist\compiled\neo-
+async\async.js:1:1444
+4)
+    at done (C:\Users
+\Theri\OneDrive\Deskt
+op\HBBKHB\missionnand
+ix\node_modules\next\
+dist\compiled\neo-asy
+nc\async.js:1:14824)
+    at Hook.eval [as 
+callAsync] (eval at 
+create (C:\Users\Ther
+i\OneDrive\Desktop\HB
+BKHB\missionnandix\no
+de_modules\next\dist\
+compiled\webpack\bund
+le5.js:13:28858), 
+<anonymous>:15:1)
+    at Hook.CALL_ASYN
+C_DELEGATE [as 
+_callAsync] (C:\Users
+\Theri\OneDrive\Deskt
+op\HBBKHB\missionnand
+ix\node_modules\next\
+dist\compiled\webpack
+\bundle5.js:13:26012)
+    at C:\Users\Theri
+\OneDrive\Desktop\HBB
+KHB\missionnandix\nod
+e_modules\next\dist\c
+ompiled\webpack\bundl
+e5.js:28:130328
+    at 
+symbolIterator (C:\Us
+ers\Theri\OneDrive\De
+sktop\HBBKHB\missionn
+andix\node_modules\ne
+xt\dist\compiled\neo-
+async\async.js:1:1440
+2)
+-- inner error --
+Syntax error: C:\User
+s\Theri\OneDrive\Desk
+top\HBBKHB\missionnan
+dix\src\app\globals.c
+ss The `rounded-xl` 
+class does not 
+exist. If 
+`rounded-xl` is a 
+custom class, make 
+sure it is defined 
+within a `@layer` 
+directive. (38:5)
+
+ [90m 36 | [39m  
+[90m/* TACTILE 
+BUTTON (The "Cast" 
+Look) */[39m
+ [90m 37 | [39m  [
+33m.btn-tactile[39m 
+[33m{[39m
+[1m[31m>[39m[22m
+[90m 38 | [39m    
+[36m@apply[39m 
+px-6 py-3 rounded-xl 
+font-semibold 
+transition-all 
+duration-200 active[
+33m:[39mscale-[33m[
+[39m0.98[33m][39m
+[33m;[39m
+ [90m    | [39m    
+[1m[31m^[39m[22m
+ [90m 39 | [39m    
+background[33m:[39m
+ [35m#F3F4F7[39m[3
+3m;[39m
+ [90m 40 | [39m    
+box-shadow[33m:[39m
+ 5px 5px 10px [36mrg
+ba[39m[36m(0,0,0,0.
+05)[39m, -5px -5px 
+10px [36mrgba[39m[
+36m(255,255,255,0.8)
+[39m[33m;[39m
+
+    at 
+Object.<anonymous> (C
+:\Users\Theri\OneDriv
+e\Desktop\HBBKHB\miss
+ionnandix\node_module
+s\next\dist\build\web
+pack\loaders\css-load
+er\src\index.js??rule
+Set[1].rules[14].oneO
+f[12].use[2]!C:\Users
+\Theri\OneDrive\Deskt
+op\HBBKHB\missionnand
+ix\node_modules\next\
+dist\build\webpack\lo
+aders\postcss-loader\
+src\index.js??ruleSet
+[1].rules[14].oneOf[1
+2].use[3]!C:\Users\Th
+eri\OneDrive\Desktop\
+HBBKHB\missionnandix\
+src\app\globals.css:1
+:7)
+    at C:\Users\Theri
+\OneDrive\Desktop\HBB
+KHB\missionnandix\nod
+e_modules\next\dist\c
+ompiled\webpack\bundl
+e5.js:28:922493
+    at Hook.eval [as 
+call] (eval at 
+create (C:\Users\Ther
+i\OneDrive\Desktop\HB
+BKHB\missionnandix\no
+de_modules\next\dist\
+compiled\webpack\bund
+le5.js:13:28636), 
+<anonymous>:7:1)
+    at 
+Hook.CALL_DELEGATE 
+[as _call] (C:\Users\
+Theri\OneDrive\Deskto
+p\HBBKHB\missionnandi
+x\node_modules\next\d
+ist\compiled\webpack\
+bundle5.js:13:25906)
+    at C:\Users\Theri
+\OneDrive\Desktop\HBB
+KHB\missionnandix\nod
+e_modules\next\dist\c
+ompiled\webpack\bundl
+e5.js:28:131198
+    at 
+tryRunOrWebpackError 
+(C:\Users\Theri\OneDr
+ive\Desktop\HBBKHB\mi
+ssionnandix\node_modu
+les\next\dist\compile
+d\webpack\bundle5.js:
+28:312943)
+    at __webpack_requ
+ire_module__ (C:\User
+s\Theri\OneDrive\Desk
+top\HBBKHB\missionnan
+dix\node_modules\next
+\dist\compiled\webpac
+k\bundle5.js:28:13116
+5)
+    at __nested_webpa
+ck_require_153728__ (
+C:\Users\Theri\OneDri
+ve\Desktop\HBBKHB\mis
+sionnandix\node_modul
+es\next\dist\compiled
+\webpack\bundle5.js:2
+8:130607)
+    at C:\Users\Theri
+\OneDrive\Desktop\HBB
+KHB\missionnandix\nod
+e_modules\next\dist\c
+ompiled\webpack\bundl
+e5.js:28:131454
+    at 
+symbolIterator (C:\Us
+ers\Theri\OneDrive\De
+sktop\HBBKHB\missionn
+andix\node_modules\ne
+xt\dist\compiled\neo-
+async\async.js:1:1444
+4)
+
+Generated code for C:
+\Users\Theri\OneDrive
+\Desktop\HBBKHB\missi
+onnandix\node_modules
+\next\dist\build\webp
+ack\loaders\css-loade
+r\src\index.js??ruleS
+et[1].rules[14].oneOf
+[12].use[2]!C:\Users\
+Theri\OneDrive\Deskto
+p\HBBKHB\missionnandi
+x\node_modules\next\d
+ist\build\webpack\loa
+ders\postcss-loader\s
+rc\index.js??ruleSet[
+1].rules[14].oneOf[12
+].use[3]!C:\Users\The
+ri\OneDrive\Desktop\H
+BBKHB\missionnandix\s
+rc\app\globals.css
+
+Import trace for 
+requested module:
+./src/app/globals.css
+
+
+> Build failed 
+because of webpack 
+errors

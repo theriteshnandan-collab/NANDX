@@ -1,0 +1,491 @@
+﻿
+> danrit@0.1.0 build
+> next build
+
+  Γû▓ Next.js 14.2.14
+  - Environments: .env.local
+
+   Creating an optimized production build ...
+node.exe : Failed to 
+compile.
+At line:1 char:1
++ & "C:\Program Files
+\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo 
+...
++ ~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~
+    + CategoryInfo   
+           : NotSpe  
+  cified: (Failed    
+ to compile.:Stri    
+ng) [], RemoteEx    
+ception
+    + FullyQualified 
+   ErrorId : Native  
+  CommandError
+ 
+
+./src/app/globals.css
+.webpack[javascript/a
+uto]!=!./node_modules
+/next/dist/build/webp
+ack/loaders/css-loade
+r/src/index.js??ruleS
+et[1].rules[14].oneOf
+[12].use[2]!./node_mo
+dules/next/dist/build
+/webpack/loaders/post
+css-loader/src/index.
+js??ruleSet[1].rules[
+14].oneOf[12].use[3]!
+./src/app/globals.css
+SyntaxError: 
+Unexpected token 
+(68:1)
+    at unexpected (C:
+\Users\Theri\OneDrive
+\Desktop\HBBKHB\missi
+onnandix\node_modules
+\sucrase\dist\parser\
+traverser\util.js:99:
+15)
+    at 
+parseBindingAtom (C:\
+Users\Theri\OneDrive\
+Desktop\HBBKHB\missio
+nnandix\node_modules\
+sucrase\dist\parser\t
+raverser\lval.js:78:2
+4)
+    at parseVarHead (
+C:\Users\Theri\OneDri
+ve\Desktop\HBBKHB\mis
+sionnandix\node_modul
+es\sucrase\dist\parse
+r\traverser\statement
+.js:638:26)
+    at parseVar (C:\U
+sers\Theri\OneDrive\D
+esktop\HBBKHB\mission
+nandix\node_modules\s
+ucrase\dist\parser\tr
+averser\statement.js:
+625:5)
+    at 
+parseVarStatement (C:
+\Users\Theri\OneDrive
+\Desktop\HBBKHB\missi
+onnandix\node_modules
+\sucrase\dist\parser\
+traverser\statement.j
+s:535:3)
+    at parseStatement
+Content (C:\Users\The
+ri\OneDrive\Desktop\H
+BBKHB\missionnandix\n
+ode_modules\sucrase\d
+ist\parser\traverser\
+statement.js:178:7)
+    at 
+parseStatement (C:\Us
+ers\Theri\OneDrive\De
+sktop\HBBKHB\missionn
+andix\node_modules\su
+crase\dist\parser\tra
+verser\statement.js:1
+16:3)
+    at 
+parseBlockBody (C:\Us
+ers\Theri\OneDrive\De
+sktop\HBBKHB\missionn
+andix\node_modules\su
+crase\dist\parser\tra
+verser\statement.js:5
+86:5)
+    at parseTopLevel 
+(C:\Users\Theri\OneDr
+ive\Desktop\HBBKHB\mi
+ssionnandix\node_modu
+les\sucrase\dist\pars
+er\traverser\statemen
+t.js:92:3)
+    at parseFile (C:\
+Users\Theri\OneDrive\
+Desktop\HBBKHB\missio
+nnandix\node_modules\
+sucrase\dist\parser\t
+raverser\index.js:17:
+35)
+
+Import trace for 
+requested module:
+./src/app/globals.css
+.webpack[javascript/a
+uto]!=!./node_modules
+/next/dist/build/webp
+ack/loaders/css-loade
+r/src/index.js??ruleS
+et[1].rules[14].oneOf
+[12].use[2]!./node_mo
+dules/next/dist/build
+/webpack/loaders/post
+css-loader/src/index.
+js??ruleSet[1].rules[
+14].oneOf[12].use[3]!
+./src/app/globals.css
+./src/app/globals.css
+
+./src/app/globals.css
+SyntaxError: 
+Unexpected token 
+(68:1)
+    at unexpected (C:
+\Users\Theri\OneDrive
+\Desktop\HBBKHB\missi
+onnandix\node_modules
+\sucrase\dist\parser\
+traverser\util.js:99:
+15)
+    at 
+parseBindingAtom (C:\
+Users\Theri\OneDrive\
+Desktop\HBBKHB\missio
+nnandix\node_modules\
+sucrase\dist\parser\t
+raverser\lval.js:78:2
+4)
+    at parseVarHead (
+C:\Users\Theri\OneDri
+ve\Desktop\HBBKHB\mis
+sionnandix\node_modul
+es\sucrase\dist\parse
+r\traverser\statement
+.js:638:26)
+    at parseVar (C:\U
+sers\Theri\OneDrive\D
+esktop\HBBKHB\mission
+nandix\node_modules\s
+ucrase\dist\parser\tr
+averser\statement.js:
+625:5)
+    at 
+parseVarStatement (C:
+\Users\Theri\OneDrive
+\Desktop\HBBKHB\missi
+onnandix\node_modules
+\sucrase\dist\parser\
+traverser\statement.j
+s:535:3)
+    at parseStatement
+Content (C:\Users\The
+ri\OneDrive\Desktop\H
+BBKHB\missionnandix\n
+ode_modules\sucrase\d
+ist\parser\traverser\
+statement.js:178:7)
+    at 
+parseStatement (C:\Us
+ers\Theri\OneDrive\De
+sktop\HBBKHB\missionn
+andix\node_modules\su
+crase\dist\parser\tra
+verser\statement.js:1
+16:3)
+    at 
+parseBlockBody (C:\Us
+ers\Theri\OneDrive\De
+sktop\HBBKHB\missionn
+andix\node_modules\su
+crase\dist\parser\tra
+verser\statement.js:5
+86:5)
+    at parseTopLevel 
+(C:\Users\Theri\OneDr
+ive\Desktop\HBBKHB\mi
+ssionnandix\node_modu
+les\sucrase\dist\pars
+er\traverser\statemen
+t.js:92:3)
+    at parseFile (C:\
+Users\Theri\OneDrive\
+Desktop\HBBKHB\missio
+nnandix\node_modules\
+sucrase\dist\parser\t
+raverser\index.js:17:
+35)
+    at 
+tryRunOrWebpackError 
+(C:\Users\Theri\OneDr
+ive\Desktop\HBBKHB\mi
+ssionnandix\node_modu
+les\next\dist\compile
+d\webpack\bundle5.js:
+28:312989)
+    at __webpack_requ
+ire_module__ (C:\User
+s\Theri\OneDrive\Desk
+top\HBBKHB\missionnan
+dix\node_modules\next
+\dist\compiled\webpac
+k\bundle5.js:28:13116
+5)
+    at __nested_webpa
+ck_require_153728__ (
+C:\Users\Theri\OneDri
+ve\Desktop\HBBKHB\mis
+sionnandix\node_modul
+es\next\dist\compiled
+\webpack\bundle5.js:2
+8:130607)
+    at C:\Users\Theri
+\OneDrive\Desktop\HBB
+KHB\missionnandix\nod
+e_modules\next\dist\c
+ompiled\webpack\bundl
+e5.js:28:131454
+    at 
+symbolIterator (C:\Us
+ers\Theri\OneDrive\De
+sktop\HBBKHB\missionn
+andix\node_modules\ne
+xt\dist\compiled\neo-
+async\async.js:1:1444
+4)
+    at done (C:\Users
+\Theri\OneDrive\Deskt
+op\HBBKHB\missionnand
+ix\node_modules\next\
+dist\compiled\neo-asy
+nc\async.js:1:14824)
+    at Hook.eval [as 
+callAsync] (eval at 
+create (C:\Users\Ther
+i\OneDrive\Desktop\HB
+BKHB\missionnandix\no
+de_modules\next\dist\
+compiled\webpack\bund
+le5.js:13:28858), 
+<anonymous>:15:1)
+    at Hook.CALL_ASYN
+C_DELEGATE [as 
+_callAsync] (C:\Users
+\Theri\OneDrive\Deskt
+op\HBBKHB\missionnand
+ix\node_modules\next\
+dist\compiled\webpack
+\bundle5.js:13:26012)
+    at C:\Users\Theri
+\OneDrive\Desktop\HBB
+KHB\missionnandix\nod
+e_modules\next\dist\c
+ompiled\webpack\bundl
+e5.js:28:130328
+    at 
+symbolIterator (C:\Us
+ers\Theri\OneDrive\De
+sktop\HBBKHB\missionn
+andix\node_modules\ne
+xt\dist\compiled\neo-
+async\async.js:1:1440
+2)
+-- inner error --
+SyntaxError: 
+Unexpected token 
+(68:1)
+    at unexpected (C:
+\Users\Theri\OneDrive
+\Desktop\HBBKHB\missi
+onnandix\node_modules
+\sucrase\dist\parser\
+traverser\util.js:99:
+15)
+    at 
+parseBindingAtom (C:\
+Users\Theri\OneDrive\
+Desktop\HBBKHB\missio
+nnandix\node_modules\
+sucrase\dist\parser\t
+raverser\lval.js:78:2
+4)
+    at parseVarHead (
+C:\Users\Theri\OneDri
+ve\Desktop\HBBKHB\mis
+sionnandix\node_modul
+es\sucrase\dist\parse
+r\traverser\statement
+.js:638:26)
+    at parseVar (C:\U
+sers\Theri\OneDrive\D
+esktop\HBBKHB\mission
+nandix\node_modules\s
+ucrase\dist\parser\tr
+averser\statement.js:
+625:5)
+    at 
+parseVarStatement (C:
+\Users\Theri\OneDrive
+\Desktop\HBBKHB\missi
+onnandix\node_modules
+\sucrase\dist\parser\
+traverser\statement.j
+s:535:3)
+    at parseStatement
+Content (C:\Users\The
+ri\OneDrive\Desktop\H
+BBKHB\missionnandix\n
+ode_modules\sucrase\d
+ist\parser\traverser\
+statement.js:178:7)
+    at 
+parseStatement (C:\Us
+ers\Theri\OneDrive\De
+sktop\HBBKHB\missionn
+andix\node_modules\su
+crase\dist\parser\tra
+verser\statement.js:1
+16:3)
+    at 
+parseBlockBody (C:\Us
+ers\Theri\OneDrive\De
+sktop\HBBKHB\missionn
+andix\node_modules\su
+crase\dist\parser\tra
+verser\statement.js:5
+86:5)
+    at parseTopLevel 
+(C:\Users\Theri\OneDr
+ive\Desktop\HBBKHB\mi
+ssionnandix\node_modu
+les\sucrase\dist\pars
+er\traverser\statemen
+t.js:92:3)
+    at parseFile (C:\
+Users\Theri\OneDrive\
+Desktop\HBBKHB\missio
+nnandix\node_modules\
+sucrase\dist\parser\t
+raverser\index.js:17:
+35)
+    at 
+Object.<anonymous> (C
+:\Users\Theri\OneDriv
+e\Desktop\HBBKHB\miss
+ionnandix\node_module
+s\next\dist\build\web
+pack\loaders\css-load
+er\src\index.js??rule
+Set[1].rules[14].oneO
+f[12].use[2]!C:\Users
+\Theri\OneDrive\Deskt
+op\HBBKHB\missionnand
+ix\node_modules\next\
+dist\build\webpack\lo
+aders\postcss-loader\
+src\index.js??ruleSet
+[1].rules[14].oneOf[1
+2].use[3]!C:\Users\Th
+eri\OneDrive\Desktop\
+HBBKHB\missionnandix\
+src\app\globals.css:1
+:7)
+    at C:\Users\Theri
+\OneDrive\Desktop\HBB
+KHB\missionnandix\nod
+e_modules\next\dist\c
+ompiled\webpack\bundl
+e5.js:28:922493
+    at Hook.eval [as 
+call] (eval at 
+create (C:\Users\Ther
+i\OneDrive\Desktop\HB
+BKHB\missionnandix\no
+de_modules\next\dist\
+compiled\webpack\bund
+le5.js:13:28636), 
+<anonymous>:7:1)
+    at 
+Hook.CALL_DELEGATE 
+[as _call] (C:\Users\
+Theri\OneDrive\Deskto
+p\HBBKHB\missionnandi
+x\node_modules\next\d
+ist\compiled\webpack\
+bundle5.js:13:25906)
+    at C:\Users\Theri
+\OneDrive\Desktop\HBB
+KHB\missionnandix\nod
+e_modules\next\dist\c
+ompiled\webpack\bundl
+e5.js:28:131198
+    at 
+tryRunOrWebpackError 
+(C:\Users\Theri\OneDr
+ive\Desktop\HBBKHB\mi
+ssionnandix\node_modu
+les\next\dist\compile
+d\webpack\bundle5.js:
+28:312943)
+    at __webpack_requ
+ire_module__ (C:\User
+s\Theri\OneDrive\Desk
+top\HBBKHB\missionnan
+dix\node_modules\next
+\dist\compiled\webpac
+k\bundle5.js:28:13116
+5)
+    at __nested_webpa
+ck_require_153728__ (
+C:\Users\Theri\OneDri
+ve\Desktop\HBBKHB\mis
+sionnandix\node_modul
+es\next\dist\compiled
+\webpack\bundle5.js:2
+8:130607)
+    at C:\Users\Theri
+\OneDrive\Desktop\HBB
+KHB\missionnandix\nod
+e_modules\next\dist\c
+ompiled\webpack\bundl
+e5.js:28:131454
+    at 
+symbolIterator (C:\Us
+ers\Theri\OneDrive\De
+sktop\HBBKHB\missionn
+andix\node_modules\ne
+xt\dist\compiled\neo-
+async\async.js:1:1444
+4)
+
+Generated code for C:
+\Users\Theri\OneDrive
+\Desktop\HBBKHB\missi
+onnandix\node_modules
+\next\dist\build\webp
+ack\loaders\css-loade
+r\src\index.js??ruleS
+et[1].rules[14].oneOf
+[12].use[2]!C:\Users\
+Theri\OneDrive\Deskto
+p\HBBKHB\missionnandi
+x\node_modules\next\d
+ist\build\webpack\loa
+ders\postcss-loader\s
+rc\index.js??ruleSet[
+1].rules[14].oneOf[12
+].use[3]!C:\Users\The
+ri\OneDrive\Desktop\H
+BBKHB\missionnandix\s
+rc\app\globals.css
+
+Import trace for 
+requested module:
+./src/app/globals.css
+
+
+> Build failed 
+because of webpack 
+errors
