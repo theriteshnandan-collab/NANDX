@@ -1,122 +1,313 @@
+/* ═══════════════════════════════════════════════════════════
+   NANDIX — AURORA BRUTALISM DESIGN SYSTEM
+   Mixed Light / Dark Duality. Every page has both.
+   ═══════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ── DESIGN TOKENS ─────────────────────────────────────────── */
 @layer base {
   :root {
-    --canvas: #FAFBFE;
-    --midnight: #0F0F1A;
-    --slate: #64748B;
-    --silver: #94A3B8;
-    --emerald: #10B981;
-    --emerald-glow: #34D399;
-    --violet: #8B5CF6;
-    --frost: #E2E8F0;
-    --mint-mist: #ECFDF5;
-    --lavender-mist: #EDE9FE;
+    /* Duality Zones */
+    --obsidian:    #080808;
+    --void:        #0D0D0D;
+    --night:       #111111;
+    --chalk:       #F5F0E8;
+    --cream:       #FAF7F2;
+    --mist:        #E2DDD5;
+    --snow:        #FFFFFF;
+
+    /* Accent Biomes */
+    --verdant:     #10B981;
+    --verdant-glow: rgba(16,185,129,0.4);
+    --ion:         #22D3EE;
+    --ion-glow:    rgba(34,211,238,0.4);
+    --plasma:      #A855F7;
+    --plasma-glow: rgba(168,85,247,0.4);
+    --ember:       #F97316;
+    --ember-glow:  rgba(249,115,22,0.4);
+    --rose:        #F43F5E;
+    --rose-glow:   rgba(244,63,94,0.4);
+    --amber:       #F59E0B;
+
+    /* Typography */
+    --font-display: 'Inter', -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', 'Geist Mono', monospace;
+    --font-sans: 'Inter', -apple-system, sans-serif;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Default: light background (landing page) */
   body {
-    @apply text-[#0F0F1A] antialiased;
-    background-color: var(--canvas);
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: var(--font-sans);
+    background-color: var(--chalk);
+    color: var(--obsidian);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Override for dark app pages */
+  body.void-mode {
+    background-color: var(--void);
+    color: var(--chalk);
   }
 
   ::selection {
-    background: rgba(16, 185, 129, 0.15);
+    background: rgba(16, 185, 129, 0.18);
+    color: var(--obsidian);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    letter-spacing: -0.03em;
   }
 }
 
+/* ── COMPONENTS ─────────────────────────────────────────────── */
 @layer components {
-  /* TACTILE INPUT (The "Milled" Look) */
-  .input-tactile {
-    @apply w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-[#0F0F1A] outline-none;
-    @apply transition-all duration-200;
+
+  /* ── TYPOGRAPHY ─────────────────────────────────────────── */
+  .display-1 {
+    @apply text-[clamp(3rem,8vw,8rem)] font-black leading-[0.9] tracking-[-0.04em];
   }
-  
-  .input-tactile:focus {
-    @apply border-emerald-300 ring-2 ring-emerald-100;
+  .display-2 {
+    @apply text-[clamp(2rem,5vw,5rem)] font-black leading-[1] tracking-[-0.03em];
+  }
+  .heading-1 {
+    @apply text-[clamp(1.5rem,3vw,3rem)] font-black leading-tight tracking-[-0.02em];
+  }
+  .label-mono {
+    @apply text-[10px] font-bold uppercase tracking-[0.25em] font-mono;
+  }
+  .label-mono-sm {
+    @apply text-[9px] font-bold uppercase tracking-[0.3em] font-mono;
   }
 
-  /* TACTILE BUTTON — Primary */
+  /* ── BUTTONS ─────────────────────────────────────────────── */
   .btn-primary {
-    @apply px-8 py-4 rounded-xl font-semibold transition-all duration-200;
-    @apply bg-[#0F0F1A] text-white hover:bg-[#1a1a2e];
-    @apply active:scale-[0.98] shadow-lg shadow-slate-900/10;
+    @apply inline-flex items-center gap-2.5 px-8 py-4 rounded-2xl font-black text-sm uppercase tracking-wider transition-all duration-200 active:scale-[0.97];
+    background: var(--obsidian);
+    color: var(--chalk);
+  }
+  .btn-primary:hover {
+    background: #1a1a1a;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    transform: translateY(-1px);
   }
 
-  /* TACTILE BUTTON — Ghost */
+  .btn-verdant {
+    @apply inline-flex items-center gap-2.5 px-8 py-4 rounded-2xl font-black text-sm uppercase tracking-wider transition-all duration-200 active:scale-[0.97];
+    background: var(--verdant);
+    color: var(--obsidian);
+    box-shadow: 0 0 0 rgba(16,185,129,0);
+  }
+  .btn-verdant:hover {
+    box-shadow: 0 0 40px var(--verdant-glow);
+    transform: translateY(-1px);
+  }
+
   .btn-ghost {
-    @apply px-6 py-3 rounded-xl font-semibold transition-all duration-200;
-    @apply bg-transparent text-slate-600 hover:text-[#0F0F1A] hover:bg-slate-100;
-    @apply active:scale-[0.98];
+    @apply inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl font-bold text-sm transition-all duration-200 active:scale-[0.97];
+    border: 1.5px solid rgba(0,0,0,0.12);
+    color: var(--obsidian);
+  }
+  .btn-ghost:hover {
+    background: rgba(0,0,0,0.04);
+    border-color: rgba(0,0,0,0.2);
   }
 
-  /* CARD */
-  .card-elevated {
-    @apply bg-white rounded-3xl border border-slate-200/60;
-    @apply transition-all duration-300;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
+  /* ── CARDS ───────────────────────────────────────────────── */
+  /* Dark card — used on light backgrounds */
+  .card-void {
+    @apply rounded-[1.75rem] p-6 transition-all duration-300;
+    background: var(--void);
+    border: 1px solid rgba(255,255,255,0.04);
+    color: var(--chalk);
   }
-  .card-elevated:hover {
-    @apply border-slate-200;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.06), 0 8px 16px rgba(0,0,0,0.04);
-    transform: translateY(-4px);
-  }
-
-  /* GRADIENT BLOBS */
-  .blob-mint {
-    @apply absolute rounded-full pointer-events-none;
-    background: radial-gradient(circle, rgba(16,185,129,0.12) 0%, transparent 70%);
-    filter: blur(80px);
-  }
-  .blob-lavender {
-    @apply absolute rounded-full pointer-events-none;
-    background: radial-gradient(circle, rgba(139,92,246,0.10) 0%, transparent 70%);
-    filter: blur(80px);
+  .card-void:hover {
+    border-color: rgba(255,255,255,0.1);
+    transform: translateY(-3px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
   }
 
-  /* GLASS NAV */
-  .glass-nav {
-    @apply bg-white/70 backdrop-blur-2xl border-b border-slate-200/50;
+  /* Light card — used on dark backgrounds */
+  .card-chalk {
+    @apply rounded-[1.75rem] p-6 transition-all duration-300;
+    background: var(--chalk);
+    border: 1px solid rgba(0,0,0,0.06);
+    color: var(--obsidian);
+  }
+  .card-chalk:hover {
+    border-color: rgba(0,0,0,0.12);
+    transform: translateY(-3px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.12);
   }
 
-  /* DARK SECTION INVERT */
-  .section-dark {
-    @apply bg-[#0F0F1A] text-white;
+  /* Glass card */
+  .card-glass {
+    @apply rounded-[1.75rem] p-6 transition-all duration-300;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.08);
+    backdrop-filter: blur(20px);
   }
 
-  /* MARQUEE */
+  /* ── BENTO GRID ──────────────────────────────────────────── */
+  .bento-grid {
+    @apply grid gap-4;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+
+  /* ── BIOME GLOWS ─────────────────────────────────────────── */
+  .glow-verdant { box-shadow: 0 0 40px var(--verdant-glow); }
+  .glow-ion     { box-shadow: 0 0 40px var(--ion-glow); }
+  .glow-plasma  { box-shadow: 0 0 40px var(--plasma-glow); }
+  .glow-ember   { box-shadow: 0 0 40px var(--ember-glow); }
+  .glow-rose    { box-shadow: 0 0 40px var(--rose-glow); }
+
+  /* ── SECTIONS ────────────────────────────────────────────── */
+  .section-chalk {
+    background: var(--chalk);
+    color: var(--obsidian);
+  }
+  .section-void {
+    background: var(--obsidian);
+    color: var(--chalk);
+  }
+  .section-cream {
+    background: var(--cream);
+    color: var(--obsidian);
+  }
+
+  /* ── DIVIDERS ────────────────────────────────────────────── */
+  .divider-chalk { border-color: rgba(0,0,0,0.08); }
+  .divider-void  { border-color: rgba(255,255,255,0.06); }
+
+  /* ── INPUTS ──────────────────────────────────────────────── */
+  .input-chalk {
+    @apply w-full px-4 py-3.5 rounded-2xl text-sm outline-none transition-all duration-200;
+    background: rgba(255,255,255,0.8);
+    border: 1.5px solid rgba(0,0,0,0.1);
+    color: var(--obsidian);
+    font-family: var(--font-sans);
+  }
+  .input-chalk:focus {
+    border-color: var(--verdant);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(16,185,129,0.1);
+  }
+  .input-chalk::placeholder { color: rgba(0,0,0,0.25); }
+
+  .input-void {
+    @apply w-full px-4 py-3.5 rounded-2xl text-sm outline-none transition-all duration-200;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--chalk);
+    font-family: var(--font-sans);
+  }
+  .input-void:focus {
+    border-color: var(--verdant);
+    box-shadow: 0 0 0 3px rgba(16,185,129,0.1);
+  }
+  .input-void::placeholder { color: rgba(255,255,255,0.2); }
+
+  /* ── NO-SCROLLBAR ─────────────────────────────────────────── */
+  .no-scrollbar { scrollbar-width: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+
+  /* ── MESH NODES BACKGROUND ───────────────────────────────── */
+  .mesh-bg {
+    background-image:
+      radial-gradient(circle at 2px 2px, rgba(16,185,129,0.12) 1px, transparent 0);
+    background-size: 40px 40px;
+  }
+
+  /* ── MARQUEE ─────────────────────────────────────────────── */
   .marquee-track {
     @apply flex gap-12 animate-marquee;
   }
-  
-  /* SHADOW UTILITIES */
-  .shadow-convex {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.08);
+
+  /* ── SPLIT LAYOUT HELPERS ────────────────────────────────── */
+  .split-light {
+    background: var(--chalk);
+    color: var(--obsidian);
   }
-  .shadow-concave {
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
-  }
-  .shadow-levitate {
-    box-shadow: 0 20px 40px rgba(0,0,0,0.06), 0 8px 16px rgba(0,0,0,0.04);
+  .split-dark {
+    background: var(--obsidian);
+    color: var(--chalk);
   }
 
-  /* GLASS CARD (kept for compatibility) */
-  .glass-card {
-    @apply rounded-3xl backdrop-blur-xl;
-    background: rgba(255, 255, 255, 0.6);
-    border: 1px solid rgba(226, 232, 240, 0.8);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+  /* ── GRADIENTS ─────────────────────────────────────────────── */
+  .gradient-verdant {
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  }
+  .gradient-plasma {
+    background: linear-gradient(135deg, #A855F7 0%, #7C3AED 100%);
+  }
+  .gradient-ember {
+    background: linear-gradient(135deg, #F97316 0%, #DC2626 100%);
+  }
+  .gradient-aurora {
+    background: linear-gradient(135deg, #10B981 0%, #22D3EE 40%, #A855F7 100%);
   }
 }
 
+/* ── UTILITIES ──────────────────────────────────────────────── */
 @layer utilities {
+
   @keyframes marquee {
-    0% { transform: translateX(0); }
+    0%   { transform: translateX(0); }
     100% { transform: translateX(-50%); }
   }
-  .animate-marquee {
-    animation: marquee 30s linear infinite;
+  .animate-marquee { animation: marquee 40s linear infinite; }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50%      { transform: translateY(-12px); }
   }
+  .animate-float { animation: float 6s ease-in-out infinite; }
+
+  @keyframes pulse-ring {
+    0%   { transform: scale(1);   opacity: 0.4; }
+    100% { transform: scale(1.6); opacity: 0; }
+  }
+  .animate-pulse-ring { animation: pulse-ring 2s ease-out infinite; }
+
+  @keyframes glitch {
+    0%, 100% { clip-path: inset(0 0 0 0); transform: none; }
+    10%       { clip-path: inset(10% 0 80% 0); transform: translateX(-4px); }
+    20%       { clip-path: inset(60% 0 20% 0); transform: translateX(4px); }
+    30%       { clip-path: inset(40% 0 40% 0); transform: translateX(-2px); }
+    40%       { clip-path: inset(0 0 0 0); transform: none; }
+  }
+  .animate-glitch { animation: glitch 4s steps(1) infinite; }
+
+  @keyframes scan {
+    0%   { transform: translateY(-100%); }
+    100% { transform: translateY(100vh); }
+  }
+  .animate-scan { animation: scan 8s linear infinite; }
+
+  /* Typography */
+  .font-display { font-family: var(--font-display); }
+  .font-mono-nandix { font-family: var(--font-mono); }
+
+  /* Biome colors */
+  .text-verdant { color: var(--verdant); }
+  .text-ion     { color: var(--ion); }
+  .text-plasma  { color: var(--plasma); }
+  .text-ember   { color: var(--ember); }
+  .text-chalk   { color: var(--chalk); }
+  .text-obsidian { color: var(--obsidian); }
+
+  .bg-obsidian { background: var(--obsidian); }
+  .bg-chalk    { background: var(--chalk); }
+  .bg-void     { background: var(--void); }
+  .bg-cream    { background: var(--cream); }
 }

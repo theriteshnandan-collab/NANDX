@@ -76,6 +76,37 @@ export interface AppSetting {
     value: any;
 }
 
+export interface SocialPost {
+    id: string; // unique ID
+    authorId: string; // peerId
+    authorName: string;
+    text: string;
+    mediaType?: "image" | "video" | "link";
+    mediaData?: string;
+    timestamp: number;
+    trustScoreAtPost?: number;
+    vibeCount?: number;
+    replyCount?: number;
+}
+
+export interface SocialVibe {
+    id: string; // unique vibe ID (postId-peerId)
+    postId: string;
+    peerId: string;
+    emoji: string;
+    timestamp: number;
+}
+
+export interface SocialReply {
+    id: string;           // unique reply ID
+    postId: string;       // parent post ID
+    authorId: string;     // peerId
+    authorName: string;
+    text: string;
+    timestamp: number;
+    replyCount?: number;
+}
+
 // ── Database Definition ────────────────────────────────────────────
 
 class NandixDatabase extends Dexie {
@@ -84,9 +115,24 @@ class NandixDatabase extends Dexie {
     contacts!: EntityTable<SovereignContact, "peerId">;
     rooms!: EntityTable<ChatRoom, "id">;
     settings!: EntityTable<AppSetting, "key">;
+    posts!: EntityTable<SocialPost, "id">;
+    vibes!: EntityTable<SocialVibe, "id">;
+    replies!: EntityTable<SocialReply, "id">;
 
     constructor() {
         super("NandixDB");
+
+        // Version 9: Added Replies table for post threads
+        this.version(9).stores({
+            files: "++id, name, direction, status, timestamp, peerId",
+            messages: "++id, topic, messageId, sender, timestamp, deliveryStatus",
+            contacts: "peerId, nickname, addedAt, lastSeen, publicKeyFingerprint, trustScore, isBot",
+            rooms: "id, name, createdBy, createdAt, inviteCode, lastActivity, isPublic",
+            settings: "key",
+            posts: "id, authorId, timestamp, vibeCount",
+            vibes: "id, postId, peerId, timestamp",
+            replies: "id, postId, authorId, timestamp",
+        });
 
         // Version 7: Added trust fields and isBot to contacts
         this.version(7).stores({

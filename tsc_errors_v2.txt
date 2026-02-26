@@ -47,6 +47,14 @@ src/app/page.tsx(370,35): error TS2322: Type '{ delay: number; duration: number;
           Type 'number[]' is not assignable to type 'EasingFunction | Easing[]'.
             Type 'number[]' is not assignable to type 'Easing[]'.
               Type 'number' is not assignable to type 'Easing'.
+src/app/page.tsx(383,13): error TS2322: Type '{ delay: number; duration: number; ease: number[]; }' is not assignable to type 'Transition<any> | undefined'.
+  Type '{ delay: number; duration: number; ease: number[]; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+    Type '{ delay: number; duration: number; ease: number[]; }' is not assignable to type 'ValueAnimationTransition<any>'.
+      Types of property 'ease' are incompatible.
+        Type 'number[]' is not assignable to type 'Easing | Easing[] | undefined'.
+          Type 'number[]' is not assignable to type 'EasingFunction | Easing[]'.
+            Type 'number[]' is not assignable to type 'Easing[]'.
+              Type 'number' is not assignable to type 'Easing'.
 src/app/page.tsx(394,13): error TS2322: Type '{ delay: number; duration: number; ease: number[]; }' is not assignable to type 'Transition<any> | undefined'.
   Type '{ delay: number; duration: number; ease: number[]; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
     Type '{ delay: number; duration: number; ease: number[]; }' is not assignable to type 'ValueAnimationTransition<any>'.

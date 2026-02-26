@@ -9,6 +9,9 @@ import { useMesh } from "@/context/MeshProvider";
 import { mesh } from "@/lib/p2p/NandixMesh";
 import { RegistryView } from "@/components/Social/RegistryView";
 import { LinkPreview } from "@/components/Chat/LinkPreview";
+import { FeedView } from "@/components/Social/FeedView";
+import { EnhancedProfileView } from "@/components/Social/EnhancedProfileView";
+import { RadarView as SovereignRadarView } from "@/components/Social/RadarView";
 import { sovereignCrypto } from "@/lib/crypto/SovereignCrypto";
 import { kernel } from "@/lib/core/NandixKernel";
 import { identity, UserProfile, getMyProfile, setMyProfile } from "@/lib/crypto/Identity";
@@ -35,10 +38,10 @@ import {
 // A spatial, physics-based sovereign interface.
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-const modes: VoidMode[] = ["TALK", "DROP", "RADAR", "PROFILE"];
+const modes: VoidMode[] = ["FEED", "TALK", "DROP", "RADAR", "PROFILE"];
 
 export default function NandixOS() {
-    const [mode, setMode] = useState<VoidMode>("TALK");
+    const [mode, setMode] = useState<VoidMode>("FEED");
     const [activeTopic, setActiveTopic] = useState("general");
     const { messages, sendMessage, sendMediaMessage } = useSovereign(activeTopic);
     const { myId, connectedPeers, mnemonic, isNewIdentity } = useMesh();
@@ -418,6 +421,7 @@ export default function NandixOS() {
                             }
                         }}
                     >
+                        {mode === "FEED" && <FeedView key="feed" myId={myId} connectedPeers={connectedPeers} />}
                         {mode === "TALK" && (
                             <TalkView
                                 key="talk"
@@ -442,23 +446,20 @@ export default function NandixOS() {
                         )}
                         {mode === "DROP" && <DropView key="drop" streamProgress={streamProgress} />}
                         {mode === "RADAR" && (
-                            <RadarView
+                            <SovereignRadarView
                                 key="radar"
                                 myId={myId}
                                 connectedPeers={connectedPeers}
-                                discoveredRooms={discoveredRooms}
+                                onAddContact={(peerId) => saveContact({ peerId, nickname: "", addedAt: Date.now(), lastSeen: Date.now(), trustScore: 0, publicKeyFingerprint: "" })}
+                                onJoinRoom={(roomId, inviteCode) => {
+                                    setActiveTopic(roomId);
+                                    setMode("TALK");
+                                }}
                             />
                         )}
-                        {mode === "PROFILE" && <ProfileView
-                            key="profile"
-                            profile={myProfile}
-                            shards={botShards}
-                            onToggleShard={(id, enabled) => {
-                                botManagerRef.current?.toggleShard(id, enabled);
-                                setBotShards([...(botManagerRef.current?.getShards() || [])]);
-                            }}
-                            onSave={async (p) => { await setMyProfile(p); setMyProfileState(p); mesh.sendProfile(p); }}
-                        />}
+                        {mode === "PROFILE" && (
+                            <EnhancedProfileView key="profile" myId={myId} />
+                        )}
                     </motion.div>
                 </AnimatePresence>
             </main>
@@ -2378,20 +2379,21 @@ function ReputationShard({ peerId, isMe }: { peerId: string; isMe: boolean }) {
                     </button>
                 )}
             </div>
-            );
+        </div>
+    );
 }
 
-            function TrustStats({peerId}: {peerId: string }) {
+function TrustStats({ peerId }: { peerId: string }) {
     const contact = useLiveQuery(() => db.contacts.get(peerId), [peerId]);
-            if (!contact) return null;
+    if (!contact) return null;
 
-            return (
-            <div className="flex items-center gap-3 px-4 py-2 rounded-2xl bg-emerald-500/[0.03] border border-emerald-500/20 shadow-[0_0_15px_rgba(16,185,129,0.05)] group hover:border-emerald-500/40 transition-all">
-                <Shield className="w-3.5 h-3.5 text-emerald-500 group-hover:scale-110 transition-transform" />
-                <div className="flex flex-col">
-                    <span className="text-[8px] font-black text-emerald-500/60 uppercase tracking-widest leading-none">Reputation</span>
-                    <span className="text-sm font-mono font-black text-white leading-none mt-1">{contact.trustScore || 10}</span>
-                </div>
+    return (
+        <div className="flex items-center gap-3 px-4 py-2 rounded-2xl bg-emerald-500/[0.03] border border-emerald-500/20 shadow-[0_0_15px_rgba(16,185,129,0.05)] group hover:border-emerald-500/40 transition-all">
+            <Shield className="w-3.5 h-3.5 text-emerald-500 group-hover:scale-110 transition-transform" />
+            <div className="flex flex-col">
+                <span className="text-[8px] font-black text-emerald-500/60 uppercase tracking-widest leading-none">Reputation</span>
+                <span className="text-sm font-mono font-black text-white leading-none mt-1">{contact.trustScore || 10}</span>
             </div>
-            );
+        </div>
+    );
 }

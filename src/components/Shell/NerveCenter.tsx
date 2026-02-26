@@ -2,7 +2,7 @@
 
 import React, { useState, useRef } from "react";
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from "framer-motion";
-import { MessageSquare, Share2, Radio, User, Zap, Cpu, Laptop, Smartphone } from "lucide-react";
+import { MessageSquare, Share2, Radio, User, Zap, Cpu, Laptop, Smartphone, Globe } from "lucide-react";
 import { GhostTerminal } from "../Ghost/GhostTerminal";
 import { GhostRemote } from "../AI/GhostRemote";
 import { ghostEngine } from "@/lib/ghost/GhostEngineCPU";
@@ -12,14 +12,20 @@ import { ghostEngine } from "@/lib/ghost/GhostEngineCPU";
 // Magnetic tilt, breathing glow, spring inertia.
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-export type VoidMode = "TALK" | "DROP" | "RADAR" | "PROFILE" | "GHOST" | "REMOTE";
+export type VoidMode = "FEED" | "TALK" | "DROP" | "RADAR" | "PROFILE" | "GHOST" | "REMOTE";
 
 interface NerveCenterProps {
     activeMode: VoidMode;
     onModeChange: (mode: VoidMode) => void;
 }
 
-const modeConfig = {
+const modeConfig: Record<VoidMode, any> = {
+    FEED: {
+        icon: Globe,
+        label: "Signal",
+        color: "#10B981",
+        glowRGB: "16,185,129",
+    },
     TALK: {
         icon: MessageSquare,
         label: "Talk",
@@ -58,7 +64,7 @@ const modeConfig = {
     }
 };
 
-const modes: VoidMode[] = ["TALK", "DROP", "RADAR", "PROFILE", "GHOST", "REMOTE"];
+const modes: VoidMode[] = ["FEED", "TALK", "DROP", "RADAR", "PROFILE", "GHOST", "REMOTE"];
 
 const MagneticButton = ({ onClick, isActive, config }: { onClick: () => void, isActive: boolean, config: any }) => {
     const ref = React.useRef<HTMLButtonElement>(null);

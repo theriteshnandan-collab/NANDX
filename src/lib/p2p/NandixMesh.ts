@@ -605,6 +605,60 @@ export class NandixMesh {
                 return;
             }
 
+            // 📣 SOCIAL: Global Feed Posts
+            if (packet.type === "SOCIAL_POST") {
+                console.log(`[SOCIAL] 📣 Received post from ${conn.peer.substring(0, 12)}`);
+                const exists = await db.posts.get(packet.payload.id);
+                if (!exists) {
+                    await db.posts.put(packet.payload);
+                    if (this.onSocialPostCallback) this.onSocialPostCallback(packet.payload);
+                }
+                return;
+            }
+
+            // 💖 SOCIAL: Feed Vibes
+            if (packet.type === "SOCIAL_VIBE") {
+                console.log(`[SOCIAL] 💖 Received vibe from ${conn.peer.substring(0, 12)}`);
+                const vibe = packet.payload;
+                const exists = await db.vibes.get(vibe.id);
+                if (!exists) {
+                    await db.vibes.put(vibe);
+                    // Update post count
+                    const post = await db.posts.get(vibe.postId);
+                    if (post) {
+                        await db.posts.update(post.id, { vibeCount: (post.vibeCount || 0) + 1 });
+                    }
+                    if (this.onSocialVibeCallback) this.onSocialVibeCallback(vibe);
+                }
+                return;
+            }
+
+            // 🔄 SOCIAL: Post Sync Request (peer is asking for our posts)
+            if (packet.type === "POST_SYNC_REQUEST") {
+                console.log(`[SOCIAL] 🔄 Post sync requested by ${conn.peer.substring(0, 12)}`);
+                // Send our latest 20 posts back to requesting peer
+                const myPosts = await db.posts.orderBy("timestamp").reverse().limit(20).toArray();
+                conn.send(JSON.stringify({
+                    type: "POST_SYNC_RESPONSE",
+                    payload: { posts: myPosts },
+                }));
+                return;
+            }
+
+            // 📥 SOCIAL: Post Sync Response (receiving posts from peer)
+            if (packet.type === "POST_SYNC_RESPONSE") {
+                console.log(`[SOCIAL] 📥 Received post sync from ${conn.peer.substring(0, 12)} (${packet.payload.posts?.length} posts)`);
+                const posts: any[] = packet.payload.posts || [];
+                for (const post of posts) {
+                    const exists = await db.posts.get(post.id);
+                    if (!exists) {
+                        await db.posts.put(post);
+                        if (this.onSocialPostCallback) this.onSocialPostCallback(post);
+                    }
+                }
+                return;
+            }
+
             // 🟢 PRESENCE: Real-time status heartbeat
             if (packet.type === "PRESENCE_UPDATE") {
                 const { status, profile, roomId } = packet.payload;
@@ -787,6 +841,58 @@ export class NandixMesh {
     public onReaction(cb: (peerId: string, messageId: string, emoji: string) => void) { this.onReactionCallback = cb; }
     public onRoomInvite(cb: (peerId: string, roomId: string, roomName: string, inviteCode: string) => void) { this.onRoomInviteCallback = cb; }
     public onProfile(cb: (peerId: string, profile: any) => void) { this.onProfileCallback = cb; }
+
+    // Social Callbacks
+    private onSocialPostCallback?: (post: any) => void;
+    public onSocialPost(cb: (post: any) => void) { this.onSocialPostCallback = cb; }
+    private onSocialVibeCallback?: (vibe: any) => void;
+    public onSocialVibe(cb: (vibe: any) => void) { this.onSocialVibeCallback = cb; }
+
+    /**
+     * 📣 Broadcast a Social Post to ALL connected peers
+     */
+    public broadcastSocialPost(post: any) {
+        console.log(`[SOCIAL] 📣 Broadcasting post to ${this.chatConnections.size} peers.`);
+        this.send("RED", post, "SOCIAL_POST");
+    }
+
+    /**
+     * 💖 Broadcast a Social Vibe to ALL connected peers
+     */
+    public broadcastSocialVibe(vibe: any) {
+        console.log(`[SOCIAL] 💖 Broadcasting vibe to ${this.chatConnections.size} peers.`);
+        this.send("RED", vibe, "SOCIAL_VIBE");
+    }
+
+    /**
+     * 💬 Broadcast a Reply to ALL connected peers
+     */
+    public broadcastSocialReply(reply: any) {
+        console.log(`[SOCIAL] 💬 Broadcasting reply to ${this.chatConnections.size} peers.`);
+        this.send("RED", reply, "SOCIAL_REPLY");
+    }
+
+    /**
+     * 🔄 Request post sync from a specific peer
+     */
+    public requestPostSync(peerId: string) {
+        const conn = this.chatConnections.get(peerId);
+        if (conn) {
+            console.log(`[SOCIAL] 🔄 Requesting post sync from ${peerId.substring(0, 12)}`);
+            conn.send(JSON.stringify({ type: "POST_SYNC_REQUEST", payload: {} }));
+        }
+    }
+
+    /**
+     * 🔄 Request post sync from ALL connected peers
+     */
+    public requestAllPeerSync() {
+        const peerIds = Array.from(this.chatConnections.keys());
+        console.log(`[SOCIAL] 🔄 Initiating full mesh post sync with ${peerIds.length} peers.`);
+        for (const peerId of peerIds) {
+            this.requestPostSync(peerId);
+        }
+    }
 
     /**
      * 👤 Send our profile to a peer or all peers
