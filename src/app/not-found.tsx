@@ -41,7 +41,7 @@ export default function NotFound() {
                             x: [0, -4, 2, -1, 0],
                             opacity: [1, 0.8, 1, 0.9, 1],
                         }}
-                        transition={{ duration: 4, repeat: Infinity, repeatDelay: 2, ease: "steps(1)" }}
+                        transition={{ duration: 4, repeat: Infinity, repeatDelay: 2, ease: "linear" }}
                         className="text-[clamp(5rem,15vw,10rem)] font-black font-mono text-white leading-none tracking-tight"
                         style={{ textShadow: "2px 0 rgba(168,85,247,0.6), -2px 0 rgba(244,63,94,0.6)" }}
                     >
@@ -58,7 +58,7 @@ export default function NotFound() {
                             ],
                             x: [0, 6, -4, 0],
                         }}
-                        transition={{ duration: 4, repeat: Infinity, repeatDelay: 2, ease: "steps(1)" }}
+                        transition={{ duration: 4, repeat: Infinity, repeatDelay: 2, ease: "linear" }}
                         className="absolute inset-0 text-[clamp(5rem,15vw,10rem)] font-black font-mono leading-none tracking-tight text-violet-400"
                     >
                         404

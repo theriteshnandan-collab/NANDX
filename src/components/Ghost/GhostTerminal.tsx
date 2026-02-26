@@ -18,7 +18,7 @@ export function GhostTerminal({ onClose }: { onClose: () => void }) {
         const unsubscribe = ghostEngine.subscribe((newStatus) => {
             setStatus(newStatus);
         });
-        return () => unsubscribe();
+        return () => { unsubscribe(); };
     }, []);
 
     useEffect(() => {
@@ -74,9 +74,9 @@ export function GhostTerminal({ onClose }: { onClose: () => void }) {
                         <span className="font-display font-bold text-teal tracking-[0.1em] uppercase text-sm">Ghost Core // Local Node</span>
                         <div className="flex items-center gap-1.5 ml-4">
                             <div className={`w-1.5 h-1.5 rounded-full ${status.state === "IDLE" ? "bg-teal shadow-[0_0_8px_rgba(0,217,165,1)]" :
-                                    status.state === "THINKING" ? "bg-teal animate-pulse shadow-[0_0_8px_rgba(0,217,165,1)]" :
-                                        status.state === "DOWNLOADING" ? "bg-[var(--text-secondary)] animate-pulse" :
-                                            status.state === "ERROR" ? "bg-red-500" : "bg-[var(--text-muted)]"
+                                status.state === "THINKING" ? "bg-teal animate-pulse shadow-[0_0_8px_rgba(0,217,165,1)]" :
+                                    status.state === "DOWNLOADING" ? "bg-[var(--text-secondary)] animate-pulse" :
+                                        status.state === "ERROR" ? "bg-red-500" : "bg-[var(--text-muted)]"
                                 }`} />
                             <span className="font-mono text-[9px] uppercase tracking-widest text-[var(--text-secondary)]">
                                 {status.state}
@@ -113,49 +113,48 @@ export function GhostTerminal({ onClose }: { onClose: () => void }) {
                                 <p className="font-mono text-[10px] text-[var(--text-secondary)] mt-1 uppercase tracking-widest">{status.progress}% Complete</p>
                             </div>
                             <div className="w-64 h-1.5 bg-[var(--bg-border)] rounded-full overflow-hidden">
-                                <div className="h-full bg-teal transition-all duration-300" style={{ width: \`\${status.progress || 0}%\` }} />
+                                <div className="h-full bg-teal transition-all duration-300" style={{ width: `${status.progress || 0}%` }} />
                             </div>
                         </div>
                     )}
 
                     {(status.state === "IDLE" || status.state === "THINKING" || status.state === "BOOTING") && logs.map((log, i) => (
-                        <div key={i} className={\`break-words transition-colors \${
-                        log.startsWith("[USER]") ? "text-white font-medium" :
+                        <div key={i} className={`break-words transition-colors ${log.startsWith("[USER]") ? "text-white font-medium" :
                             log.startsWith("[GHOST]") ? "text-teal" :
                                 log.startsWith("[ERROR]") ? "text-red-400" :
                                     "text-[var(--text-secondary)]"
-                    }\`}>
-                    {log}
-                </div>
+                            }`}>
+                            {log}
+                        </div>
                     ))}
 
-                {status.state === "THINKING" && (
-                    <div className="flex items-center gap-2 text-teal opacity-50 mt-2">
-                        <span className="w-1.5 h-1.5 bg-teal animate-bounce rounded-full" />
-                        <span className="w-1.5 h-1.5 bg-teal animate-bounce rounded-full" style={{ animationDelay: "150px" }} />
-                        <span className="w-1.5 h-1.5 bg-teal animate-bounce rounded-full" style={{ animationDelay: "300px" }} />
+                    {status.state === "THINKING" && (
+                        <div className="flex items-center gap-2 text-teal opacity-50 mt-2">
+                            <span className="w-1.5 h-1.5 bg-teal animate-bounce rounded-full" />
+                            <span className="w-1.5 h-1.5 bg-teal animate-bounce rounded-full" style={{ animationDelay: "150px" }} />
+                            <span className="w-1.5 h-1.5 bg-teal animate-bounce rounded-full" style={{ animationDelay: "300px" }} />
+                        </div>
+                    )}
+
+                    <div ref={messagesEndRef} />
+                </div>
+
+                {/* ── INPUT ── */}
+                <div className="p-4 border-t border-[var(--bg-border)] bg-[var(--bg-elevated)] flex gap-3 items-center relative z-10">
+                    <span className="text-teal font-mono font-bold">{">"}</span>
+                    <input
+                        className="flex-1 bg-transparent border-none outline-none text-white font-mono text-[14px] placeholder-[var(--text-muted)] h-full"
+                        placeholder={status.state === "IDLE" ? "Command the ghost..." : "System processing..."}
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
+                        onKeyDown={(e) => e.key === "Enter" && handleSend()}
+                        disabled={status.state !== "IDLE"}
+                        autoFocus
+                    />
+                    <div className="font-mono text-[10px] text-teal font-bold tracking-widest opacity-50">
+                        {status.tps ? `${status.tps} T/s` : status.state === "IDLE" ? "SYS_READY" : "LOCKED"}
                     </div>
-                )}
-
-                <div ref={messagesEndRef} />
-        </div>
-
-                {/* ── INPUT ── */ }
-    <div className="p-4 border-t border-[var(--bg-border)] bg-[var(--bg-elevated)] flex gap-3 items-center relative z-10">
-        <span className="text-teal font-mono font-bold">{">"}</span>
-        <input
-            className="flex-1 bg-transparent border-none outline-none text-white font-mono text-[14px] placeholder-[var(--text-muted)] h-full"
-            placeholder={status.state === "IDLE" ? "Command the ghost..." : "System processing..."}
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleSend()}
-            disabled={status.state !== "IDLE"}
-            autoFocus
-        />
-        <div className="font-mono text-[10px] text-teal font-bold tracking-widest opacity-50">
-            {status.tps ?\`\${status.tps} T/s\` : status.state === "IDLE" ? "SYS_READY" : "LOCKED"}
-        </div>
-    </div>
+                </div>
             </motion.div >
         </div >
     );

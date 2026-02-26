@@ -1,0 +1,11 @@
+[
+  "node_modules/@wllama/wllama/src/model-manager.ts(192,23): error TS2802: Type 'Set<string>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.\r",
+  "src/components/AI/GhostRemote.tsx(55,34): error TS2769: No overload matches this call.\r",
+  "  Overload 1 of 4, '(iterable: Iterable<unknown> | ArrayLike<unknown>): unknown[]', gave the following error.\r",
+  "  Overload 2 of 4, '(arrayLike: ArrayLike<unknown>): unknown[]', gave the following error.\r",
+  "src/components/AI/GhostRemote.tsx(57,25): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'SetStateAction<string | null>'.\r",
+  "src/lib/crypto/SovereignBridge.ts(143,17): error TS2769: No overload matches this call.\r",
+  "  Overload 1 of 2, '(algorithm: AlgorithmIdentifier | EcdhKeyDeriveParams | HkdfParams | Pbkdf2Params, baseKey: CryptoKey, derivedKeyType: AlgorithmIdentifier | ... 3 more ... | AesDerivedKeyParams, extractable: boolean, keyUsages: Iterable<...>): Promise<...>', gave the following error.\r",
+  "  Overload 2 of 2, '(algorithm: AlgorithmIdentifier | EcdhKeyDeriveParams | HkdfParams | Pbkdf2Params, baseKey: CryptoKey, derivedKeyType: AlgorithmIdentifier | ... 3 more ... | AesDerivedKeyParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<...>', gave the following error.\r",
+  "src/lib/ghost/DistributedInference.ts(79,28): error TS2802: Type 'MapIterator<InferenceNode>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.\r"
+]

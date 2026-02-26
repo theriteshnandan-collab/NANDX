@@ -21,7 +21,7 @@ describe('🏎️ Trident Scheduler', () => {
     beforeEach(() => {
         scheduler = new TridentScheduler();
         mockSender = vi.fn();
-        scheduler.registerSender(mockSender);
+        scheduler.registerSender(mockSender as any);
     });
 
     afterEach(() => {

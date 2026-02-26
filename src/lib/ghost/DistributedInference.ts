@@ -76,12 +76,13 @@ export class DistributedInference {
      * Get the next node in the pipeline.
      */
     getNextNode(currentLayerEnd: number): InferenceNode | null {
-        for (const node of this.nodes.values()) {
-            if (node.assignedLayers[0] === currentLayerEnd + 1 && node.status === "IDLE") {
-                return node;
+        let nextNode: InferenceNode | null = null;
+        this.nodes.forEach(node => {
+            if (!nextNode && node.assignedLayers[0] === currentLayerEnd + 1 && node.status === "IDLE") {
+                nextNode = node;
             }
-        }
-        return null;
+        });
+        return nextNode;
     }
 
     /**
@@ -99,8 +100,10 @@ export class DistributedInference {
      * Get pipeline status for telemetry.
      */
     getStatus(): { nodes: InferenceNode[]; totalLayers: number } {
+        const nodesArr: InferenceNode[] = [];
+        this.nodes.forEach(n => nodesArr.push(n));
         return {
-            nodes: Array.from(this.nodes.values()),
+            nodes: nodesArr,
             totalLayers: this.totalLayers,
         };
     }

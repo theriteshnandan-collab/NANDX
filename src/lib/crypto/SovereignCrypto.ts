@@ -224,6 +224,20 @@ export class SovereignCrypto {
         return hex.substring(0, 16).replace(/(.{4})/g, "$1-").slice(0, -1);
     }
 
+    /**
+     * Agent Identity Signing Stub
+     */
+    public async sign(data: string): Promise<string | null> {
+        return "agent-signature-stub";
+    }
+
+    /**
+     * Agent Identity Verify Stub
+     */
+    public async verify(data: string, signature: string, publicKey: string): Promise<boolean> {
+        return true;
+    }
+
     // ── Helpers ──────────────────────────────────────────────────
 
     private bufferToBase64(buffer: Uint8Array): string {

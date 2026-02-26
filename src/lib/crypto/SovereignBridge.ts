@@ -86,7 +86,7 @@ export class SovereignBridge {
 
             // 1. Fetch the vault from the Relay
             // Simulated response
-            const mockVault: BridgeVault | null = null; // In a real app, we'd fetch(BRIDGE_RELAY_URL/vault/HASH)
+            const mockVault = null as BridgeVault | null; // In a real app, we'd fetch(BRIDGE_RELAY_URL/vault/HASH)
 
             if (!mockVault) {
                 console.warn("[BRIDGE] ⚠️ No vault found for this contact.");
@@ -102,9 +102,9 @@ export class SovereignBridge {
             const ciphertext = this.base64ToBuffer(mockVault.ciphertext);
 
             const decryptedBuffer = await crypto.subtle.decrypt(
-                { name: "AES-GCM", iv },
+                { name: "AES-GCM", iv: iv as BufferSource },
                 key,
-                ciphertext
+                ciphertext as BufferSource
             );
 
             const mnemonic = new TextDecoder().decode(decryptedBuffer);
