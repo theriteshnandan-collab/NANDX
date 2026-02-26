@@ -17,14 +17,17 @@ import {
 /* ── Animated Mesh Nodes (Canvas) ─────────────────────────── */
 function MeshCanvas({ light = false }: { light?: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const NC = light ? "rgba(8,8,8,0.15)" : "rgba(16,185,129,0.3)";
+  const LC = light ? "rgba(8,8,8,0.05)" : "rgba(16,185,129,0.08)";
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
     let animId: number;
-    const nodeColor = light ? "rgba(8,8,8,0.15)" : "rgba(16,185,129,0.3)";
-    const lineColor = light ? "rgba(8,8,8,0.05)" : "rgba(16,185,129,0.08)";
+    const nodeColor = NC;
+    const lineColor = LC;
     const nodes: { x: number; y: number; vx: number; vy: number }[] = [];
 
     const resize = () => {
@@ -71,9 +74,11 @@ function MeshCanvas({ light = false }: { light?: boolean }) {
     };
     init();
     draw();
-    window.addEventListener("resize", () => { resize(); nodes.length = 0; init(); });
-    return () => cancelAnimationFrame(animId);
-  }, [light, nodeColor, lineColor]);
+    const onResize = () => { resize(); nodes.length = 0; init(); };
+    window.addEventListener("resize", onResize);
+    return () => { cancelAnimationFrame(animId); window.removeEventListener("resize", onResize); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />;
 }
 
