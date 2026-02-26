@@ -1,0 +1,17 @@
+[
+  "src/components/Ghost/GhostTerminal.tsx(64,14): error TS17008: JSX element 'motion.div' has no corresponding closing tag.\r",
+  "src/components/Ghost/GhostTerminal.tsx(116,109): error TS1127: Invalid character.\r",
+  "src/components/Ghost/GhostTerminal.tsx(116,139): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?\r",
+  "src/components/Ghost/GhostTerminal.tsx(116,140): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?\r",
+  "src/components/Ghost/GhostTerminal.tsx(116,143): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?\r",
+  "src/components/Ghost/GhostTerminal.tsx(122,49): error TS1127: Invalid character.\r",
+  "src/components/Ghost/GhostTerminal.tsx(127,24): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?\r",
+  "src/components/Ghost/GhostTerminal.tsx(127,25): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?\r",
+  "src/components/Ghost/GhostTerminal.tsx(130,23): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?\r",
+  "src/components/Ghost/GhostTerminal.tsx(143,17): error TS1005: ')' expected.\r",
+  "src/components/Ghost/GhostTerminal.tsx(156,26): error TS1127: Invalid character.\r",
+  "src/components/Ghost/GhostTerminal.tsx(156,99): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?\r",
+  "src/components/Ghost/GhostTerminal.tsx(159,13): error TS1128: Declaration or statement expected.\r",
+  "src/components/Ghost/GhostTerminal.tsx(160,9): error TS1109: Expression expected.\r",
+  "src/components/Ghost/GhostTerminal.tsx(161,5): error TS1109: Expression expected.\r"
+]

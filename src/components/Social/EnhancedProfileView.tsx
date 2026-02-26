@@ -2,67 +2,59 @@
 
 import React, { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Shield, Zap, Hash, User, Star, Award, ArrowRight, ScrollText, Power, Activity } from "lucide-react";
+import { Shield, Zap, User, Star, Award, ArrowRight, ScrollText, Power, Activity } from "lucide-react";
 import { useLiveQuery } from "dexie-react-hooks";
 import { db, SocialPost } from "@/lib/db/NandixDB";
 import { mesh } from "@/lib/p2p/NandixMesh";
 import { EchoBot } from "@/lib/agents/EchoBot";
 
+/* ══════════════════════════════════════════════════════════════
+   ENHANCED PROFILE VIEW — Billion Dollar Design
+   Void + Teal. Card classes. Typography tokens.
+══════════════════════════════════════════════════════════════ */
+
 interface EnhancedProfileViewProps {
     myId: string | null;
-    viewPeerId?: string | null; // If null, show own profile
+    viewPeerId?: string | null;
 }
 
 type ProfileTab = "WALL" | "TRUST" | "BOTS";
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// THE TRUST SCORE RING
-// A dynamic SVG ring that fills based on trust score (0-100)
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 function TrustRing({ score }: { score: number }) {
     const radius = 54;
     const circ = 2 * Math.PI * radius;
     const fill = (score / 100) * circ;
 
-    const color =
-        score >= 80 ? "#10B981" :
-            score >= 50 ? "#06B6D4" :
-                score >= 25 ? "#F59E0B" : "#F43F5E";
+    const color = "var(--teal)";
+    const bg = "var(--bg-border)";
 
     return (
-        <svg width="128" height="128" viewBox="0 0 128 128" className="drop-shadow-[0_0_24px_rgba(16,185,129,0.3)]">
-            {/* Track */}
-            <circle cx="64" cy="64" r={radius} fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="8" />
-            {/* Fill */}
+        <svg width="128" height="128" viewBox="0 0 128 128" className="drop-shadow-[0_0_24px_rgba(0,217,165,0.15)] relative z-10">
+            <circle cx="64" cy="64" r={radius} fill="none" stroke={bg} strokeWidth="6" />
             <motion.circle
                 cx="64" cy="64" r={radius}
                 fill="none"
                 stroke={color}
-                strokeWidth="8"
+                strokeWidth="6"
                 strokeLinecap="round"
                 strokeDasharray={circ}
                 initial={{ strokeDashoffset: circ }}
                 animate={{ strokeDashoffset: circ - fill }}
                 transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
                 transform="rotate(-90 64 64)"
-                style={{ filter: `drop-shadow(0 0 6px ${color})` }}
+                style={{ filter: `drop-shadow(0 0 4px ${color})` }}
             />
-            {/* Score Label */}
-            <text x="64" y="60" textAnchor="middle" fill="white" fontSize="22" fontWeight="900" fontFamily="monospace">{score}</text>
-            <text x="64" y="76" textAnchor="middle" fill="rgba(255,255,255,0.3)" fontSize="8" fontWeight="700" fontFamily="monospace" letterSpacing="3">TRUST</text>
+            <text x="64" y="60" textAnchor="middle" fill="white" className="font-display font-medium text-2xl">{score}</text>
+            <text x="64" y="78" textAnchor="middle" fill="var(--teal)" className="font-mono text-[9px] font-bold tracking-[0.2em] uppercase">TRUST</text>
         </svg>
     );
 }
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// VOUCH CONSTELLATION
-// Renders the vouch graph as a mini constellation
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 function VouchConstellation({ vouches }: { vouches: string[] }) {
     if (vouches.length === 0) return (
-        <div className="flex items-center justify-center py-8 opacity-20">
-            <Shield className="w-8 h-8 text-zinc-600" />
-            <span className="ml-3 text-xs font-mono text-zinc-600 uppercase tracking-widest">No vouches yet</span>
+        <div className="flex items-center justify-center py-8 opacity-40">
+            <Shield className="w-8 h-8 text-[var(--text-muted)]" />
+            <span className="ml-3 label-data !m-0">No vouches minted</span>
         </div>
     );
 
@@ -71,50 +63,42 @@ function VouchConstellation({ vouches }: { vouches: string[] }) {
             {vouches.map((peerId, i) => (
                 <motion.div
                     key={peerId}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
+                    initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: i * 0.08, type: "spring", stiffness: 400, damping: 25 }}
-                    className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-500/5 border border-emerald-500/20 group hover:border-emerald-500/50 transition-all"
+                    className="flex items-center gap-2 px-3 py-1.5 card group"
                 >
-                    <div className="w-5 h-5 rounded-full bg-zinc-900 border border-white/10 flex items-center justify-center">
-                        <span className="text-[9px] font-mono text-emerald-400">{peerId.substring(0, 2).toUpperCase()}</span>
+                    <div className="w-5 h-5 rounded-full card-elevated flex items-center justify-center">
+                        <span className="font-display font-medium text-[10px] text-teal">{peerId.substring(0, 2).toUpperCase()}</span>
                     </div>
-                    <span className="text-[9px] font-mono text-zinc-500 group-hover:text-emerald-400 transition-colors tracking-wider">{peerId.substring(0, 10)}…</span>
-                    <Shield className="w-2.5 h-2.5 text-emerald-500/40" />
+                    <span className="font-mono text-[10px] font-medium text-silver group-hover:text-teal transition-colors tracking-wider">{peerId.substring(0, 8)}...</span>
+                    <Shield className="w-2.5 h-2.5 text-[var(--teal-border)]" />
                 </motion.div>
             ))}
         </div>
     );
 }
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// PERSONAL WALL POST CARD
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 function WallCard({ post }: { post: SocialPost }) {
     return (
         <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
             transition={{ type: "spring", stiffness: 400, damping: 30 }}
-            className="p-5 rounded-[1.5rem] bg-white/[0.02] border border-white/[0.03] hover:border-white/[0.07] transition-colors group"
+            className="card p-5 group"
         >
-            <p className="text-[14px] text-zinc-300 leading-relaxed whitespace-pre-wrap font-medium">{post.text}</p>
+            <p className="text-[14px] text-white leading-relaxed whitespace-pre-wrap font-medium">{post.text}</p>
             <div className="flex items-center gap-3 mt-4">
-                <span className="text-[9px] font-mono text-zinc-600 uppercase tracking-widest">
+                <span className="label-data !m-0">
                     {new Date(post.timestamp).toLocaleDateString()} · {new Date(post.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                 </span>
-                <div className="flex items-center gap-1 ml-auto px-2 py-1 rounded-lg bg-emerald-500/5 border border-emerald-500/10">
-                    <Zap className="w-2.5 h-2.5 text-emerald-500" />
-                    <span className="text-[9px] font-mono text-emerald-400 font-black">{post.vibeCount || 0}</span>
+                <div className="flex items-center gap-1.5 ml-auto px-2 py-1 rounded-sm border border-[var(--teal-border)] bg-[rgba(0,217,165,0.05)]">
+                    <Zap className="w-2.5 h-2.5 text-teal" />
+                    <span className="font-mono text-[10px] text-teal font-bold">{post.vibeCount || 0}</span>
                 </div>
             </div>
         </motion.div>
     );
 }
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// MAIN COMPONENT
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 export function EnhancedProfileView({ myId, viewPeerId }: EnhancedProfileViewProps) {
     const [tab, setTab] = useState<ProfileTab>("WALL");
     const [isVouching, setIsVouching] = useState(false);
@@ -124,7 +108,6 @@ export function EnhancedProfileView({ myId, viewPeerId }: EnhancedProfileViewPro
     const targetId = viewPeerId || myId;
     const isMe = targetId === myId;
 
-    // Live data
     const contact = useLiveQuery(() => targetId ? db.contacts.get(targetId) : undefined, [targetId]);
     const myProfile = useLiveQuery(() => db.settings.get("profile"), []);
     const wallPosts = useLiveQuery<SocialPost[]>(
@@ -136,7 +119,7 @@ export function EnhancedProfileView({ myId, viewPeerId }: EnhancedProfileViewPro
 
     const displayName = isMe
         ? (myProfile?.value?.username || `user-${myId?.substring(0, 6)}`)
-        : (contact?.nickname || `nandix-${targetId?.substring(0, 6)}`);
+        : (contact?.nickname || `node-${targetId?.substring(0, 6)}`);
 
     const trustScore = isMe ? 100 : (contact?.trustScore || 10);
     const vouches = contact?.vouchedBy || [];
@@ -145,8 +128,7 @@ export function EnhancedProfileView({ myId, viewPeerId }: EnhancedProfileViewPro
     const handleVouch = async () => {
         if (!targetId || !myId || isMe) return;
         setIsVouching(true);
-        const level = 7; // Default trust level
-        mesh.vouchForPeer(targetId, level);
+        mesh.vouchForPeer(targetId, 7);
         setTimeout(() => setIsVouching(false), 1500);
     };
 
@@ -156,179 +138,161 @@ export function EnhancedProfileView({ myId, viewPeerId }: EnhancedProfileViewPro
             echoBotRef.current?.stop();
             setEchoBotRunning(false);
         } else {
-            if (!echoBotRef.current) {
-                echoBotRef.current = new EchoBot(myId, "echo-bot");
-            }
-            echoBotRef.current.start(10000); // Post every 10 seconds
+            if (!echoBotRef.current) echoBotRef.current = new EchoBot(myId, "echo-bot");
+            echoBotRef.current.start(10000);
             setEchoBotRunning(true);
         }
     };
 
     const tabs: ProfileTab[] = ["WALL", "TRUST", "BOTS"];
     const tabIcons: Record<ProfileTab, React.ReactNode> = {
-        WALL: <ScrollText className="w-3 h-3" />,
-        TRUST: <Shield className="w-3 h-3" />,
-        BOTS: <Zap className="w-3 h-3" />,
+        WALL: <ScrollText className="w-3.5 h-3.5" />,
+        TRUST: <Shield className="w-3.5 h-3.5" />,
+        BOTS: <Activity className="w-3.5 h-3.5" />,
     };
 
     return (
-        <div className="w-full h-full flex flex-col items-center max-w-2xl mx-auto px-4 md:px-0 overflow-y-auto no-scrollbar pb-36">
+        <div className="w-full h-full flex flex-col items-center max-w-3xl mx-auto px-4 md:px-0 py-4 overflow-y-auto no-scrollbar pb-36 font-inter">
 
-            {/* ── Identity Card ────────────────────────────────────────── */}
+            {/* ── Main ID Card ── */}
             <motion.div
-                initial={{ opacity: 0, scale: 0.97 }}
-                animate={{ opacity: 1, scale: 1 }}
+                initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }}
                 transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                className="w-full mt-4 p-8 rounded-[2rem] bg-[#0A0A0A]/90 border border-white/[0.04] relative overflow-hidden"
+                className="w-full mt-4 card-elevated p-8 relative overflow-hidden"
             >
-                {/* Gradient glow */}
-                <div className="absolute top-0 left-0 w-64 h-64 bg-emerald-500/5 rounded-full blur-[80px] pointer-events-none" />
-                <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent" />
+                <div className="absolute top-0 right-0 w-64 h-64 bg-[rgba(0,217,165,0.03)] rounded-full blur-[80px] pointer-events-none" />
+                <div className="absolute top-0 left-0 w-full h-[1px]" style={{ background: "linear-gradient(90deg, transparent, var(--teal-border), transparent)" }} />
 
-                <div className="relative z-10 flex gap-8 items-center">
-                    {/* Trust Ring as Avatar */}
+                <div className="relative z-10 flex gap-8 items-center flex-col md:flex-row">
                     <div className="flex-shrink-0">
                         <TrustRing score={trustScore} />
                     </div>
 
-                    {/* Identity Info */}
-                    <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-3 mb-2">
-                            <h2 className="text-2xl font-black text-white tracking-tight truncate">@{displayName}</h2>
-                            {isMe && <span className="px-2 py-0.5 rounded-lg text-[9px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase tracking-widest font-black flex-shrink-0">Sovereign</span>}
+                    <div className="flex-1 min-w-0 text-center md:text-left">
+                        <div className="flex items-center gap-3 mb-2 justify-center md:justify-start">
+                            <h2 className="display-md text-white truncate">@{displayName}</h2>
+                            {isMe && <span className="label-data border border-teal text-teal px-1.5 py-0.5 rounded-sm bg-[rgba(0,217,165,0.05)]">Sovereign</span>}
                         </div>
-                        <div className="font-mono text-[11px] text-zinc-600 mb-4 truncate">{targetId?.substring(0, 32)}…</div>
+                        <div className="label-data mb-6 truncate">{targetId}</div>
 
-                        {/* Stats Row */}
-                        <div className="flex items-center gap-6">
+                        <div className="flex items-center gap-8 justify-center md:justify-start">
                             <div className="flex flex-col">
-                                <span className="text-xl font-black text-white">{postCount}</span>
-                                <span className="text-[9px] font-mono text-zinc-600 uppercase tracking-widest">Signals</span>
+                                <span className="font-display font-medium text-2xl text-white">{postCount}</span>
+                                <span className="label-data !m-0">Signals</span>
                             </div>
-                            <div className="w-px h-8 bg-white/5" />
+                            <div className="w-px h-8 bg-[var(--bg-border)]" />
                             <div className="flex flex-col">
-                                <span className="text-xl font-black text-white">{vouches.length}</span>
-                                <span className="text-[9px] font-mono text-zinc-600 uppercase tracking-widest">Vouches</span>
+                                <span className="font-display font-medium text-2xl text-white">{vouches.length}</span>
+                                <span className="label-data !m-0">Vouches</span>
                             </div>
-                            <div className="w-px h-8 bg-white/5" />
+                            <div className="w-px h-8 bg-[var(--bg-border)]" />
                             <div className="flex flex-col">
-                                <span className="text-xl font-black text-white">{trustScore}</span>
-                                <span className="text-[9px] font-mono text-zinc-600 uppercase tracking-widest">Trust Pts</span>
+                                <span className="font-display font-medium text-2xl text-white">{trustScore}</span>
+                                <span className="label-data !m-0">Trust</span>
                             </div>
                         </div>
 
-                        {/* Vouch Action (only for peers) */}
                         {!isMe && (
                             <motion.button
-                                whileTap={{ scale: 0.96 }}
-                                onClick={handleVouch}
-                                disabled={isVouching}
-                                className="mt-4 flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-black uppercase tracking-widest hover:bg-emerald-500/20 hover:border-emerald-500/40 transition-all disabled:opacity-50"
+                                whileTap={{ scale: 0.96 }} onClick={handleVouch} disabled={isVouching}
+                                className="mt-6 btn-outline"
                             >
-                                <Shield className="w-3.5 h-3.5" />
-                                {isVouching ? "Vouch Transmitted" : "Forge Vouch Shard"}
+                                <Shield className="w-3.5 h-3.5 text-teal" />
+                                <span className="label-data !m-0">{isVouching ? "Vouch Stamped" : "Forge Trust Link"}</span>
                             </motion.button>
                         )}
                     </div>
                 </div>
             </motion.div>
 
-            {/* ── Profile Tabs ──────────────────────────────────────────── */}
-            <div className="w-full flex gap-2 my-5">
+            {/* ── Tabs ── */}
+            <div className="w-full flex gap-2 mb-6 mt-6 border-b pb-2 border-[var(--bg-border)] justify-center md:justify-start">
                 {tabs.map((t) => (
                     <button
-                        key={t}
-                        onClick={() => setTab(t)}
-                        className={`flex items-center gap-2 px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all ${tab === t ? "bg-white/10 text-white" : "text-zinc-600 hover:text-zinc-400"}`}
+                        key={t} onClick={() => setTab(t)}
+                        className={`btn-ghost ${tab === t ? "text-primary !bg-[var(--bg-border)]" : ""}`}
                     >
-                        {tabIcons[t]}
-                        {t}
+                        {React.cloneElement(tabIcons[t] as React.ReactElement, { className: "w-3.5 h-3.5 text-teal" })}
+                        <span className="label-data !text-[11px] !m-0" style={{ color: "var(--text-primary)" }}>{t}</span>
                     </button>
                 ))}
             </div>
 
-            {/* ── Tab Content ───────────────────────────────────────────── */}
+            {/* ── Content ── */}
             <AnimatePresence mode="wait">
                 <motion.div
-                    key={tab}
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -8 }}
+                    key={tab} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
                     transition={{ type: "spring", stiffness: 400, damping: 30, duration: 0.2 }}
                     className="w-full flex flex-col gap-4"
                 >
-                    {/* WALL Tab */}
                     {tab === "WALL" && (
                         wallPosts && wallPosts.length > 0 ? (
                             wallPosts.map(post => <WallCard key={post.id} post={post} />)
                         ) : (
-                            <div className="flex flex-col items-center justify-center py-24 opacity-25">
-                                <ScrollText className="w-10 h-10 text-zinc-700 mb-4" />
-                                <p className="text-zinc-600 font-mono text-[10px] uppercase tracking-widest">No signals on this wall yet.</p>
+                            <div className="flex flex-col items-center justify-center py-20 opacity-40">
+                                <ScrollText className="w-10 h-10 text-[var(--text-muted)] mb-4" />
+                                <p className="label-data">The wall is empty.</p>
                             </div>
                         )
                     )}
 
-                    {/* TRUST Tab */}
                     {tab === "TRUST" && (
-                        <div className="p-6 rounded-[2rem] bg-[#0A0A0A]/90 border border-white/[0.04] space-y-6">
-                            {/* Stats */}
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="p-5 rounded-[1.5rem] bg-white/[0.02] border border-white/[0.04] flex flex-col items-center">
-                                    <Star className="w-5 h-5 text-amber-400 mb-2" />
-                                    <span className="text-3xl font-black text-white">{trustScore}</span>
-                                    <span className="text-[9px] font-mono text-zinc-600 uppercase tracking-wider mt-1">Trust Score</span>
+                        <div className="card-elevated p-8">
+                            <div className="grid grid-cols-2 gap-4 mb-8">
+                                <div className="card border-dashed flex flex-col items-center justify-center py-8">
+                                    <Shield className="w-6 h-6 text-teal mb-3" />
+                                    <span className="font-display font-medium text-3xl text-white">{trustScore}</span>
+                                    <span className="label-data mt-1">Network Trust</span>
                                 </div>
-                                <div className="p-5 rounded-[1.5rem] bg-white/[0.02] border border-white/[0.04] flex flex-col items-center">
-                                    <Award className="w-5 h-5 text-emerald-400 mb-2" />
-                                    <span className="text-3xl font-black text-white">{vouches.length}</span>
-                                    <span className="text-[9px] font-mono text-zinc-600 uppercase tracking-wider mt-1">Vouches</span>
+                                <div className="card border-dashed flex flex-col items-center justify-center py-8">
+                                    <Award className="w-6 h-6 text-teal mb-3" />
+                                    <span className="font-display font-medium text-3xl text-white">{vouches.length}</span>
+                                    <span className="label-data mt-1">Total Vouches</span>
                                 </div>
                             </div>
-
-                            {/* Vouch Constellation */}
                             <div>
                                 <div className="flex items-center gap-2 mb-4">
-                                    <Shield className="w-3.5 h-3.5 text-emerald-500" />
-                                    <span className="text-[9px] font-black text-emerald-500/60 uppercase tracking-[0.3em]">Vouched By</span>
+                                    <Shield className="w-4 h-4 text-teal" />
+                                    <span className="eyebrow text-teal">Sovereigns Trusting</span>
                                 </div>
                                 <VouchConstellation vouches={vouches} />
                             </div>
                         </div>
                     )}
 
-                    {/* BOTS Tab */}
                     {tab === "BOTS" && (
                         <div className="flex flex-col gap-4">
-                            {/* EchoBot Card */}
-                            <div className="p-6 rounded-[2rem] bg-[#0A0A0A]/90 border border-white/[0.04] flex items-center justify-between gap-6">
-                                <div className="flex items-center gap-5">
-                                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center border transition-all ${echoBotRunning ? "bg-emerald-500/10 border-emerald-500/30 shadow-[0_0_20px_rgba(16,185,129,0.15)]" : "bg-white/[0.02] border-white/[0.05]"}`}>
-                                        <Activity className={`w-5 h-5 transition-colors ${echoBotRunning ? "text-emerald-400" : "text-zinc-600"}`} />
+                            <div className="card-elevated p-6 flex flex-col md:flex-row items-center justify-between gap-6 transition-all" style={{ border: echoBotRunning ? "1px solid var(--teal-border)" : "1px solid var(--bg-border)" }}>
+                                <div className="flex items-center gap-5 w-full md:w-auto">
+                                    <div className={`w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors ${echoBotRunning ? "bg-[rgba(0,217,165,0.1)] border border-[var(--teal-border)] shadow-[0_0_15px_rgba(0,217,165,0.2)]" : "card"}`}>
+                                        <Activity className={`w-5 h-5 ${echoBotRunning ? "text-teal" : "text-silver"}`} />
                                     </div>
-                                    <div>
-                                        <div className="text-sm font-black text-white">Echo Bot</div>
-                                        <div className="text-[10px] font-mono text-zinc-600 mt-0.5">Posts a heartbeat signal every 10 seconds.</div>
-                                        <div className={`text-[9px] font-mono mt-1 uppercase tracking-widest font-black ${echoBotRunning ? "text-emerald-400" : "text-zinc-700"}`}>
-                                            {echoBotRunning ? "● TRANSMITTING" : "○ DORMANT"}
+                                    <div className="flex flex-col">
+                                        <div className="font-medium text-white text-[15px]">Echo Bot Shard</div>
+                                        <div className="text-[12px] text-silver mt-1">Emits a sovereign heartbeat signal every 10 seconds.</div>
+                                        <div className="label-data mt-2 flex items-center gap-1.5" style={{ color: echoBotRunning ? "var(--teal)" : "var(--text-muted)" }}>
+                                            <div className={`w-1.5 h-1.5 rounded-full ${echoBotRunning ? "bg-teal animate-pulse" : "bg-[var(--text-muted)]"}`} />
+                                            {echoBotRunning ? "TRANSMITTING" : "DORMANT"}
                                         </div>
                                     </div>
                                 </div>
                                 <motion.button
-                                    whileTap={{ scale: 0.9 }}
+                                    whileTap={{ scale: 0.95 }}
                                     onClick={handleEchoBotToggle}
-                                    className={`p-3 rounded-2xl border transition-all ${echoBotRunning ? "bg-red-500/10 border-red-500/20 text-red-400 hover:bg-red-500/20" : "bg-emerald-500/10 border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/20"}`}
+                                    className={`px-5 py-2.5 rounded-sm font-mono text-[11px] font-bold tracking-widest uppercase transition-all flex items-center gap-2 border w-full md:w-auto justify-center ${echoBotRunning ? "bg-[rgba(244,63,94,0.1)] border-[rgba(244,63,94,0.3)] text-rose-500 hover:bg-[rgba(244,63,94,0.15)]" : "bg-[rgba(0,217,165,0.1)] border-[var(--teal-border)] text-teal hover:bg-[rgba(0,217,165,0.15)]"}`}
                                 >
-                                    <Power className="w-5 h-5" />
+                                    <Power className="w-3.5 h-3.5" />
+                                    {echoBotRunning ? "Halt Shard" : "Activate Shard"}
                                 </motion.button>
                             </div>
 
-                            {/* More bots placeholder */}
-                            <div className="p-5 rounded-[1.5rem] bg-white/[0.01] border border-white/[0.03] flex items-center gap-4 opacity-30">
-                                <Zap className="w-8 h-8 text-zinc-700" />
+                            <div className="card border-dashed p-6 flex items-center gap-5 opacity-40">
+                                <div className="w-12 h-12 rounded-lg card-elevated flex items-center justify-center shadow-none flex-shrink-0">
+                                    <Zap className="w-5 h-5 text-[var(--text-muted)]" />
+                                </div>
                                 <div>
-                                    <div className="text-xs font-black text-zinc-600">More Bot Shards</div>
-                                    <div className="text-[10px] font-mono text-zinc-700">Coming in Stage 6 — Agentic Civilization.</div>
+                                    <div className="font-medium text-white text-[14px]">More Bot Shards</div>
+                                    <div className="label-data !m-0 mt-1">Awaiting the Singularity Protocol.</div>
                                 </div>
                             </div>
                         </div>

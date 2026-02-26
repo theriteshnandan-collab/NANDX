@@ -1,16 +1,19 @@
 "use client";
 
-import React, { useState, useRef } from "react";
-import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from "framer-motion";
-import { MessageSquare, Share2, Radio, User, Zap, Cpu, Laptop, Smartphone, Globe } from "lucide-react";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+    Globe, MessageSquare, Share2, Radio, User,
+    Ghost, Zap, Cpu
+} from "lucide-react";
 import { GhostTerminal } from "../Ghost/GhostTerminal";
 import { GhostRemote } from "../AI/GhostRemote";
 import { ghostEngine } from "@/lib/ghost/GhostEngineCPU";
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// THE NERVE CENTER v2: PHYSICS ENGINE
-// Magnetic tilt, breathing glow, spring inertia.
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+/* ══════════════════════════════════════════════════════════════
+   NERVE CENTER — Billion Dollar Sidebar
+   64px fixed left. Teal active indicator. Clean icons.
+══════════════════════════════════════════════════════════════ */
 
 export type VoidMode = "FEED" | "TALK" | "DROP" | "RADAR" | "PROFILE" | "GHOST" | "REMOTE";
 
@@ -19,136 +22,90 @@ interface NerveCenterProps {
     onModeChange: (mode: VoidMode) => void;
 }
 
-const modeConfig: Record<VoidMode, any> = {
-    FEED: {
-        icon: Globe,
-        label: "Signal",
-        color: "#10B981",
-        glowRGB: "16,185,129",
-    },
-    TALK: {
-        icon: MessageSquare,
-        label: "Talk",
-        color: "#22C55E",
-        glowRGB: "34,197,94",
-    },
-    DROP: {
-        icon: Share2,
-        label: "Drop",
-        color: "#22D3EE",
-        glowRGB: "34,211,238",
-    },
-    RADAR: {
-        icon: Radio,
-        label: "Radar",
-        color: "#F43F5E",
-        glowRGB: "244,63,94",
-    },
-    PROFILE: {
-        icon: User,
-        label: "Sense",
-        color: "#A855F7",
-        glowRGB: "168,85,247",
-    },
-    GHOST: {
-        icon: ({ className, style }: any) => <span className={className} style={{ ...style, fontSize: '1.2rem' }}>👻</span>,
-        label: "Ghost",
-        color: "#10B981",
-        glowRGB: "16,185,129",
-    },
-    REMOTE: {
-        icon: ({ className, style }: any) => <span className={className} style={{ ...style, fontSize: '1.2rem' }}>🪄</span>,
-        label: "Sceptre",
-        color: "#A855F7",
-        glowRGB: "168,85,247",
-    }
+const modeConfig: Record<VoidMode, { icon: any; label: string; shortcut: string }> = {
+    FEED: { icon: Globe, label: "Signal", shortcut: "S" },
+    TALK: { icon: MessageSquare, label: "Talk", shortcut: "T" },
+    DROP: { icon: Share2, label: "Drop", shortcut: "D" },
+    RADAR: { icon: Radio, label: "Radar", shortcut: "R" },
+    PROFILE: { icon: User, label: "Sense", shortcut: "P" },
+    GHOST: { icon: Ghost, label: "Ghost", shortcut: "G" },
+    REMOTE: { icon: Cpu, label: "Sceptre", shortcut: "E" },
 };
 
 const modes: VoidMode[] = ["FEED", "TALK", "DROP", "RADAR", "PROFILE", "GHOST", "REMOTE"];
 
-const MagneticButton = ({ onClick, isActive, config }: { onClick: () => void, isActive: boolean, config: any }) => {
-    const ref = React.useRef<HTMLButtonElement>(null);
-    const x = useMotionValue(0);
-    const y = useMotionValue(0);
+/* ── Tooltip ── */
+function Tooltip({ label, shortcut }: { label: string; shortcut: string }) {
+    return (
+        <motion.div
+            initial={{ opacity: 0, x: -8, scale: 0.95 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            exit={{ opacity: 0, x: -4, scale: 0.95 }}
+            transition={{ duration: 0.12 }}
+            className="absolute left-[calc(100%+12px)] top-1/2 -translate-y-1/2 z-50 pointer-events-none
+                       flex items-center gap-2.5 px-3 py-2 rounded-lg whitespace-nowrap"
+            style={{
+                background: "var(--bg-surface)",
+                border: "1px solid var(--bg-border)",
+                boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
+            }}
+        >
+            <span className="text-white text-[12px] font-medium">{label}</span>
+            <kbd className="text-[9px] font-mono px-1.5 py-0.5 rounded"
+                style={{ background: "var(--bg-border)", color: "var(--text-muted)" }}>
+                {shortcut}
+            </kbd>
+        </motion.div>
+    );
+}
 
-    const springConfig = { damping: 15, stiffness: 150, mass: 0.1 };
-    const springX = useSpring(x, springConfig);
-    const springY = useSpring(y, springConfig);
-
-    const handleMouseMove = (e: React.MouseEvent) => {
-        if (!ref.current) return;
-        const rect = ref.current.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
-        const distance = 15; // Magnetic pull strength
-
-        x.set((e.clientX - centerX) / distance);
-        y.set((e.clientY - centerY) / distance);
-    };
-
-    const handleMouseLeave = () => {
-        x.set(0);
-        y.set(0);
-    };
-
-    const Icon = config.icon;
+/* ── Nav Item ── */
+function NavMode({ mode, isActive, onClick }: { mode: VoidMode; isActive: boolean; onClick: () => void }) {
+    const [hovered, setHovered] = useState(false);
+    const cfg = modeConfig[mode];
+    const Icon = cfg.icon;
 
     return (
-        <motion.button
-            ref={ref}
-            onClick={onClick}
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
-            style={{ x: springX, y: springY }}
-            className={`relative group flex flex-col items-center justify-center w-12 h-12 rounded-2xl transition-all duration-300 ${isActive ? 'bg-white/10' : 'hover:bg-white/5'
-                }`}
-        >
-            {/* Active Indicator Dot */}
-            {isActive && (
-                <motion.div
-                    layoutId="active-dot"
-                    className="absolute -top-1 w-1 h-1 rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.8)]"
-                />
-            )}
-
-            {/* Icon with Glow */}
-            <div className="relative z-10">
-                <Icon
-                    className={`w-5 h-5 transition-all duration-300 ${isActive ? 'scale-110' : 'group-hover:scale-105'
-                        }`}
-                    style={{
-                        color: isActive ? config.color : "#71717a",
-                        filter: isActive ? `drop-shadow(0 0 8px rgba(${config.glowRGB}, 0.5))` : "none"
-                    }}
-                />
-            </div>
-
-            {/* Label Tooltip */}
+        <div className="relative" onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
+            {/* Teal left-border active indicator */}
             <AnimatePresence>
                 {isActive && (
-                    <motion.span
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 5 }}
-                        className="absolute -top-8 px-2 py-1 rounded-md bg-zinc-900 border border-white/10 text-[10px] font-medium text-white whitespace-nowrap pointer-events-none"
-                    >
-                        {config.label}
-                    </motion.span>
+                    <motion.div
+                        layoutId="sidebar-indicator"
+                        className="absolute -left-3 top-1/2 -translate-y-1/2 w-[3px] rounded-r-full"
+                        style={{ height: 20, background: "var(--teal)", boxShadow: "0 0 10px rgba(0,217,165,0.5)" }}
+                        initial={{ scaleY: 0 }}
+                        animate={{ scaleY: 1 }}
+                        exit={{ scaleY: 0 }}
+                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                    />
                 )}
             </AnimatePresence>
 
-            {/* Hover Glint */}
-            <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/0 group-hover:ring-white/10 transition-all duration-300" />
-        </motion.button>
-    );
-};
+            <motion.button
+                onClick={onClick}
+                whileTap={{ scale: 0.93 }}
+                className="relative flex items-center justify-center w-10 h-10 rounded-xl transition-all duration-150 outline-none"
+                style={{
+                    background: isActive ? "var(--teal-glow)" : hovered ? "rgba(255,255,255,0.05)" : "transparent",
+                    border: isActive ? "1px solid var(--teal-border)" : "1px solid transparent",
+                    color: isActive ? "var(--teal)" : hovered ? "var(--text-secondary)" : "var(--text-muted)",
+                    opacity: isActive ? 1 : hovered ? 0.85 : 0.45,
+                }}
+            >
+                <Icon className="w-[18px] h-[18px]" strokeWidth={isActive ? 2 : 1.75} />
+            </motion.button>
 
-export const NerveCenter: React.FC<NerveCenterProps> = ({
-    activeMode,
-    onModeChange,
-}) => {
-    // Lazy load GhostTerminal to avoid heavy bundle impact initially?
-    // For now direct import is fine as it's a client component.
+            {/* Tooltip */}
+            <AnimatePresence>
+                {hovered && <Tooltip label={cfg.label} shortcut={cfg.shortcut} />}
+            </AnimatePresence>
+        </div>
+    );
+}
+
+/* ══ NERVE CENTER COMPONENT ══════════════════════════════════ */
+export const NerveCenter: React.FC<NerveCenterProps> = ({ activeMode, onModeChange }) => {
     const [showGhost, setShowGhost] = React.useState(false);
     const [showRemote, setShowRemote] = React.useState(false);
 
@@ -156,7 +113,6 @@ export const NerveCenter: React.FC<NerveCenterProps> = ({
         if (activeMode === "GHOST") {
             setShowGhost(true);
             setShowRemote(false);
-            // On Laptop, enable Mesh Control so Phone can find us
             ghostEngine.enableMeshControl();
             ghostEngine.initialize();
         } else if (activeMode === "REMOTE") {
@@ -171,50 +127,52 @@ export const NerveCenter: React.FC<NerveCenterProps> = ({
     return (
         <>
             {showGhost && (
-                <GhostTerminal onClose={() => {
-                    setShowGhost(false);
-                    onModeChange("TALK");
-                }} />
+                <GhostTerminal onClose={() => { setShowGhost(false); onModeChange("TALK"); }} />
             )}
-
             {showRemote && (
-                <GhostRemote onClose={() => {
-                    setShowRemote(false);
-                    onModeChange("TALK");
-                }} />
+                <GhostRemote onClose={() => { setShowRemote(false); onModeChange("TALK"); }} />
             )}
 
-            <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50">
-                <motion.div
-                    className="relative flex items-center gap-2 px-3 py-3 rounded-[1.8rem] bg-zinc-950/60 backdrop-blur-3xl border border-white/[0.04]"
-                    initial={{ y: 80, opacity: 0, scale: 0.7 }}
-                    animate={{ y: 0, opacity: 1, scale: 1 }}
-                    transition={{ type: "spring", stiffness: 250, damping: 20, delay: 0.3 }}
-                    style={{
-                        boxShadow: "0 25px 60px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.03)",
-                    }}
-                >
-                    {modes.map((mode) => {
-                        const config = modeConfig[mode];
-                        const isActive = mode === activeMode;
+            {/* ── Sidebar ── */}
+            <motion.aside
+                initial={{ x: -80, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ type: "spring", stiffness: 300, damping: 30, delay: 0.2 }}
+                className="fixed left-0 top-0 bottom-0 z-40 flex flex-col items-center py-4 select-none"
+                style={{
+                    width: 64,
+                    background: "var(--bg-elevated)",
+                    borderRight: "1px solid var(--bg-border)",
+                }}
+            >
+                {/* Logo */}
+                <div className="mb-6 flex items-center justify-center w-10 h-10 rounded-xl"
+                    style={{ background: "var(--teal-glow)", border: "1px solid var(--teal-border)" }}>
+                    <Zap className="w-5 h-5" style={{ color: "var(--teal)" }} />
+                </div>
 
-                        return (
-                            <MagneticButton
-                                key={mode}
-                                onClick={() => onModeChange(mode)}
-                                isActive={isActive}
-                                config={config}
-                            />
-                        );
-                    })}
+                <div className="w-full px-2 mb-4" style={{ height: 1, background: "var(--bg-border)" }} />
 
-                    {/* Separator Lines */}
-                    <div className="absolute left-[4.8rem] top-1/2 -translate-y-1/2 w-px h-7 bg-gradient-to-b from-transparent via-white/[0.06] to-transparent" />
-                    <div className="absolute left-[9.6rem] top-1/2 -translate-y-1/2 w-px h-7 bg-gradient-to-b from-transparent via-white/[0.06] to-transparent" />
-                    <div className="absolute right-[4.8rem] top-1/2 -translate-y-1/2 w-px h-7 bg-gradient-to-b from-transparent via-white/[0.06] to-transparent" />
-                    {/* Added separation for Ghost? No, let flex gap handle it for now, can polish later */}
-                </motion.div>
-            </div>
+                {/* Mode icons */}
+                <nav className="flex flex-col items-center gap-2 pl-3">
+                    {modes.map(mode => (
+                        <NavMode
+                            key={mode}
+                            mode={mode}
+                            isActive={activeMode === mode}
+                            onClick={() => onModeChange(mode)}
+                        />
+                    ))}
+                </nav>
+
+                {/* Bottom: connection dot */}
+                <div className="mt-auto flex flex-col items-center gap-2 pb-2">
+                    <div className="w-full px-2 mb-2" style={{ height: 1, background: "var(--bg-border)" }} />
+                    <div className="flex flex-col items-center gap-1">
+                        <div className="status-online" />
+                    </div>
+                </div>
+            </motion.aside>
         </>
     );
 };
