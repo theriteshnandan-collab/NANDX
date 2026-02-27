@@ -138,14 +138,14 @@ export const NerveCenter: React.FC<NerveCenterProps> = ({ activeMode, onModeChan
                 initial={{ x: -80, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ type: "spring", stiffness: 300, damping: 30, delay: 0.2 }}
-                className="fixed left-4 top-4 bottom-4 z-40 flex flex-col items-center py-6 select-none bg-zinc-950/40 backdrop-blur-3xl border border-white/5 rounded-3xl shadow-[0_10px_40px_rgba(0,0,0,0.5)]"
+                className="fixed left-4 top-4 bottom-4 z-40 flex flex-col items-center py-6 select-none bg-white/40 backdrop-blur-3xl border border-black/5 rounded-3xl shadow-[0_10px_40px_rgba(0,0,0,0.05)]"
                 style={{
                     width: 72,
                 }}
             >
                 {/* Logo */}
-                <div className="mb-8 flex items-center justify-center w-12 h-12 rounded-2xl bg-zinc-900 border border-white/10 shadow-[0_0_20px_rgba(0,217,165,0.15)] transition-all hover:scale-105 hover:border-teal-500/30">
-                    <Zap className="w-5 h-5 text-teal" />
+                <div className="mb-8 flex items-center justify-center w-12 h-12 rounded-2xl bg-white border border-black/5 shadow-[0_4px_15px_rgba(37,99,235,0.1)] transition-all hover:scale-105 hover:border-blue-500/30">
+                    <Zap className="w-5 h-5 text-blue-600" />
                 </div>
 
                 <div className="w-full px-2 mb-4" style={{ height: 1, background: "var(--bg-border)" }} />

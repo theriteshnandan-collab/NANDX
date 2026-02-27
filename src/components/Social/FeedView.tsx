@@ -98,7 +98,7 @@ export function FeedView({ myId, connectedPeers = 0 }: FeedViewProps) {
             {/* ── Status Bar ── */}
             <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
                 className="w-full flex items-center justify-between mb-4 mt-2">
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-white/5 bg-zinc-900/40 backdrop-blur-xl">
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-black/5 bg-white/40 backdrop-blur-xl">
                     <div className={connectedPeers > 0 ? "status-online" : "status-offline"} />
                     <span className="label-data">
                         {connectedPeers > 0 ? `${connectedPeers} node${connectedPeers !== 1 ? 's' : ''} connected` : "Scanning mesh..."}
@@ -117,12 +117,12 @@ export function FeedView({ myId, connectedPeers = 0 }: FeedViewProps) {
                 <div className="absolute top-0 left-0 w-full h-[1px]" style={{ background: "linear-gradient(90deg, transparent, var(--violet-glow), transparent)" }} />
 
                 <div className="flex gap-4">
-                    <div className="w-10 h-10 rounded-full flex-shrink-0 bg-white/5 border border-white/10 flex items-center justify-center">
-                        <User className="w-4 h-4 text-violet-400" />
+                    <div className="w-10 h-10 rounded-full flex-shrink-0 bg-white border border-black/5 shadow-sm flex items-center justify-center">
+                        <User className="w-4 h-4 text-blue-500" />
                     </div>
                     <div className="flex-1 flex flex-col pt-1">
                         <textarea
-                            className="w-full bg-transparent text-white placeholder-[var(--text-muted)] outline-none resize-none text-[15px] min-h-[60px]"
+                            className="w-full bg-transparent text-slate-900 placeholder-slate-400 outline-none resize-none text-[15px] min-h-[60px]"
                             placeholder="Broadcast a signal to the mesh..."
                             value={composeText}
                             onChange={(e) => setComposeText(e.target.value)}
@@ -130,11 +130,11 @@ export function FeedView({ myId, connectedPeers = 0 }: FeedViewProps) {
                                 if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handlePost(); }
                             }}
                         />
-                        <div className="flex items-center justify-between mt-3 pt-3" style={{ borderTop: "1px solid var(--bg-border)" }}>
-                            <div className="label-data flex items-center gap-1.5 text-teal">
+                        <div className="flex items-center justify-between mt-3 pt-3 border-t border-black/5">
+                            <div className="label-data flex items-center gap-1.5 text-blue-600">
                                 <Radio className="w-3.5 h-3.5" /> P2P Encrypted
                             </div>
-                            <button onClick={handlePost} disabled={!composeText.trim()} className="btn-teal !py-2 !px-4 !text-[13px]">
+                            <button onClick={handlePost} disabled={!composeText.trim()} className="btn-teal !py-2 !px-4 !text-[13px] !bg-blue-600 !text-white hover:!bg-blue-700">
                                 <Send className="w-3.5 h-3.5" /> Transmit
                             </button>
                         </div>
@@ -165,13 +165,13 @@ export function FeedView({ myId, connectedPeers = 0 }: FeedViewProps) {
                             {/* Head */}
                             <div className="flex items-center justify-between mb-4">
                                 <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 shadow-inner flex items-center justify-center font-mono text-[13px] text-white font-bold">
+                                    <div className="w-10 h-10 rounded-full bg-white border border-black/10 shadow-sm flex items-center justify-center font-mono text-[13px] text-slate-800 font-bold">
                                         {post.authorName.charAt(0).toUpperCase()}
                                     </div>
                                     <div>
                                         <div className="flex items-center gap-2">
-                                            <span className="font-medium text-white text-[14px]">@{post.authorName}</span>
-                                            {post.authorId === myId && <span className="label-data px-1.5 py-0.5 rounded bg-[var(--bg-border)]">You</span>}
+                                            <span className="font-medium text-slate-900 text-[14px]">@{post.authorName}</span>
+                                            {post.authorId === myId && <span className="label-data px-1.5 py-0.5 rounded bg-slate-100 text-slate-500">You</span>}
                                         </div>
                                         <div className="label-data flex items-center gap-1 mt-0.5">
                                             <span>{post.authorId.substring(0, 8)}</span>
@@ -180,11 +180,11 @@ export function FeedView({ myId, connectedPeers = 0 }: FeedViewProps) {
                                         </div>
                                     </div>
                                 </div>
-                                <div className={post.authorId !== myId ? "w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_12px_rgba(6,182,212,0.6)]" : "w-1.5 h-1.5 rounded-full bg-[var(--text-muted)]"} />
+                                <div className={post.authorId !== myId ? "w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_12px_rgba(37,99,235,0.4)]" : "w-1.5 h-1.5 rounded-full bg-slate-300"} />
                             </div>
 
                             {/* Body */}
-                            <p className="text-[14px] leading-relaxed text-[var(--text-primary)] whitespace-pre-wrap ml-12 mb-4">
+                            <p className="text-[14px] leading-relaxed text-slate-700 whitespace-pre-wrap ml-12 mb-4">
                                 {post.text}
                             </p>
 
@@ -206,11 +206,11 @@ export function FeedView({ myId, connectedPeers = 0 }: FeedViewProps) {
                                 {summaries[post.id] && (
                                     <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }}
                                         className="ml-12 mb-4 overflow-hidden">
-                                        <div className="p-4 rounded-xl border border-violet-500/20 bg-violet-500/5 backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
-                                            <div className="label-data flex items-center gap-1.5 text-violet-400 mb-2">
+                                        <div className="p-4 rounded-xl border border-blue-500/10 bg-blue-500/5 backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
+                                            <div className="label-data flex items-center gap-1.5 text-blue-600 mb-2">
                                                 <Sparkles className="w-3.5 h-3.5" /> Ghost Summary
                                             </div>
-                                            <p className="text-[13px] text-zinc-300 leading-relaxed font-body">{summaries[post.id]}</p>
+                                            <p className="text-[13px] text-slate-600 leading-relaxed font-body">{summaries[post.id]}</p>
                                         </div>
                                     </motion.div>
                                 )}

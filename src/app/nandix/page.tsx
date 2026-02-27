@@ -308,7 +308,7 @@ export default function NandixOS() {
             </AnimatePresence>
 
             {/* STATUS BAR: Sovereign Identity */}
-            <header className="absolute top-0 left-0 right-0 z-40 flex items-center justify-between px-4 md:px-8 h-14 border-b border-white/[0.02]">
+            <header className="absolute top-0 left-0 right-0 z-40 flex items-center justify-between px-4 md:px-8 h-14 border-b border-black/[0.04] bg-white/40 backdrop-blur-xl">
                 <div className="flex items-center gap-3">
                     <div className="relative">
                         <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(34,197,94,0.5)]" />
@@ -321,7 +321,7 @@ export default function NandixOS() {
                     <span className="text-[11px] font-black uppercase tracking-[0.3em] text-zinc-500">
                         NANDIX
                     </span>
-                    <div className="hidden md:block h-3 w-px bg-zinc-800" />
+                    <div className="hidden md:block h-3 w-px bg-slate-200" />
                     <span className="hidden md:block text-[9px] font-mono text-zinc-700 uppercase tracking-wider">
                         Sovereign Mesh
                     </span>
@@ -345,28 +345,28 @@ export default function NandixOS() {
                     </div>
 
                     {/* Identity Chip */}
-                    <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-zinc-900/40 border border-white/[0.03]">
-                        <Crosshair className="w-2.5 h-2.5 text-zinc-600" />
-                        <span className="text-[9px] font-mono text-zinc-600 tracking-wider">
+                    <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/50 border border-black/[0.03]">
+                        <Crosshair className="w-2.5 h-2.5 text-slate-400" />
+                        <span className="text-[9px] font-mono text-slate-500 tracking-wider">
                             {myId ? myId.substring(0, 10) + "…" : "…"}
                         </span>
                     </div>
 
-                    <div className="w-7 h-7 rounded-lg bg-zinc-900/60 border border-white/5 flex items-center justify-center hover:border-white/10 transition-all cursor-pointer">
-                        <Shield className="w-3.5 h-3.5 text-zinc-600" />
+                    <div className="w-7 h-7 rounded-lg bg-white/80 border border-black/5 flex items-center justify-center hover:border-black/10 transition-all cursor-pointer">
+                        <Shield className="w-3.5 h-3.5 text-slate-400" />
                     </div>
                 </div>
             </header>
 
             {/* ☢️ REACTOR HUD (Desktop only) */}
-            <div className="hidden md:flex absolute top-14 left-10 z-40 items-center gap-3 mt-2">
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full glass-panel border-emerald-500/20 shadow-[0_0_20px_rgba(16,185,129,0.1)]">
-                    <Zap className="w-3 h-3 text-emerald-400 animate-pulse" />
-                    <span className="text-[9px] font-black uppercase tracking-widest text-emerald-400">Reactor</span>
+            <div className="hidden md:flex absolute top-14 left-10 z-40 items-center gap-3 mt-4">
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full glass-panel border-blue-500/10 shadow-[0_4px_12px_rgba(37,99,235,0.05)]">
+                    <Zap className="w-3 h-3 text-blue-500 animate-pulse" />
+                    <span className="text-[9px] font-black uppercase tracking-widest text-blue-600">Reactor</span>
                 </div>
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full glass-panel border-cyan-500/20 shadow-[0_0_20px_rgba(6,182,212,0.1)]">
-                    <Activity className="w-3 h-3 text-cyan-400 animate-pulse" />
-                    <span className="text-[9px] font-black uppercase tracking-widest text-cyan-400">Kernel: {kernel.getUptime()}ms</span>
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full glass-panel border-slate-500/10 shadow-[0_4px_12px_rgba(71,85,105,0.05)]">
+                    <Activity className="w-3 h-3 text-slate-500 animate-pulse" />
+                    <span className="text-[9px] font-black uppercase tracking-widest text-slate-600">Kernel: {kernel.getUptime()}ms</span>
                 </div>
             </div>
 

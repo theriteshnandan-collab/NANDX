@@ -21,7 +21,7 @@ interface RadarViewProps {
 function RadarRing({ delay = 0, size = 1 }: { delay?: number; size?: number }) {
     return (
         <motion.div
-            className="absolute rounded-full border border-cyan-500/20"
+            className="absolute rounded-full border border-blue-500/10"
             style={{ width: `${size * 100}%`, height: `${size * 100}%` }}
             initial={{ opacity: 0.6, scale: 0.6 }}
             animate={{ opacity: 0, scale: 1.5 }}
@@ -47,9 +47,9 @@ function PeerBlip({ index, total, peer, onAdd }: { index: number; total: number;
             title={`@${peer.nickname || peer.peerId.substring(0, 8)}`}
         >
             <div className="relative">
-                <div className="w-3.5 h-3.5 rounded-full bg-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.8)] animate-pulse" />
+                <div className="w-3.5 h-3.5 rounded-full bg-blue-500 shadow-[0_0_15px_rgba(37,99,235,0.4)] animate-pulse" />
                 <div className="absolute bottom-full mb-3 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
-                    <div className="px-3 py-1.5 rounded-xl glass-panel label-data text-white text-[10px] tracking-widest border-cyan-500/30">
+                    <div className="px-3 py-1.5 rounded-xl glass-panel label-data text-slate-800 text-[10px] tracking-widest border-blue-500/20 shadow-lg">
                         @{peer.nickname || peer.peerId.substring(0, 8)}
                     </div>
                 </div>
@@ -80,18 +80,18 @@ export function RadarView({ myId, connectedPeers, onAddContact, onJoinRoom }: Ra
             <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="w-full mt-4 flex items-center justify-between p-4 glass-panel !rounded-2xl border-white/10"
+                className="w-full mt-4 flex items-center justify-between p-4 bg-white/50 backdrop-blur-xl border border-black/5 rounded-2xl"
             >
                 <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-xl bg-cyan-500/10 border border-cyan-500/20">
-                        <Radio className="w-4 h-4 text-cyan-400" />
+                    <div className="p-2 rounded-xl bg-blue-500/10 border border-blue-500/20">
+                        <Radio className="w-4 h-4 text-blue-600" />
                     </div>
-                    <span className="label-data text-white font-bold">Mesh Radar</span>
+                    <span className="label-data text-slate-900 font-bold">Mesh Radar</span>
                 </div>
                 <div className="flex items-center gap-2 label-data font-bold">
                     {connectedPeers > 0
-                        ? <><Wifi className="w-4 h-4 text-emerald-400" /><span className="text-emerald-400">{connectedPeers} peers active</span></>
-                        : <><WifiOff className="w-4 h-4 text-zinc-600" /><span className="text-zinc-600">Zero connection</span></>
+                        ? <><Wifi className="w-4 h-4 text-blue-600" /><span className="text-blue-600">{connectedPeers} peers active</span></>
+                        : <><WifiOff className="w-4 h-4 text-slate-400" /><span className="text-slate-400">Zero connection</span></>
                     }
                 </div>
             </motion.div>
@@ -104,10 +104,10 @@ export function RadarView({ myId, connectedPeers, onAddContact, onJoinRoom }: Ra
             >
                 {/* Crosshairs */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="w-full h-[1px] bg-[var(--teal-border)] opacity-30" />
+                    <div className="w-full h-[1px] bg-slate-200 opacity-50" />
                 </div>
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="h-full w-[1px] bg-[var(--teal-border)] opacity-30" />
+                    <div className="h-full w-[1px] bg-slate-200 opacity-50" />
                 </div>
 
                 {/* Animated Rings */}
@@ -129,14 +129,14 @@ export function RadarView({ myId, connectedPeers, onAddContact, onJoinRoom }: Ra
                             style={{ background: "linear-gradient(to top, rgba(0,217,165,0.6), transparent)" }}
                         />
                         <div
-                            className="absolute top-0 left-1/2 w-32 h-1/2 origin-bottom bg-gradient-to-r from-[rgba(0,217,165,0.1)] to-transparent"
+                            className="absolute top-0 left-1/2 w-32 h-1/2 origin-bottom bg-gradient-to-r from-[rgba(37,99,235,0.08)] to-transparent"
                             style={{ clipPath: "polygon(0 0, 100% 0, 0 100%)" }}
                         />
                     </motion.div>
                 )}
 
                 {/* Center Core */}
-                <div className="relative z-20 w-5 h-5 rounded-full bg-cyan-400 shadow-[0_0_30px_rgba(6,182,212,1)] flex items-center justify-center">
+                <div className="relative z-20 w-5 h-5 rounded-full bg-blue-500 shadow-[0_0_30px_rgba(37,99,235,0.4)] flex items-center justify-center">
                     <div className="w-1.5 h-1.5 rounded-full bg-white animate-ping" />
                 </div>
 
@@ -182,14 +182,14 @@ export function RadarView({ myId, connectedPeers, onAddContact, onJoinRoom }: Ra
                                             {(contact.nickname || contact.peerId).charAt(0).toUpperCase()}
                                         </span>
                                     </div>
-                                    <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-teal shadow-[0_0_8px_rgba(0,217,165,0.8)] border-[2px] border-[#0A0A0F]" />
+                                    <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(37,99,235,0.5)] border-[2px] border-white" />
                                 </div>
                                 <div className="flex flex-col">
-                                    <span className="font-medium text-white text-[14px]">@{contact.nickname || `node-${contact.peerId.substring(0, 6)}`}</span>
+                                    <span className="font-medium text-slate-900 text-[14px]">@{contact.nickname || `node-${contact.peerId.substring(0, 6)}`}</span>
                                     <div className="flex items-center gap-2 mt-0.5">
-                                        <Shield className="w-3 h-3 text-[var(--teal-border)]" />
-                                        <span className="label-data !m-0">{contact.trustScore || 0} trust</span>
-                                        <span className="label-data !m-0 border-l border-[var(--bg-border)] pl-2">{contact.peerId.substring(0, 12)}...</span>
+                                        <Shield className="w-3 h-3 text-blue-400" />
+                                        <span className="label-data !m-0 !text-slate-500">{contact.trustScore || 0} trust</span>
+                                        <span className="label-data !m-0 border-l border-slate-200 pl-2 !text-slate-400">{contact.peerId.substring(0, 12)}...</span>
                                     </div>
                                 </div>
                             </div>

@@ -38,14 +38,14 @@ export function DropView({ streamProgress }: DropViewProps) {
             className="flex flex-col items-center justify-center p-6 h-full w-full max-w-3xl mx-auto"
         >
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] pointer-events-none rounded-full"
-                style={{ background: "radial-gradient(circle, rgba(6,182,212,0.05) 0%, transparent 70%)" }} />
+                style={{ background: "radial-gradient(circle, rgba(37,99,235,0.04) 0%, transparent 70%)" }} />
 
             <div className="text-center mb-12 relative z-10">
-                <div className="eyebrow flex items-center justify-center gap-2 mb-4">
-                    <Database className="w-4 h-4" style={{ color: "var(--teal)" }} /> Local Storage Only
+                <div className="eyebrow flex items-center justify-center gap-2 mb-4 text-blue-600">
+                    <Database className="w-4 h-4" /> Local Storage Only
                 </div>
-                <h2 className="display-md mb-3 text-white">Direct Transfer</h2>
-                <p className="text-[var(--text-secondary)] max-w-md mx-auto leading-relaxed text-[15px]">
+                <h2 className="display-md mb-3 text-slate-900">Direct Transfer</h2>
+                <p className="text-slate-600 max-w-md mx-auto leading-relaxed text-[15px]">
                     Drop any file up to infinite size. Sent securely via WebRTC data streams directly to active peers in your mesh. No servers.
                 </p>
             </div>
@@ -54,19 +54,19 @@ export function DropView({ streamProgress }: DropViewProps) {
                 <label
                     onDragOver={(e) => e.preventDefault()}
                     onDrop={handleDrop}
-                    className="relative flex flex-col items-center justify-center w-full h-[400px] rounded-[3rem] cursor-pointer transition-all overflow-hidden group border border-white/5 glass-panel hover:border-cyan-500/50 shadow-[0_40px_100px_rgba(0,0,0,0.4)]"
+                    className="relative flex flex-col items-center justify-center w-full h-[400px] rounded-[3rem] cursor-pointer transition-all overflow-hidden group border border-black/5 bg-white shadow-[0_20px_60px_rgba(0,0,0,0.04)] hover:border-blue-500/30"
                 >
                     <input type="file" className="hidden" onChange={handleChange} />
 
                     <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-violet-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
                     <div className="relative flex flex-col items-center justify-center z-10">
-                        <div className="w-24 h-24 rounded-3xl flex items-center justify-center mb-6 transition-all group-hover:scale-110 group-hover:shadow-[0_0_40px_rgba(6,182,212,0.3)] bg-white/5 border border-white/10">
-                            <Upload className="w-10 h-10 text-cyan-400 group-hover:text-white transition-colors" />
+                        <div className="w-24 h-24 rounded-3xl flex items-center justify-center mb-6 transition-all group-hover:scale-110 group-hover:shadow-[0_12px_40px_rgba(37,99,235,0.1)] bg-slate-50 border border-slate-200">
+                            <Upload className="w-10 h-10 text-blue-600 group-hover:scale-110 transition-transform" />
                         </div>
 
-                        <p className="text-white font-medium text-[16px] mb-2">Click or drag file to transmit</p>
-                        <p className="font-mono text-[11px] text-[var(--text-muted)] uppercase tracking-widest">
+                        <p className="text-slate-900 font-medium text-[16px] mb-2">Click or drag file to transmit</p>
+                        <p className="font-mono text-[11px] text-slate-400 uppercase tracking-widest">
                             {streamProgress.percent > 0 ? "Transmission in progress..." : "No limits • P2P Encrypted"}
                         </p>
                     </div>
@@ -75,7 +75,7 @@ export function DropView({ streamProgress }: DropViewProps) {
                     <svg className="absolute inset-0 w-full h-full opacity-[0.03]" xmlns="http://www.w3.org/2000/svg">
                         <defs>
                             <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" strokeWidth="1" />
+                                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="black" strokeWidth="1" />
                             </pattern>
                         </defs>
                         <rect width="100%" height="100%" fill="url(#grid)" />
@@ -87,22 +87,22 @@ export function DropView({ streamProgress }: DropViewProps) {
                                 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
                                 className="absolute bottom-10 left-10 right-10"
                             >
-                                <div className="glass-panel p-6 w-full rounded-2xl border-white/10 shadow-2xl">
+                                <div className="p-4 rounded-xl border border-blue-500/10 bg-white shadow-xl">
                                     <div className="flex justify-between items-center mb-3">
                                         <div className="flex items-center gap-2">
-                                            <Zap className="w-4 h-4 text-teal animate-pulse" />
-                                            <span className="text-[13px] font-medium text-white truncate max-w-[200px]">
+                                            <Zap className="w-4 h-4 text-blue-600 animate-pulse" />
+                                            <span className="text-[13px] font-medium text-slate-800 truncate max-w-[200px]">
                                                 {streamProgress.file}
                                             </span>
                                         </div>
-                                        <span className="font-mono font-bold text-[12px] text-teal">
+                                        <span className="font-mono font-bold text-[12px] text-blue-600">
                                             {streamProgress.percent}%
                                         </span>
                                     </div>
-                                    <div className="w-full h-2 rounded-full bg-white/5 overflow-hidden border border-white/5">
+                                    <div className="w-full h-1.5 rounded-full bg-slate-100 overflow-hidden">
                                         <motion.div
                                             animate={{ width: `${streamProgress.percent}%` }}
-                                            className="h-full bg-gradient-to-r from-cyan-500 to-teal-400 shadow-[0_0_15px_rgba(6,182,212,0.5)]"
+                                            className="h-full bg-blue-600 shadow-[0_0_12px_rgba(37,99,235,0.3)]"
                                         />
                                     </div>
                                 </div>

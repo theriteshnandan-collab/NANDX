@@ -113,11 +113,11 @@ export function TalkView({
             className="flex flex-col h-full w-full max-w-5xl mx-auto px-4 py-4 relative"
         >
             {/* Header */}
-            <header className="w-full flex items-center justify-between px-5 py-4 glass-panel rounded-2xl mb-4">
+            <header className="w-full flex items-center justify-between px-5 py-4 bg-white/40 backdrop-blur-xl border border-black/5 rounded-2xl mb-4">
                 <div className="flex items-center gap-4">
-                    <button onClick={() => setShowRooms(!showRooms)} className="btn-ghost !px-3 !bg-[var(--bg-border)] flex items-center gap-2">
-                        <Hash className="w-4 h-4 text-teal" />
-                        <span className="font-display font-bold text-white tracking-tight">
+                    <button onClick={() => setShowRooms(!showRooms)} className="btn-ghost !px-3 !bg-slate-100 flex items-center gap-2">
+                        <Hash className="w-4 h-4 text-blue-600" />
+                        <span className="font-display font-bold text-slate-800 tracking-tight">
                             {activeTopic === "general" ? "general" : rooms.find(r => r.id === activeTopic)?.name || activeTopic}
                         </span>
                     </button>
@@ -131,10 +131,10 @@ export function TalkView({
                         onChange={(e) => setSearchQuery(e.target.value)}
                         className="hidden md:block input-void w-48 !py-1.5 !text-[13px]"
                     />
-                    <div className="flex items-center gap-2 border-l pl-3 border-[var(--bg-border)]">
-                        <button onClick={() => activeTopic !== "general" && onCall(activeTopic, "voice")} className="btn-ghost !p-2"><Phone className="w-4 h-4" /></button>
-                        <button onClick={() => activeTopic !== "general" && onCall(activeTopic, "video")} className="btn-ghost !p-2"><Video className="w-4 h-4" /></button>
-                        <button onClick={() => setShowRegistry(true)} className="btn-ghost !p-2" title="Sovereign Identity Registry"><Lock className="w-4 h-4" /></button>
+                    <div className="flex items-center gap-2 border-l pl-3 border-slate-200">
+                        <button onClick={() => activeTopic !== "general" && onCall(activeTopic, "voice")} className="btn-ghost !p-2 text-slate-500 hover:text-blue-600"><Phone className="w-4 h-4" /></button>
+                        <button onClick={() => activeTopic !== "general" && onCall(activeTopic, "video")} className="btn-ghost !p-2 text-slate-500 hover:text-blue-600"><Video className="w-4 h-4" /></button>
+                        <button onClick={() => setShowRegistry(true)} className="btn-ghost !p-2 text-slate-500 hover:text-blue-600" title="Sovereign Identity Registry"><Lock className="w-4 h-4" /></button>
                     </div>
                 </div>
             </header>
@@ -149,12 +149,12 @@ export function TalkView({
                     >
                         <div className="max-h-60 overflow-y-auto no-scrollbar pb-2">
                             <button onClick={() => { onSwitchTopic("general"); setShowRooms(false); }}
-                                className={`w-full text-left px-3 py-2 rounded-lg label-data transition text-[11px] hover:bg-[var(--bg-border)] ${activeTopic === "general" ? "text-teal bg-[var(--teal-glow)]" : ""}`}>
+                                className={`w-full text-left px-3 py-2 rounded-lg label-data transition text-[11px] hover:bg-slate-100 ${activeTopic === "general" ? "text-blue-600 bg-blue-50" : "text-slate-600"}`}>
                                 # general
                             </button>
                             {rooms.map(room => (
                                 <button key={room.id} onClick={() => { onSwitchTopic(room.id); setShowRooms(false); }}
-                                    className={`w-full text-left px-3 py-2 rounded-lg label-data transition mt-1 text-[11px] hover:bg-[var(--bg-border)] ${activeTopic === room.id ? "text-teal bg-[var(--teal-glow)]" : ""}`}>
+                                    className={`w-full text-left px-3 py-2 rounded-lg label-data transition mt-1 text-[11px] hover:bg-slate-100 ${activeTopic === room.id ? "text-blue-600 bg-blue-50" : "text-slate-600"}`}>
                                     # {room.name}
                                 </button>
                             ))}
@@ -205,8 +205,8 @@ export function TalkView({
                                     </div>
 
                                     {/* Bubble */}
-                                    <div className={`px-4 py-2.5 rounded-2xl text-[14px] leading-relaxed shadow-lg font-medium text-white
-                                        ${isMe ? "bg-gradient-to-br from-cyan-500 to-teal-400 text-[#040406] rounded-br-sm border border-cyan-300/30" : "bg-white/5 backdrop-blur-xl border border-white/10 rounded-bl-sm"}`}>
+                                    <div className={`px-4 py-2.5 rounded-2xl text-[14px] leading-relaxed shadow-sm font-medium
+                                        ${isMe ? "bg-blue-600 text-white rounded-br-sm shadow-[0_4px_12px_rgba(37,99,235,0.2)]" : "bg-white border border-black/5 rounded-bl-sm text-slate-800"}`}>
 
                                         {msg.mediaType === "image" && msg.mediaData ? (
                                             <div className="flex flex-col gap-2">
@@ -269,7 +269,7 @@ export function TalkView({
                             if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSend(); }
                         }}
                         placeholder={`Signal to #${activeTopic === "general" ? "general" : rooms.find(r => r.id === activeTopic)?.name || activeTopic}...`}
-                        className="flex-1 bg-transparent text-white placeholder-[var(--text-muted)] text-[14px] min-h-[40px] max-h-[160px] py-2.5 outline-none resize-none no-scrollbar font-medium"
+                        className="flex-1 bg-transparent text-slate-900 placeholder-slate-400 text-[14px] min-h-[40px] max-h-[160px] py-2.5 outline-none resize-none no-scrollbar font-medium"
                         rows={1}
                     />
 
@@ -289,11 +289,11 @@ export function TalkView({
             <AnimatePresence>
                 {showRegistry && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                        className="absolute inset-0 z-50 rounded-2xl overflow-hidden backdrop-blur-3xl bg-[#0A0A0F]/90 border border-[var(--bg-border)] m-4 shadow-2xl flex flex-col">
-                        <div className="flex justify-between items-center p-4 border-b border-[var(--bg-border)]">
+                        className="absolute inset-0 z-50 rounded-2xl overflow-hidden backdrop-blur-3xl bg-white/95 border border-black/5 m-4 shadow-2xl flex flex-col">
+                        <div className="flex justify-between items-center p-4 border-b border-black/5">
                             <div className="flex items-center gap-2">
-                                <Lock className="w-4 h-4 text-teal" />
-                                <span className="font-display font-medium text-white text-sm">Sovereign Identity Registry</span>
+                                <Lock className="w-4 h-4 text-blue-600" />
+                                <span className="font-display font-medium text-slate-900 text-sm">Sovereign Identity Registry</span>
                             </div>
                             <button onClick={() => setShowRegistry(false)} className="btn-ghost !p-1.5 hover:bg-white/5 disabled:opacity-50 transition-colors">
                                 <X className="w-4 h-4" />

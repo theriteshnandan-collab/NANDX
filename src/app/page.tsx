@@ -23,8 +23,8 @@ function ParticleNet() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
     let raf: number;
-    const NC = "rgba(0,217,165,0.18)";
-    const LC = "rgba(0,217,165,0.05)";
+    const NC = "rgba(37, 99, 235, 0.12)";
+    const LC = "rgba(148, 163, 184, 0.08)";
     type Node = { x: number; y: number; vx: number; vy: number };
     const nodes: Node[] = [];
 
@@ -98,7 +98,7 @@ function FeatureBlock({ flip, icon: Icon, eyebrow, title, description, visual, d
           <Icon className="w-3.5 h-3.5" style={{ color: "var(--teal)" }} />
           {eyebrow}
         </div>
-        <h3 className="font-display text-[clamp(1.8rem,3.5vw,2.8rem)] font-bold text-white leading-tight tracking-tight mb-5">
+        <h3 className="font-display text-[clamp(1.8rem,3.5vw,2.8rem)] font-bold text-slate-900 leading-tight tracking-tight mb-5">
           {title}
         </h3>
         <p className="text-[var(--text-secondary)] text-[15px] leading-relaxed max-w-md">
@@ -131,7 +131,7 @@ function VisualP2P() {
           animate={{ cx: [88, 252, 88] }} transition={{ duration: 3, repeat: Infinity, ease: "linear" }} />
       </svg>
       <div className="absolute top-3 left-1/2 -translate-x-1/2 card px-3 py-1.5">
-        <span className="label-data" style={{ color: "var(--teal)" }}>Direct P2P</span>
+        <span className="label-data" style={{ color: "var(--teal)" }}>Direct Sovereign Link</span>
       </div>
       <div className="absolute bottom-3 left-4 label-data">Device A</div>
       <div className="absolute bottom-3 right-4 label-data">Device B</div>
@@ -208,8 +208,8 @@ function VisualGhost() {
       ].map((m, i) => (
         <div key={i} className={`mb-2 flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
           <div className={`px-3 py-2 rounded-xl text-[12px] max-w-[80%] ${m.role === "user"
-              ? "text-[#0A0A0F] font-medium"
-              : "text-[var(--text-secondary)]"
+            ? "text-[#0A0A0F] font-medium"
+            : "text-[var(--text-secondary)]"
             }`}
             style={{ background: m.role === "user" ? "var(--teal)" : "var(--bg-border)" }}>
             {m.text}
@@ -246,8 +246,8 @@ function HowStep({ n, icon: Icon, title, body }: { n: string; icon: any; title: 
         <span className="font-mono text-[11px]" style={{ color: "var(--text-muted)" }}>{n}</span>
       </div>
       <div>
-        <h4 className="font-display font-bold text-white text-[17px] mb-2 tracking-tight">{title}</h4>
-        <p className="text-[13px] leading-relaxed" style={{ color: "var(--text-secondary)" }}>{body}</p>
+        <h4 className="font-display font-bold text-slate-900 text-[17px] mb-2 tracking-tight">{title}</h4>
+        <p className="text-[13px] leading-relaxed text-slate-600">{body}</p>
       </div>
     </motion.div>
   );
@@ -277,7 +277,7 @@ export default function LandingPage() {
             style={{ background: "var(--teal-glow)", border: "1px solid var(--teal-border)" }}>
             <Zap className="w-4 h-4" style={{ color: "var(--teal)" }} />
           </div>
-          <span className="font-display font-bold text-white text-[15px] tracking-tight">NANDIX</span>
+          <span className="font-display font-bold text-slate-900 text-[15px] tracking-tight">NANDIX</span>
         </Link>
         <div className="hidden md:flex items-center gap-1">
           {[["Manifesto", "/manifesto"], ["Features", "#features"], ["Protocol", "#how"]].map(([l, h]) => (
@@ -313,11 +313,12 @@ export default function LandingPage() {
 
           {/* Headline */}
           <motion.h1 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="display-xl mb-4">
+            className="display-xl mb-4 text-slate-900">
             Own Your Signal.
           </motion.h1>
           <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.28 }}
-            className="display-xl mb-8 text-stroke-teal">
+            className="display-xl mb-8 -webkit-text-stroke-slate-900 text-transparent opacity-20"
+            style={{ WebkitTextStroke: "1px #0F172A" }}>
             Own Everything.
           </motion.div>
 
@@ -488,7 +489,7 @@ export default function LandingPage() {
                 style={{ background: "var(--teal-glow)", border: "1px solid var(--teal-border)" }}>
                 <Zap className="w-3.5 h-3.5" style={{ color: "var(--teal)" }} />
               </div>
-              <span className="font-display font-bold text-white text-[14px]">NANDIX</span>
+              <span className="font-display font-bold text-slate-900 text-[14px]">NANDIX</span>
             </div>
             <p className="label-data text-center">
               © 2026 NANDIX Protocol. No Rights Reserved. Sovereign Mesh.
