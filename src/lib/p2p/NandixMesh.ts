@@ -92,6 +92,10 @@ export class NandixMesh {
         return this.chatConnections.size;
     }
 
+    public getConnectedPeerIds(): string[] {
+        return Array.from(this.chatConnections.keys());
+    }
+
     public onIncomingCall(callback: (call: MediaConnection) => void) {
         this.onIncomingCallCallback = callback;
     }

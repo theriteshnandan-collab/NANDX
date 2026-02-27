@@ -52,8 +52,7 @@ export const GhostRemote: React.FC<GhostRemoteProps> = ({ onClose }) => {
         // 2. Discover Workers (Peers)
         // For now, we assume the first connected peer with "laptop" in ID or just any peer is a potential worker.
         // In a real Hive Mind, we'd have a GHOST_HEARTBEAT.
-        const peers: string[] = [];
-        mesh.getConnectedPeers().forEach(p => peers.push(p));
+        const peers = mesh.getConnectedPeerIds();
         if (peers.length > 0) {
             setWorkerId(peers[0]);
         }

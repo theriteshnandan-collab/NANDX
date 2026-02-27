@@ -401,8 +401,8 @@ export default function NandixOS() {
                 )}
             </AnimatePresence>
 
-            {/* MAIN CONTENT: offset by sidebar (96px = ml-24) */}
-            <main className="relative w-full h-full z-10 pt-14 ml-24" style={{ minHeight: "100vh" }}>
+            {/* MAIN CONTENT: offset by sidebar (96px = ml-24) on desktop, pb-24 on mobile */}
+            <main className="relative w-full h-full z-10 pt-14 md:ml-24 pb-24 md:pb-0" style={{ minHeight: "100vh" }}>
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={mode}
@@ -513,36 +513,36 @@ function IdentityVessel({ mnemonic, onComplete }: { mnemonic: string; onComplete
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] bg-zinc-950/80 backdrop-blur-3xl flex items-center justify-center p-6"
+            className="fixed inset-0 z-[100] bg-white/40 backdrop-blur-3xl flex items-center justify-center p-6"
         >
             <motion.div
                 initial={{ scale: 0.9, y: 30 }}
                 animate={{ scale: 1, y: 0 }}
                 exit={{ scale: 0.9, y: 30 }}
                 transition={{ type: "spring", stiffness: 200, damping: 20 }}
-                className="w-full max-w-lg glass-panel p-10 rounded-[3rem] border-white/10 shadow-[0_40px_100px_rgba(0,0,0,0.8)] relative overflow-hidden"
+                className="w-full max-w-lg bg-white/80 border border-black/5 p-10 rounded-[3rem] shadow-[0_40px_100px_rgba(37,99,235,0.1)] relative overflow-hidden"
             >
-                <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-violet-500 to-transparent" />
+                <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-blue-500/20 to-transparent" />
                 {/* Header */}
                 <div className="text-center mb-8">
                     <motion.div
                         animate={{ rotate: [0, 5, -5, 0] }}
                         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                        className="w-16 h-16 mx-auto mb-5 rounded-2xl bg-gradient-to-br from-violet-500/20 to-rose-500/20 border border-violet-500/20 flex items-center justify-center"
+                        className="w-16 h-16 mx-auto mb-5 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center"
                     >
-                        <Key className="w-7 h-7 text-violet-400 animate-pulse" />
+                        <Key className="w-7 h-7 text-blue-600 animate-pulse" />
                     </motion.div>
-                    <h2 className="display-sm font-black tracking-tight text-white">Sovereign Onboarding</h2>
-                    <p className="text-[12px] text-zinc-400 mt-3 leading-relaxed max-w-xs mx-auto">
-                        These 12 words are your total sovereign identity. <b>Do not lose them.</b>
+                    <h2 className="display-sm font-black tracking-tight text-slate-900">Sovereign Onboarding</h2>
+                    <p className="text-[12px] text-slate-500 mt-3 leading-relaxed max-w-xs mx-auto">
+                        These 12 words are your total sovereign identity. <b className="text-slate-900">Do not lose them.</b>
                         They are the only way to recover your node.
                     </p>
                 </div>
 
                 {/* Warning */}
-                <div className="flex items-start gap-3 px-4 py-3 rounded-xl bg-amber-500/5 border border-amber-500/10 mb-6">
-                    <AlertTriangle className="w-4 h-4 text-amber-500 mt-0.5 shrink-0" />
-                    <p className="text-[10px] text-amber-500/80 leading-relaxed">
+                <div className="flex items-start gap-3 px-4 py-3 rounded-xl bg-amber-500/5 border border-amber-500/20 mb-6">
+                    <AlertTriangle className="w-4 h-4 text-amber-600 mt-0.5 shrink-0" />
+                    <p className="text-[10px] text-amber-600/90 font-bold leading-relaxed">
                         Never share these words. Anyone with them controls your identity. Store them offline.
                     </p>
                 </div>
@@ -555,10 +555,10 @@ function IdentityVessel({ mnemonic, onComplete }: { mnemonic: string; onComplete
                             initial={{ opacity: 0, scale: 0.8 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: i * 0.05 }}
-                            className="relative px-4 py-3.5 rounded-2xl bg-white/5 border border-white/5 shadow-inner group hover:border-violet-500/30 transition-all"
+                            className="relative px-4 py-3.5 rounded-2xl bg-slate-50 border border-black/5 shadow-sm group hover:border-blue-500/30 transition-all"
                         >
-                            <span className="text-[9px] font-mono text-zinc-600 absolute top-1 left-2 group-hover:text-violet-400">{(i + 1).toString().padStart(2, '0')}</span>
-                            <span className={`text-[14px] font-mono block text-center mt-1 font-bold ${showWords ? "text-white" : "text-transparent bg-white/5 rounded-md select-none"}`}>
+                            <span className="text-[9px] font-mono text-slate-400 absolute top-1 left-2 group-hover:text-blue-500">{(i + 1).toString().padStart(2, '0')}</span>
+                            <span className={`text-[14px] font-mono block text-center mt-1 font-bold ${showWords ? "text-slate-900" : "text-transparent bg-slate-200 rounded-md select-none"}`}>
                                 {showWords ? word : "••••••"}
                             </span>
                         </motion.div>
@@ -569,16 +569,16 @@ function IdentityVessel({ mnemonic, onComplete }: { mnemonic: string; onComplete
                 <div className="flex items-center gap-3 mb-6">
                     <button
                         onClick={() => setShowWords(!showWords)}
-                        className="flex-1 flex items-center justify-center gap-2 px-4 py-3.5 rounded-2xl glass-panel border-white/5 text-[11px] font-mono uppercase tracking-widest text-zinc-400 hover:text-white hover:border-white/20 transition-all"
+                        className="flex-1 flex items-center justify-center gap-2 px-4 py-3.5 rounded-2xl bg-white border border-black/5 text-[11px] font-mono uppercase tracking-widest text-slate-500 hover:text-slate-900 hover:border-black/10 transition-all shadow-sm"
                     >
                         {showWords ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                         {showWords ? "Hide" : "Reveal"}
                     </button>
                     <button
                         onClick={handleCopyWords}
-                        className={`flex-1 flex items-center justify-center gap-2 px-4 py-3.5 rounded-2xl border text-[11px] font-mono uppercase tracking-widest transition-all ${copiedWords
-                            ? "bg-violet-500/10 border-violet-500/30 text-violet-400"
-                            : "glass-panel border-white/5 text-zinc-400 hover:text-white"
+                        className={`flex-1 flex items-center justify-center gap-2 px-4 py-3.5 rounded-2xl border text-[11px] font-mono uppercase tracking-widest transition-all shadow-sm ${copiedWords
+                            ? "bg-blue-500/10 border-blue-500/30 text-blue-600"
+                            : "bg-white border-black/5 text-slate-500 hover:text-slate-900"
                             }`}
                     >
                         {copiedWords ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
@@ -587,29 +587,29 @@ function IdentityVessel({ mnemonic, onComplete }: { mnemonic: string; onComplete
                 </div>
 
                 {/* Confirmation */}
-                <label className="flex items-center gap-3 px-4 py-3 rounded-xl bg-zinc-950/50 border border-white/[0.03] cursor-pointer mb-6">
+                <label className="flex items-center gap-3 px-4 py-3 rounded-xl bg-slate-50 border border-black/[0.03] cursor-pointer mb-6">
                     <input
                         type="checkbox"
                         checked={confirmed}
                         onChange={(e) => setConfirmed(e.target.checked)}
-                        className="w-4 h-4 rounded border-zinc-700 bg-zinc-900 text-violet-500 focus:ring-violet-500/20"
+                        className="w-4 h-4 rounded border-slate-300 bg-white text-blue-600 focus:ring-blue-500/20"
                     />
-                    <span className="text-[11px] text-zinc-400">
+                    <span className="text-[11px] text-slate-500 font-bold">
                         I have written down my Magic Words in a safe place
                     </span>
                 </label>
 
                 {/* Enter the Void */}
                 <motion.button
-                    whileHover={confirmed ? { scale: 1.02 } : {}}
+                    whileHover={confirmed ? { scale: 1.02, y: -2 } : {}}
                     whileTap={confirmed ? { scale: 0.98 } : {}}
                     onClick={confirmed ? onComplete : undefined}
                     className={`w-full py-4 rounded-2xl text-[12px] font-black uppercase tracking-[0.3em] transition-all ${confirmed
-                        ? "bg-gradient-to-r from-violet-600 to-rose-600 text-white shadow-[0_0_40px_rgba(139,92,246,0.2)] hover:shadow-[0_0_60px_rgba(139,92,246,0.3)] cursor-pointer"
-                        : "bg-zinc-900 text-zinc-700 cursor-not-allowed"
+                        ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-[0_20px_40px_rgba(37,99,235,0.2)] hover:shadow-[0_25px_50px_rgba(37,99,235,0.3)] cursor-pointer"
+                        : "bg-slate-100 text-slate-300 cursor-not-allowed"
                         }`}
                 >
-                    Enter the Void
+                    Establish Node
                 </motion.button>
             </motion.div>
         </motion.div>

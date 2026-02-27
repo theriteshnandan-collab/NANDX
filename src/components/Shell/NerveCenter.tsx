@@ -98,7 +98,11 @@ function NavMode({ mode, isActive, onClick }: { mode: VoidMode; isActive: boolea
 
             {/* Tooltip */}
             <AnimatePresence>
-                {hovered && <Tooltip label={cfg.label} shortcut={cfg.shortcut} />}
+                {hovered && (
+                    <div className="hidden md:block">
+                        <Tooltip label={cfg.label} shortcut={cfg.shortcut} />
+                    </div>
+                )}
             </AnimatePresence>
         </div>
     );
@@ -133,25 +137,25 @@ export const NerveCenter: React.FC<NerveCenterProps> = ({ activeMode, onModeChan
                 <GhostRemote onClose={() => { setShowRemote(false); onModeChange("TALK"); }} />
             )}
 
-            {/* ── Sidebar (Floating Glass Rail) ── */}
+            {/* ── Sidebar (Floating Glass Rail on Desktop, Bottom Rail on Mobile) ── */}
             <motion.aside
-                initial={{ x: -80, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
+                initial={{ y: 80, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
                 transition={{ type: "spring", stiffness: 300, damping: 30, delay: 0.2 }}
-                className="fixed left-4 top-4 bottom-4 z-40 flex flex-col items-center py-6 select-none bg-white/40 backdrop-blur-3xl border border-black/5 rounded-3xl shadow-[0_10px_40px_rgba(0,0,0,0.05)]"
-                style={{
-                    width: 72,
-                }}
+                className="fixed left-0 right-0 bottom-0 md:bottom-4 md:left-4 md:top-4 z-40 
+                           flex md:flex-col items-center justify-center md:justify-start py-3 md:py-6 select-none 
+                           bg-white/40 backdrop-blur-3xl border-t md:border border-black/5 
+                           md:rounded-3xl shadow-[0_10px_40px_rgba(0,0,0,0.05)] md:w-[72px]"
             >
-                {/* Logo */}
-                <div className="mb-8 flex items-center justify-center w-12 h-12 rounded-2xl bg-white border border-black/5 shadow-[0_4px_15px_rgba(37,99,235,0.1)] transition-all hover:scale-105 hover:border-blue-500/30">
+                {/* Logo (Hidden on mobile) */}
+                <div className="hidden md:flex mb-8 items-center justify-center w-12 h-12 rounded-2xl bg-white border border-black/5 shadow-[0_4px_15px_rgba(37,99,235,0.1)] transition-all hover:scale-105 hover:border-blue-500/30">
                     <Zap className="w-5 h-5 text-blue-600" />
                 </div>
 
-                <div className="w-full px-2 mb-4" style={{ height: 1, background: "var(--bg-border)" }} />
+                <div className="hidden md:block w-full px-2 mb-4" style={{ height: 1, background: "var(--bg-border)" }} />
 
                 {/* Mode icons */}
-                <nav className="flex flex-col items-center gap-2 pl-3">
+                <nav className="flex md:flex-col items-center gap-2 md:gap-2 px-2 md:pl-3 w-full">
                     {modes.map(mode => (
                         <NavMode
                             key={mode}
@@ -162,8 +166,8 @@ export const NerveCenter: React.FC<NerveCenterProps> = ({ activeMode, onModeChan
                     ))}
                 </nav>
 
-                {/* Bottom: connection dot */}
-                <div className="mt-auto flex flex-col items-center gap-2 pb-2">
+                {/* Bottom: connection dot (Hidden on mobile) */}
+                <div className="hidden md:flex mt-auto flex-col items-center gap-2 pb-2">
                     <div className="w-full px-2 mb-2" style={{ height: 1, background: "var(--bg-border)" }} />
                     <div className="flex flex-col items-center gap-1">
                         <div className="status-online" />
