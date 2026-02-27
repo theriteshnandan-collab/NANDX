@@ -26,24 +26,24 @@ export const RegistryView: React.FC<RegistryViewProps> = ({ onJoinRoom, onAddCon
     const filteredPeers = localContacts.filter(p => (p.nickname || p.peerId).toLowerCase().includes(filter.toLowerCase()));
 
     return (
-        <div className="w-full h-full flex flex-col glass-panel !rounded-[2.5rem] overflow-hidden border-white/5">
+        <div className="w-full h-full flex flex-col bg-white border border-black/5 !rounded-[2.5rem] overflow-hidden shadow-2xl">
             {/* Header: Search & Navigation */}
-            <div className="p-6 space-y-4 border-b border-white/[0.04]">
+            <div className="p-6 space-y-4 border-b border-black/[0.03] bg-slate-50/50">
                 <div className="flex items-center justify-between">
-                    <h2 className="text-xs font-black uppercase tracking-[0.3em] text-white/40 flex items-center gap-2">
-                        <Globe className="w-3 h-3 text-cyan-400" />
+                    <h2 className="text-xs font-black uppercase tracking-[0.3em] text-slate-400 flex items-center gap-2">
+                        <Globe className="w-3 h-3 text-blue-600" />
                         The Registry
                     </h2>
-                    <div className="flex items-center gap-1 bg-white/5 p-1 rounded-xl">
+                    <div className="flex items-center gap-1 bg-slate-200/50 p-1 rounded-xl">
                         <button
                             onClick={() => setTab("ROOMS")}
-                            className={`px-3 py-1.5 text-[10px] font-bold rounded-lg transition-all ${tab === "ROOMS" ? "bg-white/10 text-white shadow-lg" : "text-white/40 hover:text-white/60"}`}
+                            className={`px-3 py-1.5 text-[10px] font-bold rounded-lg transition-all ${tab === "ROOMS" ? "bg-white text-slate-900 shadow-sm" : "text-slate-400 hover:text-slate-600"}`}
                         >
                             Swarms
                         </button>
                         <button
                             onClick={() => setTab("PEERS")}
-                            className={`px-3 py-1.5 text-[10px] font-bold rounded-lg transition-all ${tab === "PEERS" ? "bg-white/10 text-white shadow-lg" : "text-white/40 hover:text-white/60"}`}
+                            className={`px-3 py-1.5 text-[10px] font-bold rounded-lg transition-all ${tab === "PEERS" ? "bg-white text-slate-900 shadow-sm" : "text-slate-400 hover:text-slate-600"}`}
                         >
                             Mesh
                         </button>
@@ -51,13 +51,13 @@ export const RegistryView: React.FC<RegistryViewProps> = ({ onJoinRoom, onAddCon
                 </div>
 
                 <div className="relative group">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20 group-focus-within:text-cyan-400 transition-colors" />
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-300 group-focus-within:text-blue-600 transition-colors" />
                     <input
                         type="text"
                         placeholder={tab === "ROOMS" ? "Search public swarms..." : "Search mesh contacts..."}
                         value={filter}
                         onChange={(e) => setFilter(e.target.value)}
-                        className="w-full bg-white/[0.03] border border-white/[0.06] rounded-2xl py-3 pl-12 pr-4 text-sm text-white placeholder:text-white/10 outline-none focus:border-cyan-500/50 focus:bg-white/[0.05] transition-all"
+                        className="w-full bg-white border border-black/5 rounded-2xl py-3 pl-12 pr-4 text-sm text-slate-900 placeholder:text-slate-300 outline-none focus:border-blue-500/30 transition-all shadow-sm"
                     />
                 </div>
             </div>
@@ -102,24 +102,24 @@ function RoomCard({ room, onJoin }: { room: any, onJoin: () => void }) {
     return (
         <motion.div
             whileHover={{ y: -4 }}
-            className="group p-6 glass-panel border-white/5 hover:border-cyan-500/50 rounded-3xl transition-all cursor-pointer relative overflow-hidden shadow-xl"
+            className="group p-6 bg-white border border-black/5 hover:border-blue-500/30 rounded-3xl transition-all cursor-pointer relative overflow-hidden shadow-sm hover:shadow-xl"
             onClick={onJoin}
         >
-            <div className="absolute top-0 left-0 w-1.5 h-0 bg-cyan-500 group-hover:h-full transition-all duration-300" />
+            <div className="absolute top-0 left-0 w-1.5 h-0 bg-blue-600 group-hover:h-full transition-all duration-300" />
 
             <div className="flex items-start justify-between mb-4">
-                <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center">
-                    <Hash className="w-5 h-5 text-cyan-400" />
+                <div className="w-10 h-10 rounded-xl bg-blue-500/5 border border-blue-500/10 flex items-center justify-center">
+                    <Hash className="w-5 h-5 text-blue-600" />
                 </div>
                 <div className="flex flex-col items-end">
-                    <span className="text-[10px] font-black uppercase tracking-tighter text-white/20">MEMBERS</span>
-                    <span className="text-xs font-bold text-white/60">{room.members?.length || 0}</span>
+                    <span className="text-[10px] font-black uppercase tracking-tighter text-slate-300">MEMBERS</span>
+                    <span className="text-xs font-bold text-slate-500">{room.members?.length || 0}</span>
                 </div>
             </div>
 
             <div className="space-y-1">
-                <h3 className="font-bold text-white group-hover:text-cyan-400 transition-colors">{room.name}</h3>
-                <p className="text-[11px] text-white/30 line-clamp-2 leading-relaxed">
+                <h3 className="font-bold text-slate-900 group-hover:text-blue-600 transition-colors uppercase tracking-tight">{room.name}</h3>
+                <p className="text-[11px] text-slate-500 line-clamp-2 leading-relaxed">
                     {room.description || "A sovereign group in the NANDIX mesh."}
                 </p>
             </div>
@@ -127,10 +127,10 @@ function RoomCard({ room, onJoin }: { room: any, onJoin: () => void }) {
             <div className="mt-4 flex items-center justify-between">
                 <div className="flex -space-x-2">
                     {[1, 2, 3].map(i => (
-                        <div key={i} className="w-5 h-5 rounded-full bg-zinc-900 border border-white/10" />
+                        <div key={i} className="w-5 h-5 rounded-full bg-slate-100 border border-white" />
                     ))}
                 </div>
-                <Zap className="w-4 h-4 text-white/10 group-hover:text-amber-400 transition-colors" />
+                <Zap className="w-4 h-4 text-slate-200 group-hover:text-blue-500 transition-colors" />
             </div>
         </motion.div>
     );
@@ -139,34 +139,34 @@ function RoomCard({ room, onJoin }: { room: any, onJoin: () => void }) {
 function PeerRow({ peer, onAdd }: { peer: any, onAdd: () => void }) {
     return (
         <motion.div
-            whileHover={{ x: 6, backgroundColor: "rgba(255,255,255,0.03)" }}
-            className="flex items-center justify-between p-4 glass-panel border-white/5 group rounded-[1.5rem] transition-all"
+            whileHover={{ x: 6, backgroundColor: "rgba(0,0,0,0.02)" }}
+            className="flex items-center justify-between p-4 bg-white border border-black/5 group rounded-[1.5rem] transition-all"
         >
             <div className="flex items-center gap-4">
                 <div className="relative">
-                    <div className="w-11 h-11 rounded-full bg-violet-500/10 border border-violet-500/20 flex items-center justify-center shadow-inner">
-                        <User className="w-5 h-5 text-violet-400" />
+                    <div className="w-11 h-11 rounded-full bg-blue-500/5 border border-blue-500/10 flex items-center justify-center shadow-inner">
+                        <User className="w-5 h-5 text-blue-600" />
                     </div>
                     {peer.lastSeen > Date.now() - 60000 && (
-                        <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 border-2 border-zinc-950 rounded-full" />
+                        <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 border-2 border-white rounded-full" />
                     )}
                 </div>
                 <div>
-                    <h4 className="text-sm font-bold text-white">{peer.nickname || `nandix-${peer.peerId.substring(0, 6)}`}</h4>
-                    <p className="text-[10px] text-white/20 font-mono tracking-tighter uppercase">{peer.peerId}</p>
+                    <h4 className="text-sm font-black text-slate-900 uppercase tracking-tight">{peer.nickname || `nandix-${peer.peerId.substring(0, 6)}`}</h4>
+                    <p className="text-[10px] text-slate-400 font-mono tracking-tighter uppercase">{peer.peerId}</p>
                 </div>
             </div>
 
             <div className="flex items-center gap-3">
                 {peer.trustScore && (
                     <div className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-emerald-500/5 border border-emerald-500/10">
-                        <Shield className="w-2.5 h-2.5 text-emerald-400" />
-                        <span className="text-[9px] font-black text-emerald-400">{peer.trustScore}</span>
+                        <Shield className="w-2.5 h-2.5 text-emerald-600" />
+                        <span className="text-[9px] font-black text-emerald-600">{peer.trustScore}</span>
                     </div>
                 )}
                 <button
                     onClick={(e) => { e.stopPropagation(); onAdd(); }}
-                    className="p-2 bg-white/5 hover:bg-cyan-500/20 rounded-xl border border-white/5 hover:border-cyan-500/30 transition-all text-white/40 hover:text-cyan-400"
+                    className="p-2 bg-slate-50 hover:bg-blue-600 hover:text-white rounded-xl border border-black/5 hover:border-blue-600 transition-all text-slate-400"
                 >
                     <ArrowRight className="w-4 h-4" />
                 </button>
@@ -178,10 +178,10 @@ function PeerRow({ peer, onAdd }: { peer: any, onAdd: () => void }) {
 function EmptyState({ icon: Icon, message }: { icon: any, message: string }) {
     return (
         <div className="w-full py-20 flex flex-col items-center justify-center text-center space-y-4">
-            <div className="w-16 h-16 rounded-3xl bg-white/[0.02] border border-white/[0.04] flex items-center justify-center">
-                <Icon className="w-8 h-8 text-white/10" />
+            <div className="w-16 h-16 rounded-3xl bg-slate-50 border border-black/5 flex items-center justify-center">
+                <Icon className="w-8 h-8 text-slate-200" />
             </div>
-            <p className="text-[11px] font-bold text-white/20 uppercase tracking-[0.2em]">
+            <p className="text-[11px] font-black text-slate-300 uppercase tracking-[0.2em]">
                 {message}
             </p>
         </div>

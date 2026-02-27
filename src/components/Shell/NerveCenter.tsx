@@ -47,12 +47,12 @@ function Tooltip({ label, shortcut }: { label: string; shortcut: string }) {
             style={{
                 background: "var(--bg-surface)",
                 border: "1px solid var(--bg-border)",
-                boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
+                boxShadow: "0 10px 30px rgba(0,0,0,0.08)",
             }}
         >
-            <span className="text-white text-[12px] font-medium">{label}</span>
-            <kbd className="text-[9px] font-mono px-1.5 py-0.5 rounded"
-                style={{ background: "var(--bg-border)", color: "var(--text-muted)" }}>
+            <span className="text-slate-900 text-[12px] font-bold tracking-tight">{label}</span>
+            <kbd className="text-[9px] font-mono px-1.5 py-0.5 rounded border border-black/[0.03]"
+                style={{ background: "rgba(0,0,0,0.02)", color: "var(--text-muted)" }}>
                 {shortcut}
             </kbd>
         </motion.div>
@@ -87,7 +87,7 @@ function NavMode({ mode, isActive, onClick }: { mode: VoidMode; isActive: boolea
                 whileTap={{ scale: 0.93 }}
                 className="relative flex items-center justify-center w-12 h-12 rounded-2xl transition-all duration-300 outline-none group"
                 style={{
-                    background: isActive ? "var(--teal-glow)" : hovered ? "rgba(255,255,255,0.08)" : "transparent",
+                    background: isActive ? "var(--teal-glow)" : hovered ? "rgba(37, 99, 235, 0.04)" : "transparent",
                     border: isActive ? "1px solid var(--teal-border)" : "1px solid transparent",
                     color: isActive ? "var(--teal)" : hovered ? "var(--text-primary)" : "var(--text-secondary)",
                     boxShadow: isActive ? "0 4px 20px rgba(0, 217, 165, 0.15)" : "none",

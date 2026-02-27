@@ -225,7 +225,7 @@ export default function NandixOS() {
     };
 
     return (
-        <div className="relative w-screen h-screen overflow-hidden bg-[#000000] text-white selection:bg-emerald-500/30">
+        <div className="relative w-screen h-screen overflow-hidden bg-[var(--bg-base)] text-[var(--text-primary)] selection:bg-blue-500/20">
             {/* ═══ ERROR TOAST ═══ */}
             <AnimatePresence>
                 {lastError && (
@@ -268,28 +268,28 @@ export default function NandixOS() {
 
             {/* DOT GRID PATTERN */}
             <div
-                className="absolute inset-0 z-0 pointer-events-none opacity-[0.04]"
+                className="absolute inset-0 z-0 pointer-events-none opacity-[0.06]"
                 style={{
-                    backgroundImage: `radial-gradient(circle, rgba(255,255,255,0.3) 1px, transparent 1px)`,
-                    backgroundSize: "24px 24px",
+                    backgroundImage: `radial-gradient(circle, rgba(37,99,235,0.12) 1px, transparent 1px)`,
+                    backgroundSize: "32px 32px",
                 }}
             />
 
             {/* AMBIENT GRADIENT ORBS — Floating energy signatures */}
             <motion.div
-                animate={{ x: [0, 30, -20, 0], y: [0, -40, 20, 0] }}
+                animate={{ x: [0, 40, -30, 0], y: [0, -50, 30, 0] }}
+                transition={{ duration: 35, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute top-[10%] left-[5%] w-[500px] h-[500px] rounded-full bg-blue-500/[0.04] blur-[150px] pointer-events-none z-0"
+            />
+            <motion.div
+                animate={{ x: [0, -50, 40, 0], y: [0, 30, -40, 0] }}
+                transition={{ duration: 40, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute bottom-[15%] right-[10%] w-[450px] h-[450px] rounded-full bg-indigo-400/[0.03] blur-[130px] pointer-events-none z-0"
+            />
+            <motion.div
+                animate={{ x: [0, 25, -20, 0], y: [0, -30, 50, 0] }}
                 transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute top-[15%] left-[10%] w-[300px] h-[300px] rounded-full bg-emerald-500/[0.04] blur-[120px] pointer-events-none z-0"
-            />
-            <motion.div
-                animate={{ x: [0, -40, 30, 0], y: [0, 20, -30, 0] }}
-                transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute bottom-[20%] right-[15%] w-[250px] h-[250px] rounded-full bg-violet-500/[0.03] blur-[100px] pointer-events-none z-0"
-            />
-            <motion.div
-                animate={{ x: [0, 20, -10, 0], y: [0, -20, 40, 0] }}
-                transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute top-[50%] right-[30%] w-[200px] h-[200px] rounded-full bg-cyan-500/[0.025] blur-[80px] pointer-events-none z-0"
+                className="absolute top-[45%] right-[25%] w-[350px] h-[350px] rounded-full bg-slate-400/[0.02] blur-[110px] pointer-events-none z-0"
             />
 
             {/* Wire-Responsive Ambient Glow */}
@@ -318,28 +318,28 @@ export default function NandixOS() {
                             className="absolute inset-0 rounded-full bg-emerald-500"
                         />
                     </div>
-                    <span className="text-[11px] font-black uppercase tracking-[0.3em] text-zinc-500">
+                    <span className="text-[11px] font-black uppercase tracking-[0.3em] text-slate-500">
                         NANDIX
                     </span>
                     <div className="hidden md:block h-3 w-px bg-slate-200" />
-                    <span className="hidden md:block text-[9px] font-mono text-zinc-700 uppercase tracking-wider">
+                    <span className="hidden md:block text-[9px] font-mono text-slate-400 uppercase tracking-wider">
                         Sovereign Mesh
                     </span>
                 </div>
 
                 <div className="flex items-center gap-2 md:gap-4">
                     {/* System Clock */}
-                    <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-zinc-900/40 border border-white/[0.03]">
-                        <Clock className="w-2.5 h-2.5 text-zinc-600" />
-                        <span className="text-[10px] font-mono text-zinc-500 tabular-nums">
+                    <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100/50 border border-black/[0.03]">
+                        <Clock className="w-2.5 h-2.5 text-slate-400" />
+                        <span className="text-[10px] font-mono text-slate-500 tabular-nums">
                             {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                         </span>
                     </div>
 
                     {/* Peer Counter */}
-                    <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg border ${connectedPeers > 0 ? 'bg-emerald-500/5 border-emerald-500/10' : 'bg-zinc-900/40 border-white/[0.03]'}`}>
-                        <Users className={`w-2.5 h-2.5 ${connectedPeers > 0 ? 'text-emerald-500' : 'text-zinc-700'}`} />
-                        <span className={`text-[10px] font-mono tabular-nums ${connectedPeers > 0 ? 'text-emerald-400' : 'text-zinc-600'}`}>
+                    <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg border ${connectedPeers > 0 ? 'bg-blue-500/5 border-blue-500/10' : 'bg-slate-100/50 border-black/[0.03]'}`}>
+                        <Users className={`w-2.5 h-2.5 ${connectedPeers > 0 ? 'text-blue-600' : 'text-slate-400'}`} />
+                        <span className={`text-[10px] font-mono tabular-nums ${connectedPeers > 0 ? 'text-blue-600' : 'text-slate-500'}`}>
                             {connectedPeers}
                         </span>
                     </div>
@@ -380,20 +380,20 @@ export default function NandixOS() {
                         transition={{ type: "spring", stiffness: 400, damping: 28 }}
                         className="absolute top-16 left-1/2 -translate-x-1/2 z-50"
                     >
-                        <div className="px-8 py-4 rounded-2xl bg-zinc-950/80 backdrop-blur-3xl border border-cyan-500/20 flex items-center gap-5">
-                            <Zap className="w-4 h-4 text-cyan-400 animate-pulse" />
+                        <div className="px-8 py-4 rounded-2xl bg-white/95 backdrop-blur-3xl border border-black/5 flex items-center gap-5 shadow-2xl">
+                            <Zap className="w-4 h-4 text-blue-600 animate-pulse" />
                             <div>
-                                <div className="text-[10px] font-black uppercase tracking-[0.3em] text-cyan-400">
+                                <div className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-600">
                                     Blue Wire Active
                                 </div>
-                                <div className="text-[9px] text-zinc-600 font-mono mt-0.5">
+                                <div className="text-[9px] text-slate-500 font-mono mt-0.5">
                                     {streamProgress.file} · {streamProgress.percent.toFixed(0)}%
                                 </div>
                             </div>
-                            <div className="w-32 h-1 bg-zinc-900 rounded-full overflow-hidden">
+                            <div className="w-32 h-1.5 bg-slate-100 rounded-full overflow-hidden">
                                 <motion.div
                                     animate={{ width: `${streamProgress.percent}%` }}
-                                    className="h-full bg-gradient-to-r from-cyan-500 to-emerald-500 rounded-full"
+                                    className="h-full bg-blue-600 shadow-[0_0_12px_rgba(37,99,235,0.3)] rounded-full"
                                 />
                             </div>
                         </div>
@@ -697,16 +697,16 @@ function RadarView({ myId, connectedPeers, discoveredRooms }: { myId: string | n
             className="h-full flex flex-col items-center justify-start max-w-2xl mx-auto px-6 pt-12 gap-8"
         >
             {/* Tab Switcher */}
-            <div className="flex gap-1 p-1 rounded-2xl bg-white/[0.02] border border-white/[0.05]">
+            <div className="flex gap-1 p-1 rounded-2xl bg-slate-200/50 border border-black/5">
                 <button
                     onClick={() => setTab("radar")}
-                    className={`px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${tab === "radar" ? "bg-white/[0.05] text-white shadow-lg" : "text-zinc-600 hover:text-zinc-400"}`}
+                    className={`px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${tab === "radar" ? "bg-white text-slate-900 shadow-sm" : "text-slate-400 hover:text-slate-600"}`}
                 >
                     Sonar
                 </button>
                 <button
                     onClick={() => setTab("lounge")}
-                    className={`px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${tab === "lounge" ? "bg-white/[0.05] text-white shadow-lg" : "text-zinc-600 hover:text-zinc-400"}`}
+                    className={`px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${tab === "lounge" ? "bg-white text-slate-900 shadow-sm" : "text-slate-400 hover:text-slate-600"}`}
                 >
                     Lounge
                 </button>
@@ -747,30 +747,30 @@ function RadarView({ myId, connectedPeers, discoveredRooms }: { myId: string | n
                     <motion.div
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className={`flex items-center gap-2 px-4 py-2 rounded-full border ${connectedPeers > 0 ? "bg-emerald-500/[0.03] border-emerald-500/20 shadow-[0_0_15px_rgba(16,185,129,0.05)]" : "bg-white/[0.01] border-white/[0.05]"}`}
+                        className={`flex items-center gap-2 px-4 py-2 rounded-full border ${connectedPeers > 0 ? "bg-emerald-500/5 border-emerald-500/10 shadow-[0_0_15px_rgba(16,185,129,0.05)]" : "bg-slate-50 border-black/5 shadow-sm"}`}
                     >
-                        <Users className={`w-3 h-3 ${connectedPeers > 0 ? "text-emerald-400" : "text-zinc-700"}`} />
-                        <span className={`text-[10px] font-mono uppercase tracking-wider ${connectedPeers > 0 ? "text-emerald-400" : "text-zinc-700"}`}>
+                        <Users className={`w-3 h-3 ${connectedPeers > 0 ? "text-emerald-600" : "text-slate-400"}`} />
+                        <span className={`text-[10px] font-mono uppercase tracking-wider ${connectedPeers > 0 ? "text-emerald-600" : "text-slate-400"}`}>
                             {connectedPeers > 0 ? `${connectedPeers} peer${connectedPeers > 1 ? "s" : ""} connected` : "No peers connected"}
                         </span>
                     </motion.div>
 
                     <div className="w-full flex flex-col gap-6">
                         {/* ═══ SOURCE IDENTITY CARD ═══ */}
-                        <div className="relative p-6 md:p-7 rounded-[2.2rem] bg-zinc-950/40 backdrop-blur-3xl border border-white/[0.03]">
+                        <div className="relative p-6 md:p-7 rounded-[2.2rem] bg-white/50 backdrop-blur-3xl border border-black/5 shadow-xl">
                             <div className="flex items-center justify-between mb-3">
-                                <span className="text-[9px] font-black uppercase tracking-[0.4em] text-zinc-700">Your Sovereign ID</span>
+                                <span className="text-[9px] font-black uppercase tracking-[0.4em] text-slate-400">Your Sovereign ID</span>
                                 <div className="flex items-center gap-2">
-                                    <div className={`w-1.5 h-1.5 rounded-full ${myId ? "bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]" : "bg-zinc-800"} animate-pulse`} />
-                                    <span className={`text-[8px] font-mono uppercase ${myId ? "text-emerald-500/80" : "text-zinc-800"}`}>
+                                    <div className={`w-1.5 h-1.5 rounded-full ${myId ? "bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]" : "bg-slate-200"} animate-pulse`} />
+                                    <span className={`text-[8px] font-mono uppercase ${myId ? "text-emerald-600" : "text-slate-300"}`}>
                                         {myId ? "Online" : "Linking..."}
                                     </span>
                                 </div>
                             </div>
 
                             {/* The ID itself — large, prominent, selectable */}
-                            <div className="py-3 px-4 rounded-2xl bg-black/40 border border-white/[0.02] mb-4">
-                                <p className="text-[15px] md:text-[17px] font-mono text-white tracking-wide break-all leading-relaxed select-all">
+                            <div className="py-3 px-4 rounded-2xl bg-slate-50 border border-black/[0.03] mb-4 shadow-inner">
+                                <p className="text-[15px] md:text-[17px] font-mono text-slate-900 font-bold tracking-tight break-all leading-relaxed select-all">
                                     {myId || "⏳ Generating cryptographic identity..."}
                                 </p>
                             </div>
@@ -783,10 +783,10 @@ function RadarView({ myId, connectedPeers, discoveredRooms }: { myId: string | n
                                     onClick={handleCopy}
                                     disabled={!myId}
                                     className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl border text-[11px] font-mono uppercase tracking-wider transition-all ${copied
-                                        ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-400"
+                                        ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-600"
                                         : myId
-                                            ? "bg-white/[0.02] border-white/5 text-zinc-500 hover:text-white hover:border-white/10"
-                                            : "bg-white/[0.01] border-white/[0.02] text-zinc-800 cursor-not-allowed"
+                                            ? "bg-white border-black/5 text-slate-500 hover:text-blue-600 hover:border-blue-500/30 shadow-sm"
+                                            : "bg-slate-50 border-black/[0.02] text-slate-300 cursor-not-allowed"
                                         }`}
                                 >
                                     {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
@@ -799,8 +799,8 @@ function RadarView({ myId, connectedPeers, discoveredRooms }: { myId: string | n
                                     onClick={handleShare}
                                     disabled={!myId}
                                     className={`flex items-center justify-center gap-2 px-4 py-3 rounded-xl border text-[11px] font-mono uppercase tracking-wider transition-all ${myId
-                                        ? "bg-white/[0.02] border-white/5 text-zinc-500 hover:text-white hover:border-white/10"
-                                        : "bg-white/[0.01] border-white/[0.02] text-zinc-800 cursor-not-allowed"
+                                        ? "bg-white border-black/5 text-slate-500 hover:text-blue-600 hover:border-blue-500/30 shadow-sm"
+                                        : "bg-slate-50 border-black/[0.02] text-slate-300 cursor-not-allowed"
                                         }`}
                                 >
                                     <Share2 className="w-3.5 h-3.5" />
@@ -810,15 +810,15 @@ function RadarView({ myId, connectedPeers, discoveredRooms }: { myId: string | n
                         </div>
 
                         {/* ═══ TARGET SIGNAL INPUT ═══ */}
-                        <div className="relative p-6 md:p-7 rounded-[2.2rem] bg-zinc-950/40 backdrop-blur-3xl border border-white/[0.03]">
-                            <span className="text-[9px] font-black uppercase tracking-[0.4em] text-zinc-700 block mb-3">Connect to Peer</span>
+                        <div className="relative p-6 md:p-7 rounded-[2.2rem] bg-white/50 backdrop-blur-3xl border border-black/5 shadow-xl">
+                            <span className="text-[9px] font-black uppercase tracking-[0.4em] text-slate-400 block mb-3">Connect to Peer</span>
                             <div className="flex items-center gap-3">
                                 <input
                                     value={peerId}
                                     onChange={(e) => setPeerId(e.target.value)}
                                     onKeyDown={(e) => e.key === "Enter" && handleConnect()}
                                     placeholder="Paste Sovereign ID here..."
-                                    className="flex-1 bg-black/40 rounded-xl px-4 py-3 text-[13px] text-zinc-300 placeholder-zinc-800 outline-none font-mono border border-white/[0.02] focus:border-rose-500/20 transition-all"
+                                    className="flex-1 bg-slate-50 rounded-xl px-4 py-3 text-[13px] text-slate-900 font-bold placeholder-slate-300 outline-none font-mono border border-black/[0.03] focus:border-blue-500/20 transition-all shadow-inner"
                                 />
                                 <motion.button
                                     whileHover={{ scale: 1.05 }}
@@ -826,10 +826,10 @@ function RadarView({ myId, connectedPeers, discoveredRooms }: { myId: string | n
                                     onClick={handleConnect}
                                     disabled={!peerId.trim()}
                                     className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all ${connecting
-                                        ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-400"
+                                        ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-600"
                                         : peerId.trim()
-                                            ? "bg-rose-500/10 border border-rose-500/20 text-rose-500 hover:bg-rose-500 hover:text-rose-950"
-                                            : "bg-zinc-950 border border-white/[0.02] text-zinc-800"
+                                            ? "bg-blue-600 text-white shadow-lg active:scale-90"
+                                            : "bg-slate-100 border border-black/[0.02] text-slate-300"
                                         }`}
                                 >
                                     {connecting ? <Check className="w-4 h-4" /> : <Zap className="w-4 h-4" />}
@@ -851,14 +851,14 @@ function RadarView({ myId, connectedPeers, discoveredRooms }: { myId: string | n
                                                 key={contact.peerId}
                                                 initial={{ opacity: 0, x: -10 }}
                                                 animate={{ opacity: 1, x: 0 }}
-                                                className="flex items-center gap-3 px-4 py-3 rounded-xl bg-black/30 border border-white/[0.02] group"
+                                                className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white border border-black/5 shadow-sm group"
                                             >
                                                 {/* Avatar */}
                                                 <div className="relative">
-                                                    <div className="w-9 h-9 rounded-xl bg-zinc-900 border border-white/5 flex items-center justify-center">
-                                                        <User className="w-3.5 h-3.5 text-zinc-600" />
+                                                    <div className="w-9 h-9 rounded-xl bg-slate-50 border border-black/5 flex items-center justify-center">
+                                                        <User className="w-3.5 h-3.5 text-slate-400" />
                                                     </div>
-                                                    <div className={`absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-black ${isOnline ? "bg-emerald-500" : "bg-zinc-700"
+                                                    <div className={`absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-white ${isOnline ? "bg-emerald-500" : "bg-slate-200"
                                                         }`} />
                                                 </div>
 
@@ -875,25 +875,25 @@ function RadarView({ myId, connectedPeers, discoveredRooms }: { myId: string | n
                                                 {/* Info */}
                                                 <div className="flex-1 min-w-0">
                                                     <div className="flex items-center gap-2 mb-0.5">
-                                                        <span className="text-[12px] font-semibold text-zinc-300 truncate">
+                                                        <span className="text-[12px] font-black text-slate-900 truncate uppercase tracking-tight">
                                                             {contact.nickname}
                                                         </span>
                                                         {contact.isBot && (
-                                                            <div className="flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-violet-500/10 border border-violet-500/20 text-[7px] font-black text-violet-400 uppercase tracking-tighter">
+                                                            <div className="flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-[7px] font-black text-blue-600 uppercase tracking-tighter">
                                                                 <Cpu className="w-2 h-2" />
                                                                 Bot
                                                             </div>
                                                         )}
                                                     </div>
                                                     <div className="flex items-center gap-2">
-                                                        <span className="text-[9px] font-mono text-zinc-700 truncate">
+                                                        <span className="text-[9px] font-mono text-slate-400 truncate">
                                                             {contact.peerId.substring(0, 16)}...
                                                         </span>
 
                                                         {/* Trust Shield */}
-                                                        <div className={`flex items-center gap-1 px-1 rounded-md border ${(contact.trustScore || 0) > 70 ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400" :
-                                                            (contact.trustScore || 0) > 30 ? "bg-amber-500/10 border-amber-500/20 text-amber-400" :
-                                                                "bg-zinc-900 border-white/5 text-zinc-600"
+                                                        <div className={`flex items-center gap-1 px-1 rounded-md border ${(contact.trustScore || 0) > 70 ? "bg-emerald-500/5 border-emerald-500/10 text-emerald-600" :
+                                                            (contact.trustScore || 0) > 30 ? "bg-amber-500/5 border-amber-500/10 text-amber-600" :
+                                                                "bg-slate-50 border-black/5 text-slate-300"
                                                             }`}>
                                                             <Shield className="w-2 h-2" />
                                                             <span className="text-[8px] font-black">{contact.trustScore || 10}</span>
@@ -903,7 +903,7 @@ function RadarView({ myId, connectedPeers, discoveredRooms }: { myId: string | n
 
                                                 {/* Stats */}
                                                 {contact.messageCount > 0 && (
-                                                    <span className="text-[8px] font-mono text-zinc-700 px-1.5 py-0.5 rounded bg-zinc-900">
+                                                    <span className="text-[8px] font-mono text-slate-400 px-1.5 py-0.5 rounded bg-slate-50 border border-black/[0.02]">
                                                         {contact.messageCount} msgs
                                                     </span>
                                                 )}
@@ -942,9 +942,9 @@ function RadarView({ myId, connectedPeers, discoveredRooms }: { myId: string | n
                         <div className="flex gap-3">
                             <button
                                 onClick={() => { setShowMyWords(!showMyWords); setShowRecovery(false); }}
-                                className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl border text-[10px] font-mono uppercase tracking-wider transition-all ${showMyWords
-                                    ? "bg-violet-500/10 border-violet-500/20 text-violet-400"
-                                    : "bg-zinc-950/50 border-white/[0.03] text-zinc-600 hover:text-zinc-400"
+                                className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl border text-[10px] font-mono uppercase tracking-wider transition-all shadow-sm ${showMyWords
+                                    ? "bg-blue-600 text-white shadow-blue-500/20"
+                                    : "bg-white border-black/5 text-slate-400 hover:text-slate-600"
                                     }`}
                             >
                                 <Key className="w-3 h-3" />
@@ -952,9 +952,9 @@ function RadarView({ myId, connectedPeers, discoveredRooms }: { myId: string | n
                             </button>
                             <button
                                 onClick={() => { setShowRecovery(!showRecovery); setShowMyWords(false); }}
-                                className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl border text-[10px] font-mono uppercase tracking-wider transition-all ${showRecovery
-                                    ? "bg-rose-500/10 border-rose-500/20 text-rose-400"
-                                    : "bg-zinc-950/50 border-white/[0.03] text-zinc-600 hover:text-zinc-400"
+                                className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl border text-[10px] font-mono uppercase tracking-wider transition-all shadow-sm ${showRecovery
+                                    ? "bg-blue-600 text-white shadow-blue-500/20"
+                                    : "bg-white border-black/5 text-slate-400 hover:text-slate-600"
                                     }`}
                             >
                                 <RefreshCw className="w-3 h-3" />
@@ -981,21 +981,21 @@ function RadarView({ myId, connectedPeers, discoveredRooms }: { myId: string | n
                                                     exit={{ height: 0, opacity: 0 }}
                                                     className="overflow-hidden"
                                                 >
-                                                    <div className="p-5 rounded-[2rem] bg-zinc-950/40 backdrop-blur-3xl border border-rose-500/10">
-                                                        <span className="text-[9px] font-black uppercase tracking-[0.4em] text-rose-500/60 block mb-3">Enter 12 Magic Words</span>
+                                                    <div className="p-5 rounded-[2rem] bg-white border border-blue-500/10 shadow-xl">
+                                                        <span className="text-[9px] font-black uppercase tracking-[0.4em] text-blue-600/60 block mb-3">Enter 12 Magic Words</span>
                                                         <textarea
                                                             value={recoveryWords}
                                                             onChange={(e) => setRecoveryWords(e.target.value)}
                                                             placeholder="word1 word2 word3 word4 word5 word6 word7 word8 word9 word10 word11 word12"
                                                             rows={3}
-                                                            className="w-full bg-black/40 rounded-xl px-4 py-3 text-[12px] text-zinc-300 placeholder-zinc-800 outline-none font-mono border border-white/[0.02] focus:border-rose-500/20 transition-all resize-none"
+                                                            className="w-full bg-slate-50 rounded-xl px-4 py-3 text-[12px] text-slate-900 font-bold placeholder-slate-300 outline-none font-mono border border-black/[0.03] focus:border-blue-500/30 transition-all resize-none shadow-inner"
                                                         />
                                                         <button
                                                             onClick={handleRecover}
                                                             disabled={recovering || !recoveryWords.trim()}
-                                                            className={`w-full mt-3 py-3 rounded-xl text-[11px] font-mono uppercase tracking-wider transition-all ${recoveryWords.trim()
-                                                                ? "bg-rose-500/10 border border-rose-500/20 text-rose-400 hover:bg-rose-500 hover:text-rose-950"
-                                                                : "bg-zinc-950 border border-white/[0.02] text-zinc-800"
+                                                            className={`w-full mt-3 py-3 rounded-xl text-[11px] font-mono uppercase tracking-wider transition-all shadow-lg ${recoveryWords.trim()
+                                                                ? "bg-blue-600 text-white shadow-blue-500/20"
+                                                                : "bg-slate-50 border border-black/[0.02] text-slate-200"
                                                                 }`}
                                                         >
                                                             {recovering ? "Recovering..." : "Restore Identity"}
@@ -1014,19 +1014,19 @@ function RadarView({ myId, connectedPeers, discoveredRooms }: { myId: string | n
                                     exit={{ height: 0, opacity: 0 }}
                                     className="overflow-hidden"
                                 >
-                                    <div className="p-5 rounded-[2rem] bg-zinc-950/40 backdrop-blur-3xl border border-rose-500/10">
-                                        <span className="text-[9px] font-black uppercase tracking-[0.4em] text-rose-500/60 block mb-3">Enter 12 Magic Words</span>
+                                    <div className="p-5 rounded-[2rem] bg-white/40 backdrop-blur-3xl border border-blue-500/10 shadow-xl">
+                                        <span className="text-[9px] font-black uppercase tracking-[0.4em] text-blue-600 block mb-3">Enter 12 Magic Words</span>
                                         <textarea
                                             value={recoveryWords}
                                             onChange={(e) => setRecoveryWords(e.target.value)}
                                             placeholder="word1 word2 word3..."
                                             rows={3}
-                                            className="w-full bg-black/40 rounded-xl px-4 py-3 text-[12px] text-zinc-300 placeholder-zinc-800 outline-none font-mono border border-white/[0.02] focus:border-rose-500/20 transition-all resize-none"
+                                            className="w-full bg-white/50 rounded-xl px-4 py-3 text-[12px] text-slate-900 placeholder-slate-300 outline-none font-mono border border-black/[0.04] focus:border-blue-500/20 transition-all resize-none"
                                         />
                                         <button
                                             onClick={handleRecover}
                                             disabled={recovering || !recoveryWords.trim()}
-                                            className="w-full mt-3 py-3 rounded-xl bg-radius-500/10 border border-radius-500/20 text-rose-400 font-mono text-[11px] uppercase tracking-widest"
+                                            className="w-full mt-3 py-3 rounded-xl bg-blue-600 text-white font-mono text-[11px] uppercase tracking-widest shadow-lg shadow-blue-500/20"
                                         >
                                             {recovering ? "Recovering..." : "Restore Identity"}
                                         </button>
@@ -1055,20 +1055,20 @@ function RadarView({ myId, connectedPeers, discoveredRooms }: { myId: string | n
                                     key={room.id}
                                     initial={{ opacity: 0, scale: 0.95 }}
                                     animate={{ opacity: 1, scale: 1 }}
-                                    className="p-6 rounded-[2rem] bg-zinc-950/40 backdrop-blur-3xl border border-white/5 flex items-center justify-between group"
+                                    className="p-6 rounded-[2rem] bg-white/60 backdrop-blur-3xl border border-black/5 flex items-center justify-between group shadow-sm"
                                 >
                                     <div className="space-y-1">
                                         <div className="flex items-center gap-2">
-                                            <span className="text-[14px] font-black text-white">{room.name}</span>
-                                            <div className="px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[8px] font-mono text-emerald-500 uppercase">Public</div>
+                                            <span className="text-[14px] font-black text-slate-900">{room.name}</span>
+                                            <div className="px-2 py-0.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-[8px] font-mono text-blue-600 uppercase">Public</div>
                                         </div>
-                                        <p className="text-[11px] text-zinc-500 max-w-xs">{room.description || "No description."}</p>
+                                        <p className="text-[11px] text-slate-500 max-w-xs">{room.description || "No description."}</p>
                                         <div className="flex items-center gap-3 pt-2">
-                                            <div className="flex items-center gap-1"><Users className="w-3 h-3 text-zinc-700" /><span className="text-[9px] font-mono text-zinc-600">{room.members?.length || 0}</span></div>
-                                            <div className="flex items-center gap-1"><Cpu className="w-3 h-3 text-zinc-700" /><span className="text-[9px] font-mono text-zinc-600">via {room.host.substring(0, 8)}</span></div>
+                                            <div className="flex items-center gap-1"><Users className="w-3 h-3 text-slate-400" /><span className="text-[9px] font-mono text-slate-500">{room.members?.length || 0}</span></div>
+                                            <div className="flex items-center gap-1"><Cpu className="w-3 h-3 text-slate-400" /><span className="text-[9px] font-mono text-slate-500">via {room.host.substring(0, 8)}</span></div>
                                         </div>
                                     </div>
-                                    <button onClick={() => { mesh.connectToPeer(room.host); db.rooms.put({ ...room, isPublic: false }); alert(`Joined ${room.name}!`); }} className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-500"><Plus className="w-5 h-5" /></button>
+                                    <button onClick={() => { mesh.connectToPeer(room.host); db.rooms.put({ ...room, isPublic: false }); alert(`Joined ${room.name}!`); }} className="w-12 h-12 rounded-2xl bg-blue-600 text-white shadow-lg shadow-blue-500/20 flex items-center justify-center"><Plus className="w-5 h-5" /></button>
                                 </motion.div>
                             ))
                         )}
@@ -1132,12 +1132,12 @@ function ProfileView({ profile, onSave, shards, onToggleShard }: { profile: User
                     <div className="relative flex flex-col md:flex-row items-center gap-6">
                         {/* QR */}
                         <div className="relative group w-36 h-36 md:w-40 md:h-40 shrink-0">
-                            <div className="absolute -inset-2 bg-violet-600/10 rounded-2xl blur-xl group-hover:bg-violet-600/20 transition-all duration-700" />
-                            <div className="relative w-full h-full p-2 rounded-2xl bg-black/40 border border-violet-500/10 flex items-center justify-center">
+                            <div className="absolute -inset-2 bg-blue-600/5 rounded-2xl blur-xl group-hover:bg-blue-600/10 transition-all duration-700" />
+                            <div className="relative w-full h-full p-3 rounded-2xl bg-white border border-black/5 flex items-center justify-center shadow-sm">
                                 {qrData ? (
-                                    <img src={qrData} alt="QR Identity" className="w-full h-full opacity-80 group-hover:opacity-100 transition-opacity" />
+                                    <img src={qrData} alt="QR Identity" className="w-full h-full opacity-90 group-hover:opacity-100 transition-opacity" />
                                 ) : (
-                                    <div className="animate-pulse w-full h-full bg-zinc-900 rounded-xl" />
+                                    <div className="animate-pulse w-full h-full bg-slate-50 rounded-xl" />
                                 )}
                             </div>
                         </div>
@@ -1253,10 +1253,10 @@ function ProfileView({ profile, onSave, shards, onToggleShard }: { profile: User
                         { icon: <Wifi className="w-4 h-4 text-violet-500/40" />, label: "P2P Mesh", sub: "WebRTC" },
                         { icon: <Database className="w-4 h-4 text-cyan-500/40" />, label: "Local DB", sub: "IndexedDB" },
                     ].map((item) => (
-                        <div key={item.label} className="flex flex-col items-center gap-1.5 py-3 rounded-xl bg-white/[0.01] border border-white/[0.02]">
+                        <div key={item.label} className="flex flex-col items-center gap-1.5 py-4 rounded-xl bg-slate-50 border border-black/[0.03] shadow-sm">
                             {item.icon}
-                            <span className="text-[8px] font-black uppercase tracking-widest text-zinc-600">{item.label}</span>
-                            <span className="text-[7px] font-mono text-zinc-800">{item.sub}</span>
+                            <span className="text-[8px] font-black uppercase tracking-widest text-slate-400">{item.label}</span>
+                            <span className="text-[7px] font-mono text-slate-500">{item.sub}</span>
                         </div>
                     ))}
                 </div>
@@ -1291,13 +1291,13 @@ function LinkingShard({ myId }: { myId: string }) {
                 <div className="flex gap-2">
                     <button
                         onClick={() => setMode(mode === "bridge" ? "none" : "bridge")}
-                        className={`px-3 py-1.5 rounded-lg text-[9px] font-mono transition-all ${mode === "bridge" ? "bg-cyan-500 text-cyan-950" : "bg-zinc-900 text-zinc-400 border border-white/5"}`}
+                        className={`px-4 py-2 rounded-lg text-[9px] font-bold tracking-tight transition-all ${mode === "bridge" ? "bg-blue-600 text-white shadow-lg shadow-blue-500/20" : "bg-slate-100 text-slate-500 border border-black/5 hover:bg-slate-200"}`}
                     >
                         BRIDGE
                     </button>
                     <button
                         onClick={() => setMode(mode === "link" ? "none" : "link")}
-                        className={`px-3 py-1.5 rounded-lg text-[9px] font-mono transition-all ${mode === "link" ? "bg-emerald-500 text-emerald-950" : "bg-zinc-900 text-zinc-400 border border-white/5"}`}
+                        className={`px-4 py-2 rounded-lg text-[9px] font-bold tracking-tight transition-all ${mode === "link" ? "bg-blue-600 text-white shadow-lg shadow-blue-500/20" : "bg-slate-100 text-slate-500 border border-black/5 hover:bg-slate-200"}`}
                     >
                         LINK
                     </button>
@@ -1315,15 +1315,15 @@ function LinkingShard({ myId }: { myId: string }) {
                         {!pairingCode ? (
                             <button
                                 onClick={generateBridge}
-                                className="w-full py-4 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-[10px] font-black uppercase tracking-widest hover:bg-cyan-500 hover:text-cyan-950 transition-all"
+                                className="w-full py-4 rounded-xl bg-blue-600/5 border border-blue-600/10 text-blue-600 text-[10px] font-black uppercase tracking-widest hover:bg-blue-600 hover:text-white transition-all shadow-sm"
                             >
                                 Generate Bridging Secret
                             </button>
                         ) : (
-                            <div className="p-4 rounded-xl bg-black/40 border border-cyan-500/20 text-center">
-                                <span className="text-[8px] text-zinc-600 block mb-2 uppercase tracking-widest">Your One-Time Bridge Code</span>
-                                <div className="text-[18px] font-mono text-cyan-400 tracking-tighter select-all">{pairingCode}</div>
-                                <p className="text-[9px] text-zinc-500 mt-3 leading-relaxed">
+                            <div className="p-5 rounded-xl bg-slate-50 border border-blue-500/10 text-center shadow-inner">
+                                <span className="text-[8px] text-slate-400 block mb-2 uppercase tracking-widest font-bold">Your One-Time Bridge Code</span>
+                                <div className="text-[18px] font-mono text-blue-600 tracking-tighter select-all font-black">{pairingCode}</div>
+                                <p className="text-[9px] text-slate-500 mt-3 leading-relaxed">
                                     Send this to your secondary device. It expires when you close this view.
                                 </p>
                             </div>
@@ -1342,11 +1342,11 @@ function LinkingShard({ myId }: { myId: string }) {
                             value={joinCode}
                             onChange={(e) => setJoinCode(e.target.value)}
                             placeholder="nandix-XXXX:SECRET"
-                            className="w-full bg-black/40 rounded-xl px-4 py-3 text-[12px] text-zinc-300 placeholder-zinc-800 outline-none font-mono border border-white/[0.02] focus:border-emerald-500/20 transition-all"
+                            className="w-full bg-slate-50 rounded-xl px-4 py-3 text-[12px] text-slate-900 placeholder-slate-300 outline-none font-mono border border-black/[0.04] focus:border-blue-500/20 transition-all"
                         />
                         <button
                             onClick={handleLink}
-                            className="w-full py-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-black uppercase tracking-widest hover:bg-emerald-500 hover:text-emerald-950 transition-all"
+                            className="w-full py-3 rounded-xl bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-blue-500/20 transition-all"
                         >
                             Request Link
                         </button>
@@ -1362,31 +1362,31 @@ function LinkingShard({ myId }: { myId: string }) {
 
 function PairingDialog({ request, onAccept, onReject }: { request: { peerId: string; secret: string }; onAccept: () => void; onReject: () => void }) {
     return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-zinc-950/60 backdrop-blur-3xl">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-900/40 backdrop-blur-3xl">
             <motion.div
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                className="w-full max-w-sm p-10 glass-panel border-white/10 rounded-[3rem] shadow-[0_50px_100px_rgba(0,0,0,0.8)] text-center relative overflow-hidden"
+                className="w-full max-w-sm p-10 bg-white/80 backdrop-blur-2xl border border-black/5 rounded-[3rem] shadow-[0_50px_100px_rgba(0,0,0,0.1)] text-center relative overflow-hidden"
             >
-                <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
-                <div className="w-20 h-20 rounded-3xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center mx-auto mb-8 shadow-inner">
-                    <Share2 className="w-10 h-10 text-cyan-400 animate-pulse" />
+                <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-blue-500 to-transparent" />
+                <div className="w-20 h-20 rounded-3xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center mx-auto mb-8 shadow-inner">
+                    <Share2 className="w-10 h-10 text-blue-600 animate-pulse" />
                 </div>
-                <h3 className="display-sm font-black tracking-tight text-white mb-3">Bridge Link</h3>
-                <p className="text-[13px] text-zinc-400 leading-relaxed mb-10">
-                    A node with ID <span className="text-cyan-400 font-mono font-bold">{request.peerId.substring(0, 12)}...</span> is requesting a sub-space bridge.
+                <h3 className="display-sm font-black tracking-tight text-slate-900 mb-3">Bridge Link</h3>
+                <p className="text-[13px] text-slate-500 leading-relaxed mb-10">
+                    A node with ID <span className="text-blue-600 font-mono font-bold">{request.peerId.substring(0, 12)}...</span> is requesting a sub-space bridge.
                 </p>
 
                 <div className="flex gap-4">
                     <button
                         onClick={onReject}
-                        className="flex-1 py-4 rounded-2xl bg-white/5 border border-white/5 text-zinc-500 text-[11px] font-black uppercase tracking-widest hover:text-white transition-all"
+                        className="flex-1 py-4 rounded-2xl bg-slate-100 border border-black/5 text-slate-500 text-[11px] font-black uppercase tracking-widest hover:bg-slate-200 transition-all"
                     >
                         Deny
                     </button>
                     <button
                         onClick={onAccept}
-                        className="flex-1 py-4 rounded-2xl bg-gradient-to-r from-cyan-600 to-cyan-500 text-white text-[11px] font-black uppercase tracking-widest shadow-[0_0_30px_rgba(6,182,212,0.3)] hover:shadow-[0_0_50px_rgba(6,182,212,0.5)] transition-all"
+                        className="flex-1 py-4 rounded-2xl bg-blue-600 text-white text-[11px] font-black uppercase tracking-widest shadow-lg shadow-blue-500/20 hover:bg-blue-700 transition-all"
                     >
                         Accept
                     </button>
@@ -1442,7 +1442,7 @@ function StatShard({ label, value, icon, color, delay, index }: { label: string;
                 x: 10,
                 transition: { type: "spring", stiffness: 400, damping: 10 }
             }}
-            className={`relative w-16 h-16 rounded-3xl bg-zinc-950/40 backdrop-blur-3xl border-t border-white/10 border-b border-black shadow-[0_8px_32px_rgba(0,0,0,0.4)] ${c.border} flex flex-col items-center justify-center gap-1.5 cursor-pointer group isolation-auto`}
+            className={`relative w-16 h-16 rounded-3xl bg-white/40 backdrop-blur-3xl border border-black/5 shadow-sm group isolation-auto`}
         >
             {/* Inner Glow Gradient */}
             <div className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${c.glow} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
@@ -1471,25 +1471,25 @@ function StatShard({ label, value, icon, color, delay, index }: { label: string;
                 {icon}
             </motion.div>
 
-            <span className="text-[10px] font-mono font-bold text-zinc-400 group-hover:text-white transition-colors duration-300 tracking-tighter tabular-nums">
+            <span className="text-[10px] font-mono font-bold text-slate-500 group-hover:text-blue-600 transition-colors duration-300 tracking-tighter tabular-nums z-10">
                 {value}
             </span>
 
             {/* High-Fidelity Tooltip */}
             <div className="absolute left-[calc(100%+14px)] opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 pointer-events-none z-50">
-                <div className="relative px-4 py-2 rounded-2xl bg-zinc-950/90 backdrop-blur-2xl border border-white/5 shadow-2xl overflow-hidden min-w-[120px]">
+                <div className="relative px-4 py-2 rounded-2xl bg-white/95 backdrop-blur-2xl border border-black/5 shadow-2xl overflow-hidden min-w-[120px]">
                     {/* Tooltip Accent */}
                     <div className={`absolute left-0 top-0 bottom-0 w-1 ${c.ring}`} />
 
-                    <div className="text-[8px] font-black uppercase tracking-[0.4em] text-zinc-600 mb-0.5">{color.toUpperCase()} MODULE</div>
-                    <div className="text-[11px] font-bold text-white tracking-tight">{label}</div>
+                    <div className="text-[8px] font-black uppercase tracking-[0.4em] text-slate-400 mb-0.5">{color.toUpperCase()} MODULE</div>
+                    <div className="text-[11px] font-bold text-slate-900 tracking-tight">{label}</div>
 
                     {/* Scanline Effect */}
                     <div className="absolute inset-0 bg-scanline opacity-[0.03] pointer-events-none" />
                 </div>
 
                 {/* Arrow */}
-                <div className="absolute right-full top-1/2 -translate-y-1/2 w-2 h-2 rotate-45 bg-zinc-950/90 border-l border-b border-white/5 -mr-[5px]" />
+                <div className="absolute right-full top-1/2 -translate-y-1/2 w-2 h-2 rotate-45 bg-white border-l border-b border-black/5 -mr-[5px]" />
             </div>
         </motion.div>
     );
@@ -1505,21 +1505,21 @@ function CallOverlay({ state, type, peerId, remoteStream, localStream, isAudioMu
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center p-6 md:p-12 bg-zinc-950/80 backdrop-blur-3xl"
+            className="fixed inset-0 z-[100] flex items-center justify-center p-6 md:p-12 bg-slate-900/40 backdrop-blur-3xl"
         >
-            <div className="relative w-full max-w-2xl aspect-video md:aspect-video rounded-[3rem] glass-panel border-white/10 overflow-hidden shadow-[0_50px_150px_rgba(0,0,0,0.8)] flex flex-col">
-                <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500 to-transparent z-30" />
+            <div className="relative w-full max-w-2xl aspect-video md:aspect-video rounded-[3rem] bg-white border border-black/5 overflow-hidden shadow-2xl flex flex-col">
+                <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-blue-500 to-transparent z-30" />
 
                 {/* Visual Background (Remote Video or Ambient) */}
-                <div className="absolute inset-0 z-0">
+                <div className="absolute inset-0 z-0 text-slate-500">
                     {type === "video" && remoteStream ? (
                         <StreamPreview stream={remoteStream} muted={false} className="w-full h-full object-cover" />
                     ) : (
-                        <div className="w-full h-full bg-gradient-to-br from-zinc-900 via-zinc-950 to-emerald-950/20 flex items-center justify-center">
+                        <div className="w-full h-full bg-slate-50 flex items-center justify-center">
                             <motion.div
-                                animate={{ scale: [1, 1.1, 1], opacity: [0.1, 0.2, 0.1] }}
+                                animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.4, 0.3] }}
                                 transition={{ duration: 4, repeat: Infinity }}
-                                className="w-64 h-64 rounded-full bg-emerald-500/10 blur-[100px]"
+                                className="w-64 h-64 rounded-full bg-blue-500/10 blur-[100px]"
                             />
                         </div>
                     )}
@@ -1527,11 +1527,11 @@ function CallOverlay({ state, type, peerId, remoteStream, localStream, isAudioMu
 
                 {/* Local Preview (PiP) */}
                 {type === "video" && localStream && state === "active" && (
-                    <div className="absolute top-8 right-8 w-32 h-44 rounded-2xl border border-white/10 overflow-hidden z-20 shadow-xl bg-black">
+                    <div className="absolute top-8 right-8 w-32 h-44 rounded-2xl border border-black/5 overflow-hidden z-20 shadow-xl bg-slate-100">
                         <StreamPreview stream={localStream} muted={true} className="w-full h-full object-cover" />
                         {isVideoOff && (
-                            <div className="absolute inset-0 flex items-center justify-center bg-zinc-900">
-                                <VideoOff className="w-4 h-4 text-white/20" />
+                            <div className="absolute inset-0 flex items-center justify-center bg-slate-200">
+                                <VideoOff className="w-4 h-4 text-slate-400" />
                             </div>
                         )}
                     </div>
@@ -1539,21 +1539,21 @@ function CallOverlay({ state, type, peerId, remoteStream, localStream, isAudioMu
 
                 {/* Content Overlay */}
                 <div className="relative z-10 flex-1 flex flex-col items-center justify-center text-center p-12">
-                    <div className="w-24 h-24 rounded-[2.5rem] bg-zinc-900 border border-white/5 flex items-center justify-center mb-8 relative">
-                        <User className="w-8 h-8 text-zinc-600" />
+                    <div className="w-24 h-24 rounded-[2.5rem] bg-slate-50 border border-black/5 flex items-center justify-center mb-8 relative">
+                        <User className="w-8 h-8 text-slate-400" />
                         {(state === "calling" || state === "incoming") && (
                             <motion.div
                                 animate={{ scale: [1, 1.5], opacity: [0.5, 0] }}
                                 transition={{ duration: 2, repeat: Infinity }}
-                                className="absolute inset-0 rounded-[2.5rem] border border-emerald-500"
+                                className="absolute inset-0 rounded-[2.5rem] border border-blue-500"
                             />
                         )}
                     </div>
 
-                    <h2 className="text-xl font-bold tracking-tight text-white mb-2">
+                    <h2 className="text-xl font-bold tracking-tight text-slate-900 mb-2">
                         {peerId?.substring(0, 12)}
                     </h2>
-                    <p className="text-xs uppercase tracking-[0.3em] font-black text-zinc-600">
+                    <p className="text-xs uppercase tracking-[0.3em] font-black text-slate-400">
                         {state === "calling" ? "Requesting Entry..." :
                             state === "incoming" ? "Incoming Transmission" :
                                 state === "active" ? "Sub-Space Link Active" : ""}
@@ -1582,7 +1582,7 @@ function CallOverlay({ state, type, peerId, remoteStream, localStream, isAudioMu
                     <div className="relative z-20 p-8 flex items-center justify-center gap-6">
                         <button
                             onClick={onToggleAudio}
-                            className={`w-12 h-12 rounded-2xl flex items-center justify-center border transition-all ${isAudioMuted ? 'bg-rose-500/20 border-rose-500/30 text-rose-500' : 'bg-zinc-900 border-white/5 text-zinc-400 hover:text-white'}`}
+                            className={`w-12 h-12 rounded-2xl flex items-center justify-center border transition-all ${isAudioMuted ? 'bg-rose-500/20 border-rose-500/30 text-rose-500' : 'bg-slate-100 border-black/5 text-slate-500 hover:text-blue-600'}`}
                         >
                             {isAudioMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
                         </button>
@@ -1597,7 +1597,7 @@ function CallOverlay({ state, type, peerId, remoteStream, localStream, isAudioMu
                         {type === "video" && (
                             <button
                                 onClick={onToggleVideo}
-                                className={`w-12 h-12 rounded-2xl flex items-center justify-center border transition-all ${isVideoOff ? 'bg-rose-500/20 border-rose-500/30 text-rose-500' : 'bg-zinc-900 border-white/5 text-zinc-400 hover:text-white'}`}
+                                className={`w-12 h-12 rounded-2xl flex items-center justify-center border transition-all ${isVideoOff ? 'bg-rose-500/20 border-rose-500/30 text-rose-500' : 'bg-slate-100 border-black/5 text-slate-500 hover:text-blue-600'}`}
                             >
                                 {isVideoOff ? <VideoOff className="w-4 h-4" /> : <ImageIcon className="w-4 h-4" />}
                             </button>

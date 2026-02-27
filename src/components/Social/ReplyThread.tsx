@@ -50,9 +50,9 @@ export function ReplyThread({ post, myId }: ReplyThreadProps) {
             {/* Toggle Button */}
             <button
                 onClick={() => setOpen(o => !o)}
-                className="flex items-center gap-2 text-zinc-500 hover:text-cyan-400 transition-all text-[10px] font-mono font-bold uppercase tracking-widest py-1 group"
+                className="flex items-center gap-2 text-slate-400 hover:text-blue-600 transition-all text-[10px] font-mono font-bold uppercase tracking-widest py-1 group"
             >
-                <div className="p-1 rounded-md bg-white/5 border border-white/5 group-hover:border-cyan-500/30 transition-all">
+                <div className="p-1 rounded-md bg-slate-50 border border-black/5 group-hover:border-blue-500/30 transition-all">
                     <MessageSquare className="w-3 h-3" />
                 </div>
                 {replyCount > 0 ? `${replyCount} Repl${replyCount === 1 ? "y" : "ies"}` : "Reply"}
@@ -69,7 +69,7 @@ export function ReplyThread({ post, myId }: ReplyThreadProps) {
                         transition={{ type: "spring", stiffness: 400, damping: 35 }}
                         className="overflow-hidden"
                     >
-                        <div className="pt-3 space-y-3 border-l border-white/[0.04] pl-4">
+                        <div className="pt-3 space-y-3 border-l border-black/[0.04] pl-4">
                             {/* Existing Replies */}
                             {replies?.map((reply) => (
                                 <motion.div
@@ -79,33 +79,33 @@ export function ReplyThread({ post, myId }: ReplyThreadProps) {
                                     transition={{ type: "spring", stiffness: 400, damping: 30 }}
                                     className="flex gap-3"
                                 >
-                                    <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0 shadow-inner">
-                                        <span className="text-[10px] font-mono text-cyan-400 font-bold">{reply.authorName.charAt(0).toUpperCase()}</span>
+                                    <div className="w-8 h-8 rounded-full bg-slate-50 border border-black/5 flex items-center justify-center flex-shrink-0 shadow-inner">
+                                        <span className="text-[10px] font-mono text-blue-600 font-bold">{reply.authorName.charAt(0).toUpperCase()}</span>
                                     </div>
                                     <div className="flex-1">
                                         <div className="flex items-center gap-2 mb-0.5">
-                                            <span className="text-[11px] font-black text-white">@{reply.authorName}</span>
+                                            <span className="text-[11px] font-black text-slate-900">@{reply.authorName}</span>
                                             {reply.authorId === myId && (
-                                                <span className="text-[8px] bg-white/5 text-zinc-500 px-1 rounded uppercase tracking-widest">you</span>
+                                                <span className="text-[8px] bg-blue-500/5 text-blue-600 px-1 rounded uppercase tracking-widest font-bold">you</span>
                                             )}
-                                            <span className="text-[9px] text-zinc-700 font-mono ml-auto">
+                                            <span className="text-[9px] text-slate-400 font-mono ml-auto">
                                                 {new Date(reply.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                                             </span>
                                         </div>
-                                        <p className="text-[13px] text-zinc-400 leading-relaxed">{reply.text}</p>
+                                        <p className="text-[13px] text-slate-600 leading-relaxed">{reply.text}</p>
                                     </div>
                                 </motion.div>
                             ))}
 
                             {/* Compose Reply */}
                             <div className="flex gap-3 pt-2">
-                                <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0">
-                                    <User className="w-3.5 h-3.5 text-cyan-400" />
+                                <div className="w-8 h-8 rounded-full bg-slate-50 border border-black/5 flex items-center justify-center flex-shrink-0">
+                                    <User className="w-3.5 h-3.5 text-blue-600" />
                                 </div>
                                 <div className="flex-1 flex gap-2">
                                     <input
                                         type="text"
-                                        className="flex-1 bg-white/5 border border-white/10 rounded-2xl px-4 py-2 text-[13px] text-white placeholder-zinc-600 outline-none focus:border-cyan-500/50 focus:bg-white/[0.08] transition-all"
+                                        className="flex-1 bg-slate-50 border border-black/5 rounded-2xl px-4 py-2 text-[13px] text-slate-900 placeholder-slate-300 outline-none focus:border-blue-500/30 focus:bg-white transition-all shadow-sm"
                                         placeholder="Reply to the signal…"
                                         value={text}
                                         onChange={e => setText(e.target.value)}
@@ -116,7 +116,7 @@ export function ReplyThread({ post, myId }: ReplyThreadProps) {
                                     <button
                                         onClick={handleReply}
                                         disabled={!text.trim()}
-                                        className="p-2 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 hover:bg-cyan-500/20 transition-all disabled:opacity-20"
+                                        className="p-2 rounded-2xl bg-blue-600 text-white shadow-lg shadow-blue-500/20 hover:bg-blue-700 transition-all disabled:opacity-20 flex-shrink-0"
                                     >
                                         <Send className="w-3.5 h-3.5" />
                                     </button>
