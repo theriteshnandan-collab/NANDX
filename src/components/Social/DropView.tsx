@@ -37,8 +37,8 @@ export function DropView({ streamProgress }: DropViewProps) {
             exit={{ opacity: 0 }}
             className="flex flex-col items-center justify-center p-6 h-full w-full max-w-3xl mx-auto"
         >
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] pointer-events-none rounded-full"
-                style={{ background: "radial-gradient(circle, rgba(0,217,165,0.03) 0%, transparent 70%)" }} />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] pointer-events-none rounded-full"
+                style={{ background: "radial-gradient(circle, rgba(6,182,212,0.05) 0%, transparent 70%)" }} />
 
             <div className="text-center mb-12 relative z-10">
                 <div className="eyebrow flex items-center justify-center gap-2 mb-4">
@@ -54,16 +54,15 @@ export function DropView({ streamProgress }: DropViewProps) {
                 <label
                     onDragOver={(e) => e.preventDefault()}
                     onDrop={handleDrop}
-                    className="relative flex flex-col items-center justify-center w-full h-80 rounded-[2rem] cursor-pointer transition-all overflow-hidden group border border-[var(--bg-border)] bg-[var(--bg-surface)] hover:border-[var(--teal-border)]"
+                    className="relative flex flex-col items-center justify-center w-full h-[400px] rounded-[3rem] cursor-pointer transition-all overflow-hidden group border border-white/5 glass-panel hover:border-cyan-500/50 shadow-[0_40px_100px_rgba(0,0,0,0.4)]"
                 >
                     <input type="file" className="hidden" onChange={handleChange} />
 
-                    <div className="absolute inset-0 bg-[var(--teal-glow)] opacity-0 group-hover:opacity-10 transition-opacity duration-500" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-violet-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
                     <div className="relative flex flex-col items-center justify-center z-10">
-                        <div className="w-20 h-20 rounded-2xl flex items-center justify-center mb-6 transition-all group-hover:scale-110 group-hover:shadow-[0_0_30px_rgba(0,217,165,0.2)]"
-                            style={{ background: "var(--bg-elevated)", border: "1px solid var(--bg-border)" }}>
-                            <Upload className="w-8 h-8 text-[var(--teal)]" />
+                        <div className="w-24 h-24 rounded-3xl flex items-center justify-center mb-6 transition-all group-hover:scale-110 group-hover:shadow-[0_0_40px_rgba(6,182,212,0.3)] bg-white/5 border border-white/10">
+                            <Upload className="w-10 h-10 text-cyan-400 group-hover:text-white transition-colors" />
                         </div>
 
                         <p className="text-white font-medium text-[16px] mb-2">Click or drag file to transmit</p>
@@ -86,9 +85,9 @@ export function DropView({ streamProgress }: DropViewProps) {
                         {streamProgress.percent > 0 && (
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-                                className="absolute bottom-6 left-6 right-6"
+                                className="absolute bottom-10 left-10 right-10"
                             >
-                                <div className="card-elevated p-4 w-full">
+                                <div className="glass-panel p-6 w-full rounded-2xl border-white/10 shadow-2xl">
                                     <div className="flex justify-between items-center mb-3">
                                         <div className="flex items-center gap-2">
                                             <Zap className="w-4 h-4 text-teal animate-pulse" />
@@ -100,10 +99,10 @@ export function DropView({ streamProgress }: DropViewProps) {
                                             {streamProgress.percent}%
                                         </span>
                                     </div>
-                                    <div className="w-full h-1.5 rounded-full bg-[var(--bg-border)] overflow-hidden">
+                                    <div className="w-full h-2 rounded-full bg-white/5 overflow-hidden border border-white/5">
                                         <motion.div
                                             animate={{ width: `${streamProgress.percent}%` }}
-                                            className="h-full bg-teal"
+                                            className="h-full bg-gradient-to-r from-cyan-500 to-teal-400 shadow-[0_0_15px_rgba(6,182,212,0.5)]"
                                         />
                                     </div>
                                 </div>

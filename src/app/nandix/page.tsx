@@ -359,13 +359,13 @@ export default function NandixOS() {
             </header>
 
             {/* ☢️ REACTOR HUD (Desktop only) */}
-            <div className="hidden md:flex absolute top-14 left-8 z-40 items-center gap-3 mt-1">
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/5 border border-emerald-500/10 backdrop-blur-md">
-                    <Zap className="w-3 h-3 text-emerald-500 animate-pulse" />
+            <div className="hidden md:flex absolute top-14 left-10 z-40 items-center gap-3 mt-2">
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full glass-panel border-emerald-500/20 shadow-[0_0_20px_rgba(16,185,129,0.1)]">
+                    <Zap className="w-3 h-3 text-emerald-400 animate-pulse" />
                     <span className="text-[9px] font-black uppercase tracking-widest text-emerald-400">Reactor</span>
                 </div>
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan-500/5 border border-cyan-500/10 backdrop-blur-md">
-                    <Activity className="w-3 h-3 text-cyan-500 animate-pulse" />
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full glass-panel border-cyan-500/20 shadow-[0_0_20px_rgba(6,182,212,0.1)]">
+                    <Activity className="w-3 h-3 text-cyan-400 animate-pulse" />
                     <span className="text-[9px] font-black uppercase tracking-widest text-cyan-400">Kernel: {kernel.getUptime()}ms</span>
                 </div>
             </div>
@@ -401,8 +401,8 @@ export default function NandixOS() {
                 )}
             </AnimatePresence>
 
-            {/* MAIN CONTENT: offset by sidebar (64px = ml-16) */}
-            <main className="relative w-full h-full z-10 pt-14 ml-16" style={{ minHeight: "100vh" }}>
+            {/* MAIN CONTENT: offset by sidebar (96px = ml-24) */}
+            <main className="relative w-full h-full z-10 pt-14 ml-24" style={{ minHeight: "100vh" }}>
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={mode}
@@ -488,8 +488,6 @@ export default function NandixOS() {
                 )}
             </AnimatePresence>
 
-            {/* SIDE STATS: Floating Shards */}
-            <VoidStats />
         </div>
     );
 }
@@ -515,15 +513,16 @@ function IdentityVessel({ mnemonic, onComplete }: { mnemonic: string; onComplete
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-3xl flex items-center justify-center p-6"
+            className="fixed inset-0 z-[100] bg-zinc-950/80 backdrop-blur-3xl flex items-center justify-center p-6"
         >
             <motion.div
                 initial={{ scale: 0.9, y: 30 }}
                 animate={{ scale: 1, y: 0 }}
                 exit={{ scale: 0.9, y: 30 }}
                 transition={{ type: "spring", stiffness: 200, damping: 20 }}
-                className="w-full max-w-lg"
+                className="w-full max-w-lg glass-panel p-10 rounded-[3rem] border-white/10 shadow-[0_40px_100px_rgba(0,0,0,0.8)] relative overflow-hidden"
             >
+                <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-violet-500 to-transparent" />
                 {/* Header */}
                 <div className="text-center mb-8">
                     <motion.div
@@ -531,12 +530,12 @@ function IdentityVessel({ mnemonic, onComplete }: { mnemonic: string; onComplete
                         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                         className="w-16 h-16 mx-auto mb-5 rounded-2xl bg-gradient-to-br from-violet-500/20 to-rose-500/20 border border-violet-500/20 flex items-center justify-center"
                     >
-                        <Key className="w-7 h-7 text-violet-400" />
+                        <Key className="w-7 h-7 text-violet-400 animate-pulse" />
                     </motion.div>
-                    <h2 className="text-xl font-black tracking-wide text-white">Your Magic Words</h2>
-                    <p className="text-[11px] text-zinc-500 mt-2 leading-relaxed max-w-xs mx-auto">
-                        These 12 words are your sovereign identity. Write them down.
-                        They are the ONLY way to recover your account.
+                    <h2 className="display-sm font-black tracking-tight text-white">Sovereign Onboarding</h2>
+                    <p className="text-[12px] text-zinc-400 mt-3 leading-relaxed max-w-xs mx-auto">
+                        These 12 words are your total sovereign identity. <b>Do not lose them.</b>
+                        They are the only way to recover your node.
                     </p>
                 </div>
 
@@ -553,13 +552,13 @@ function IdentityVessel({ mnemonic, onComplete }: { mnemonic: string; onComplete
                     {words.map((word, i) => (
                         <motion.div
                             key={i}
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: i * 0.05 }}
-                            className="relative px-3 py-2.5 rounded-xl bg-zinc-900/60 border border-white/[0.04]"
+                            className="relative px-4 py-3.5 rounded-2xl bg-white/5 border border-white/5 shadow-inner group hover:border-violet-500/30 transition-all"
                         >
-                            <span className="text-[9px] font-mono text-zinc-700 absolute top-1 left-2">{i + 1}</span>
-                            <span className={`text-[13px] font-mono block text-center mt-1 ${showWords ? "text-white" : "text-transparent bg-zinc-800 rounded select-none"}`}>
+                            <span className="text-[9px] font-mono text-zinc-600 absolute top-1 left-2 group-hover:text-violet-400">{(i + 1).toString().padStart(2, '0')}</span>
+                            <span className={`text-[14px] font-mono block text-center mt-1 font-bold ${showWords ? "text-white" : "text-transparent bg-white/5 rounded-md select-none"}`}>
                                 {showWords ? word : "••••••"}
                             </span>
                         </motion.div>
@@ -570,19 +569,19 @@ function IdentityVessel({ mnemonic, onComplete }: { mnemonic: string; onComplete
                 <div className="flex items-center gap-3 mb-6">
                     <button
                         onClick={() => setShowWords(!showWords)}
-                        className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-zinc-900 border border-white/5 text-[11px] font-mono uppercase tracking-wider text-zinc-400 hover:text-white transition-all"
+                        className="flex-1 flex items-center justify-center gap-2 px-4 py-3.5 rounded-2xl glass-panel border-white/5 text-[11px] font-mono uppercase tracking-widest text-zinc-400 hover:text-white hover:border-white/20 transition-all"
                     >
-                        {showWords ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                        {showWords ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                         {showWords ? "Hide" : "Reveal"}
                     </button>
                     <button
                         onClick={handleCopyWords}
-                        className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl border text-[11px] font-mono uppercase tracking-wider transition-all ${copiedWords
-                            ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-400"
-                            : "bg-zinc-900 border-white/5 text-zinc-400 hover:text-white"
+                        className={`flex-1 flex items-center justify-center gap-2 px-4 py-3.5 rounded-2xl border text-[11px] font-mono uppercase tracking-widest transition-all ${copiedWords
+                            ? "bg-violet-500/10 border-violet-500/30 text-violet-400"
+                            : "glass-panel border-white/5 text-zinc-400 hover:text-white"
                             }`}
                     >
-                        {copiedWords ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                        {copiedWords ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                         {copiedWords ? "Copied" : "Copy"}
                     </button>
                 </div>
@@ -1198,52 +1197,52 @@ function ProfileView({ profile, onSave, shards, onToggleShard }: { profile: User
                 </div>
 
                 {/* ═══ EDIT PROFILE CARD ═══ */}
-                <div className="p-6 rounded-[2rem] bg-white/[0.02] backdrop-blur-xl border border-white/[0.03]">
-                    <div className="flex items-center gap-2 mb-4">
-                        <Edit3 className="w-3 h-3 text-violet-500/60" />
-                        <span className="text-[9px] font-black uppercase tracking-[0.3em] text-zinc-600">Edit Profile</span>
+                <div className="glass-panel p-8 rounded-[2.5rem] border-white/5 space-y-6">
+                    <div className="flex items-center gap-3">
+                        <Edit3 className="w-4 h-4 text-violet-400" />
+                        <span className="text-[10px] font-black uppercase tracking-[0.4em] text-white/40">Profile Parameters</span>
                     </div>
-                    <div className="space-y-4">
-                        <div className="space-y-1.5">
-                            <label className="text-[9px] font-black uppercase tracking-[0.3em] text-zinc-700 block ml-1">Username</label>
+                    <div className="space-y-5">
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-black uppercase tracking-widest text-zinc-600 block ml-1">Identity Tag</label>
                             <input
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
-                                className="w-full bg-black/30 rounded-xl px-4 py-3 text-[14px] text-zinc-300 outline-none border border-white/[0.04] focus:border-violet-500/30 transition-all"
-                                placeholder="Enter username..."
+                                className="w-full bg-white/5 rounded-2xl px-5 py-4 text-[14px] text-zinc-200 outline-none border border-white/5 focus:border-violet-500/50 focus:bg-white/[0.08] transition-all"
+                                placeholder="Enter tag..."
                             />
                         </div>
-                        <div className="space-y-1.5">
-                            <label className="text-[9px] font-black uppercase tracking-[0.3em] text-zinc-700 block ml-1">Bio</label>
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-black uppercase tracking-widest text-zinc-600 block ml-1">Sub-Space Bio</label>
                             <textarea
                                 value={bio}
                                 onChange={(e) => setBio(e.target.value)}
-                                className="w-full bg-black/30 rounded-xl px-4 py-3 text-[14px] text-zinc-300 outline-none border border-white/[0.04] focus:border-violet-500/30 transition-all resize-none"
-                                placeholder="Tell the mesh about yourself..."
+                                className="w-full bg-white/5 rounded-2xl px-5 py-4 text-[14px] text-zinc-200 outline-none border border-white/5 focus:border-violet-500/50 focus:bg-white/[0.08] transition-all resize-none"
+                                placeholder="Broadcast your intent..."
                                 rows={2}
                             />
                         </div>
                         <button
                             onClick={() => onSave({ ...profile, username, bio })}
-                            className="w-full py-3.5 rounded-2xl bg-violet-600 text-violet-950 text-[11px] font-black uppercase tracking-[0.2em] shadow-[0_0_30px_rgba(168,85,247,0.2)] hover:shadow-[0_0_50px_rgba(168,85,247,0.4)] transition-all active:scale-[0.98]"
+                            className="w-full py-4 rounded-2xl bg-gradient-to-r from-violet-600 to-violet-500 text-white text-[11px] font-black uppercase tracking-[0.25em] shadow-[0_10px_30px_rgba(139,92,246,0.3)] hover:shadow-[0_15px_40px_rgba(139,92,246,0.5)] hover:-translate-y-0.5 transition-all active:scale-[0.98]"
                         >
-                            Save Changes
+                            Sync Identity
                         </button>
                     </div>
                 </div>
 
                 {/* ═══ CROSS-LINK MODULE ═══ */}
-                <div className="p-6 rounded-[2rem] bg-white/[0.02] backdrop-blur-xl border border-white/[0.03]">
+                <div className="glass-panel p-8 rounded-[2.5rem] border-white/5">
                     <LinkingShard myId={profile.peerId} />
                 </div>
 
                 {/* ═══ REPUTATION ═══ */}
-                <div className="p-6 rounded-[2rem] bg-white/[0.02] backdrop-blur-xl border border-white/[0.03]">
+                <div className="glass-panel p-8 rounded-[2.5rem] border-white/5">
                     <ReputationShard peerId={profile.peerId} isMe={true} />
                 </div>
 
                 {/* ═══ BOT LABORATORY ═══ */}
-                <div className="p-6 rounded-[2rem] bg-white/[0.02] backdrop-blur-xl border border-white/[0.03]">
+                <div className="glass-panel p-8 rounded-[2.5rem] border-white/5">
                     <BotLaboratory shards={shards} onToggle={onToggleShard} />
                 </div>
 
@@ -1363,30 +1362,31 @@ function LinkingShard({ myId }: { myId: string }) {
 
 function PairingDialog({ request, onAccept, onReject }: { request: { peerId: string; secret: string }; onAccept: () => void; onReject: () => void }) {
     return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/80 backdrop-blur-sm">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-zinc-950/60 backdrop-blur-3xl">
             <motion.div
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                className="w-full max-w-sm p-8 rounded-[2.5rem] bg-zinc-950 border border-cyan-500/20 shadow-[0_0_50px_rgba(34,211,238,0.1)] text-center"
+                className="w-full max-w-sm p-10 glass-panel border-white/10 rounded-[3rem] shadow-[0_50px_100px_rgba(0,0,0,0.8)] text-center relative overflow-hidden"
             >
-                <div className="w-16 h-16 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center mx-auto mb-6">
-                    <Share2 className="w-8 h-8 text-cyan-400" />
+                <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
+                <div className="w-20 h-20 rounded-3xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center mx-auto mb-8 shadow-inner">
+                    <Share2 className="w-10 h-10 text-cyan-400 animate-pulse" />
                 </div>
-                <h3 className="text-[20px] font-black tracking-tight text-white mb-2">Bridge Request</h3>
-                <p className="text-[12px] text-zinc-400 leading-relaxed mb-6">
-                    A device with ID <span className="text-cyan-400 font-mono">{request.peerId.substring(0, 12)}...</span> is requesting access to your Sovereign Identity.
+                <h3 className="display-sm font-black tracking-tight text-white mb-3">Bridge Link</h3>
+                <p className="text-[13px] text-zinc-400 leading-relaxed mb-10">
+                    A node with ID <span className="text-cyan-400 font-mono font-bold">{request.peerId.substring(0, 12)}...</span> is requesting a sub-space bridge.
                 </p>
 
-                <div className="flex gap-3">
+                <div className="flex gap-4">
                     <button
                         onClick={onReject}
-                        className="flex-1 py-3 rounded-xl bg-zinc-900 text-zinc-400 text-[10px] font-black uppercase tracking-widest hover:bg-zinc-800 transition-all"
+                        className="flex-1 py-4 rounded-2xl bg-white/5 border border-white/5 text-zinc-500 text-[11px] font-black uppercase tracking-widest hover:text-white transition-all"
                     >
                         Deny
                     </button>
                     <button
                         onClick={onAccept}
-                        className="flex-1 py-3 rounded-xl bg-cyan-500 text-cyan-950 text-[10px] font-black uppercase tracking-widest shadow-[0_0_20px_rgba(34,211,238,0.3)] transition-all"
+                        className="flex-1 py-4 rounded-2xl bg-gradient-to-r from-cyan-600 to-cyan-500 text-white text-[11px] font-black uppercase tracking-widest shadow-[0_0_30px_rgba(6,182,212,0.3)] hover:shadow-[0_0_50px_rgba(6,182,212,0.5)] transition-all"
                     >
                         Accept
                     </button>
@@ -1505,9 +1505,11 @@ function CallOverlay({ state, type, peerId, remoteStream, localStream, isAudioMu
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center p-6 md:p-12 bg-black/80 backdrop-blur-xl"
+            className="fixed inset-0 z-[100] flex items-center justify-center p-6 md:p-12 bg-zinc-950/80 backdrop-blur-3xl"
         >
-            <div className="relative w-full max-w-lg aspect-[3/4] md:aspect-video rounded-[3rem] bg-zinc-950 border border-white/5 overflow-hidden shadow-2xl flex flex-col">
+            <div className="relative w-full max-w-2xl aspect-video md:aspect-video rounded-[3rem] glass-panel border-white/10 overflow-hidden shadow-[0_50px_150px_rgba(0,0,0,0.8)] flex flex-col">
+                <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500 to-transparent z-30" />
+
                 {/* Visual Background (Remote Video or Ambient) */}
                 <div className="absolute inset-0 z-0">
                     {type === "video" && remoteStream ? (

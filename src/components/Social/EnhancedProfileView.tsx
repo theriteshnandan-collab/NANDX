@@ -29,12 +29,12 @@ function TrustRing({ score }: { score: number }) {
     const bg = "var(--bg-border)";
 
     return (
-        <svg width="128" height="128" viewBox="0 0 128 128" className="drop-shadow-[0_0_24px_rgba(0,217,165,0.15)] relative z-10">
-            <circle cx="64" cy="64" r={radius} fill="none" stroke={bg} strokeWidth="6" />
+        <svg width="128" height="128" viewBox="0 0 128 128" className="drop-shadow-[0_0_32px_rgba(6,182,212,0.3)] relative z-10">
+            <circle cx="64" cy="64" r={radius} fill="none" stroke={bg} strokeWidth="6" strokeOpacity="0.2" />
             <motion.circle
                 cx="64" cy="64" r={radius}
                 fill="none"
-                stroke={color}
+                stroke="url(#aurora-gradient)"
                 strokeWidth="6"
                 strokeLinecap="round"
                 strokeDasharray={circ}
@@ -42,10 +42,15 @@ function TrustRing({ score }: { score: number }) {
                 animate={{ strokeDashoffset: circ - fill }}
                 transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
                 transform="rotate(-90 64 64)"
-                style={{ filter: `drop-shadow(0 0 4px ${color})` }}
             />
+            <defs>
+                <linearGradient id="aurora-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="var(--cyan)" />
+                    <stop offset="100%" stopColor="var(--teal)" />
+                </linearGradient>
+            </defs>
             <text x="64" y="60" textAnchor="middle" fill="white" className="font-display font-medium text-2xl">{score}</text>
-            <text x="64" y="78" textAnchor="middle" fill="var(--teal)" className="font-mono text-[9px] font-bold tracking-[0.2em] uppercase">TRUST</text>
+            <text x="64" y="78" textAnchor="middle" fill="var(--cyan)" className="font-mono text-[9px] font-bold tracking-[0.2em] uppercase">STATUS</text>
         </svg>
     );
 }
@@ -65,13 +70,13 @@ function VouchConstellation({ vouches }: { vouches: string[] }) {
                     key={peerId}
                     initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: i * 0.08, type: "spring", stiffness: 400, damping: 25 }}
-                    className="flex items-center gap-2 px-3 py-1.5 card group"
+                    className="flex items-center gap-2 px-3 py-1.5 glass-panel group rounded-xl"
                 >
-                    <div className="w-5 h-5 rounded-full card-elevated flex items-center justify-center">
-                        <span className="font-display font-medium text-[10px] text-teal">{peerId.substring(0, 2).toUpperCase()}</span>
+                    <div className="w-5 h-5 rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
+                        <span className="font-display font-medium text-[10px] text-cyan-400">{peerId.substring(0, 2).toUpperCase()}</span>
                     </div>
-                    <span className="font-mono text-[10px] font-medium text-silver group-hover:text-teal transition-colors tracking-wider">{peerId.substring(0, 8)}...</span>
-                    <Shield className="w-2.5 h-2.5 text-[var(--teal-border)]" />
+                    <span className="font-mono text-[10px] font-medium text-zinc-400 group-hover:text-white transition-colors tracking-wider">{peerId.substring(0, 8)}...</span>
+                    <Shield className="w-2.5 h-2.5 text-cyan-500/50" />
                 </motion.div>
             ))}
         </div>
@@ -83,8 +88,9 @@ function WallCard({ post }: { post: SocialPost }) {
         <motion.div
             initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
             transition={{ type: "spring", stiffness: 400, damping: 30 }}
-            className="card p-5 group"
+            className="glass-panel p-6 group rounded-3xl relative overflow-hidden"
         >
+            <div className="absolute left-0 top-0 w-1 h-0 bg-cyan-500 group-hover:h-full transition-all duration-300" />
             <p className="text-[14px] text-white leading-relaxed whitespace-pre-wrap font-medium">{post.text}</p>
             <div className="flex items-center gap-3 mt-4">
                 <span className="label-data !m-0">
@@ -158,10 +164,10 @@ export function EnhancedProfileView({ myId, viewPeerId }: EnhancedProfileViewPro
             <motion.div
                 initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }}
                 transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                className="w-full mt-4 card-elevated p-8 relative overflow-hidden"
+                className="w-full mt-4 glass-panel p-8 relative overflow-hidden rounded-[2.5rem] shadow-[0_20px_60px_rgba(0,0,0,0.6)]"
             >
-                <div className="absolute top-0 right-0 w-64 h-64 bg-[rgba(0,217,165,0.03)] rounded-full blur-[80px] pointer-events-none" />
-                <div className="absolute top-0 left-0 w-full h-[1px]" style={{ background: "linear-gradient(90deg, transparent, var(--teal-border), transparent)" }} />
+                <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/[0.05] rounded-full blur-[100px] pointer-events-none" />
+                <div className="absolute top-0 left-0 w-full h-[1px]" style={{ background: "linear-gradient(90deg, transparent, var(--violet-glow), transparent)" }} />
 
                 <div className="relative z-10 flex gap-8 items-center flex-col md:flex-row">
                     <div className="flex-shrink-0">

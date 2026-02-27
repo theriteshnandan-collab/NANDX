@@ -21,9 +21,9 @@ interface RadarViewProps {
 function RadarRing({ delay = 0, size = 1 }: { delay?: number; size?: number }) {
     return (
         <motion.div
-            className="absolute rounded-full border border-[var(--teal-border)]"
+            className="absolute rounded-full border border-cyan-500/20"
             style={{ width: `${size * 100}%`, height: `${size * 100}%` }}
-            initial={{ opacity: 0.8, scale: 0.6 }}
+            initial={{ opacity: 0.6, scale: 0.6 }}
             animate={{ opacity: 0, scale: 1.5 }}
             transition={{ duration: 4, repeat: Infinity, delay, ease: "easeOut" }}
         />
@@ -47,9 +47,9 @@ function PeerBlip({ index, total, peer, onAdd }: { index: number; total: number;
             title={`@${peer.nickname || peer.peerId.substring(0, 8)}`}
         >
             <div className="relative">
-                <div className="w-3 h-3 rounded-full bg-teal shadow-[0_0_12px_rgba(0,217,165,0.8)] animate-pulse" />
-                <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
-                    <div className="px-2 py-1 rounded-lg bg-[var(--bg-elevated)] border border-[var(--bg-border)] label-data text-white">
+                <div className="w-3.5 h-3.5 rounded-full bg-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.8)] animate-pulse" />
+                <div className="absolute bottom-full mb-3 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
+                    <div className="px-3 py-1.5 rounded-xl glass-panel label-data text-white text-[10px] tracking-widest border-cyan-500/30">
                         @{peer.nickname || peer.peerId.substring(0, 8)}
                     </div>
                 </div>
@@ -80,16 +80,18 @@ export function RadarView({ myId, connectedPeers, onAddContact, onJoinRoom }: Ra
             <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="w-full mt-4 flex items-center justify-between mb-8 section-elevated card-elevated !rounded-xl"
+                className="w-full mt-4 flex items-center justify-between p-4 glass-panel !rounded-2xl border-white/10"
             >
-                <div className="flex items-center gap-2">
-                    <Radio className="w-4 h-4 text-teal" />
-                    <span className="label-data text-white">Mesh Radar</span>
+                <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-xl bg-cyan-500/10 border border-cyan-500/20">
+                        <Radio className="w-4 h-4 text-cyan-400" />
+                    </div>
+                    <span className="label-data text-white font-bold">Mesh Radar</span>
                 </div>
-                <div className="flex items-center gap-2 label-data">
+                <div className="flex items-center gap-2 label-data font-bold">
                     {connectedPeers > 0
-                        ? <><Wifi className="w-4 h-4 text-teal" /><span className="text-teal">{connectedPeers} peers active</span></>
-                        : <><WifiOff className="w-4 h-4 text-[var(--text-muted)]" /><span className="text-[var(--text-muted)]">Zero connection</span></>
+                        ? <><Wifi className="w-4 h-4 text-emerald-400" /><span className="text-emerald-400">{connectedPeers} peers active</span></>
+                        : <><WifiOff className="w-4 h-4 text-zinc-600" /><span className="text-zinc-600">Zero connection</span></>
                     }
                 </div>
             </motion.div>
@@ -98,7 +100,7 @@ export function RadarView({ myId, connectedPeers, onAddContact, onJoinRoom }: Ra
             <motion.div
                 initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
                 transition={{ type: "spring", stiffness: 300, damping: 25, delay: 0.1 }}
-                className="relative w-72 h-72 mb-12 flex items-center justify-center card-elevated !rounded-full overflow-visible border-[var(--teal-border)] shadow-[0_0_80px_rgba(0,217,165,0.05)]"
+                className="relative w-72 h-72 mb-12 mt-8 flex items-center justify-center glass-panel !rounded-full overflow-visible border-white/5 shadow-[0_0_80px_rgba(6,182,212,0.1)]"
             >
                 {/* Crosshairs */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -134,7 +136,9 @@ export function RadarView({ myId, connectedPeers, onAddContact, onJoinRoom }: Ra
                 )}
 
                 {/* Center Core */}
-                <div className="relative z-20 w-4 h-4 rounded-full bg-teal shadow-[0_0_20px_rgba(0,217,165,1)] flex items-center justify-center" />
+                <div className="relative z-20 w-5 h-5 rounded-full bg-cyan-400 shadow-[0_0_30px_rgba(6,182,212,1)] flex items-center justify-center">
+                    <div className="w-1.5 h-1.5 rounded-full bg-white animate-ping" />
+                </div>
 
                 {/* Blips */}
                 {onlineContacts.map((peer, i) => (

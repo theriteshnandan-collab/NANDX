@@ -50,9 +50,11 @@ export function ReplyThread({ post, myId }: ReplyThreadProps) {
             {/* Toggle Button */}
             <button
                 onClick={() => setOpen(o => !o)}
-                className="flex items-center gap-1.5 text-zinc-600 hover:text-white transition-colors text-[10px] font-mono font-black uppercase tracking-widest py-1"
+                className="flex items-center gap-2 text-zinc-500 hover:text-cyan-400 transition-all text-[10px] font-mono font-bold uppercase tracking-widest py-1 group"
             >
-                <MessageSquare className="w-3 h-3" />
+                <div className="p-1 rounded-md bg-white/5 border border-white/5 group-hover:border-cyan-500/30 transition-all">
+                    <MessageSquare className="w-3 h-3" />
+                </div>
                 {replyCount > 0 ? `${replyCount} Repl${replyCount === 1 ? "y" : "ies"}` : "Reply"}
                 {replyCount > 0 && (open ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />)}
             </button>
@@ -77,8 +79,8 @@ export function ReplyThread({ post, myId }: ReplyThreadProps) {
                                     transition={{ type: "spring", stiffness: 400, damping: 30 }}
                                     className="flex gap-3"
                                 >
-                                    <div className="w-7 h-7 rounded-full bg-zinc-900 border border-white/5 flex items-center justify-center flex-shrink-0">
-                                        <span className="text-[9px] font-mono text-zinc-400 font-black">{reply.authorName.charAt(0).toUpperCase()}</span>
+                                    <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0 shadow-inner">
+                                        <span className="text-[10px] font-mono text-cyan-400 font-bold">{reply.authorName.charAt(0).toUpperCase()}</span>
                                     </div>
                                     <div className="flex-1">
                                         <div className="flex items-center gap-2 mb-0.5">
@@ -96,14 +98,14 @@ export function ReplyThread({ post, myId }: ReplyThreadProps) {
                             ))}
 
                             {/* Compose Reply */}
-                            <div className="flex gap-3 pt-1">
-                                <div className="w-7 h-7 rounded-full bg-zinc-900 border border-white/5 flex items-center justify-center flex-shrink-0">
-                                    <User className="w-3 h-3 text-emerald-500" />
+                            <div className="flex gap-3 pt-2">
+                                <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0">
+                                    <User className="w-3.5 h-3.5 text-cyan-400" />
                                 </div>
                                 <div className="flex-1 flex gap-2">
                                     <input
                                         type="text"
-                                        className="flex-1 bg-white/[0.02] border border-white/[0.04] rounded-xl px-3 py-2 text-[13px] text-white placeholder-zinc-700 outline-none focus:border-emerald-500/30 transition-colors"
+                                        className="flex-1 bg-white/5 border border-white/10 rounded-2xl px-4 py-2 text-[13px] text-white placeholder-zinc-600 outline-none focus:border-cyan-500/50 focus:bg-white/[0.08] transition-all"
                                         placeholder="Reply to the signal…"
                                         value={text}
                                         onChange={e => setText(e.target.value)}
@@ -114,7 +116,7 @@ export function ReplyThread({ post, myId }: ReplyThreadProps) {
                                     <button
                                         onClick={handleReply}
                                         disabled={!text.trim()}
-                                        className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/20 transition-all disabled:opacity-20"
+                                        className="p-2 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 hover:bg-cyan-500/20 transition-all disabled:opacity-20"
                                     >
                                         <Send className="w-3.5 h-3.5" />
                                     </button>

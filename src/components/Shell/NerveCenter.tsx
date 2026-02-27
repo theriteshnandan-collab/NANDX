@@ -85,15 +85,15 @@ function NavMode({ mode, isActive, onClick }: { mode: VoidMode; isActive: boolea
             <motion.button
                 onClick={onClick}
                 whileTap={{ scale: 0.93 }}
-                className="relative flex items-center justify-center w-10 h-10 rounded-xl transition-all duration-150 outline-none"
+                className="relative flex items-center justify-center w-12 h-12 rounded-2xl transition-all duration-300 outline-none group"
                 style={{
-                    background: isActive ? "var(--teal-glow)" : hovered ? "rgba(255,255,255,0.05)" : "transparent",
+                    background: isActive ? "var(--teal-glow)" : hovered ? "rgba(255,255,255,0.08)" : "transparent",
                     border: isActive ? "1px solid var(--teal-border)" : "1px solid transparent",
-                    color: isActive ? "var(--teal)" : hovered ? "var(--text-secondary)" : "var(--text-muted)",
-                    opacity: isActive ? 1 : hovered ? 0.85 : 0.45,
+                    color: isActive ? "var(--teal)" : hovered ? "var(--text-primary)" : "var(--text-secondary)",
+                    boxShadow: isActive ? "0 4px 20px rgba(0, 217, 165, 0.15)" : "none",
                 }}
             >
-                <Icon className="w-[18px] h-[18px]" strokeWidth={isActive ? 2 : 1.75} />
+                <Icon className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" strokeWidth={isActive ? 2 : 1.75} />
             </motion.button>
 
             {/* Tooltip */}
@@ -133,22 +133,19 @@ export const NerveCenter: React.FC<NerveCenterProps> = ({ activeMode, onModeChan
                 <GhostRemote onClose={() => { setShowRemote(false); onModeChange("TALK"); }} />
             )}
 
-            {/* ── Sidebar ── */}
+            {/* ── Sidebar (Floating Glass Rail) ── */}
             <motion.aside
                 initial={{ x: -80, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ type: "spring", stiffness: 300, damping: 30, delay: 0.2 }}
-                className="fixed left-0 top-0 bottom-0 z-40 flex flex-col items-center py-4 select-none"
+                className="fixed left-4 top-4 bottom-4 z-40 flex flex-col items-center py-6 select-none bg-zinc-950/40 backdrop-blur-3xl border border-white/5 rounded-3xl shadow-[0_10px_40px_rgba(0,0,0,0.5)]"
                 style={{
-                    width: 64,
-                    background: "var(--bg-elevated)",
-                    borderRight: "1px solid var(--bg-border)",
+                    width: 72,
                 }}
             >
                 {/* Logo */}
-                <div className="mb-6 flex items-center justify-center w-10 h-10 rounded-xl"
-                    style={{ background: "var(--teal-glow)", border: "1px solid var(--teal-border)" }}>
-                    <Zap className="w-5 h-5" style={{ color: "var(--teal)" }} />
+                <div className="mb-8 flex items-center justify-center w-12 h-12 rounded-2xl bg-zinc-900 border border-white/10 shadow-[0_0_20px_rgba(0,217,165,0.15)] transition-all hover:scale-105 hover:border-teal-500/30">
+                    <Zap className="w-5 h-5 text-teal" />
                 </div>
 
                 <div className="w-full px-2 mb-4" style={{ height: 1, background: "var(--bg-border)" }} />

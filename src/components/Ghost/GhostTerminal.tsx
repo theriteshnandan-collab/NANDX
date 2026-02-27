@@ -60,25 +60,25 @@ export function GhostTerminal({ onClose }: { onClose: () => void }) {
     };
 
     return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-[#0A0A0F]/90 backdrop-blur-md p-4 animate-in fade-in duration-300 font-inter">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-zinc-950/60 backdrop-blur-3xl p-4 animate-in fade-in duration-500 font-inter">
             <motion.div
                 initial={{ opacity: 0, scale: 0.98, y: 10 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
-                className="w-full max-w-3xl h-[650px] card-elevated flex flex-col overflow-hidden relative"
-                style={{ border: "1px solid var(--teal-border)", boxShadow: "0 0 40px rgba(0,217,165,0.05)" }}
+                className="w-full max-w-3xl h-[650px] glass-panel flex flex-col overflow-hidden relative rounded-[2rem] shadow-[0_40px_100px_rgba(0,0,0,0.8)] border-white/10"
             >
+                <div className="absolute top-0 left-0 w-full h-[1px]" style={{ background: "linear-gradient(90deg, transparent, var(--violet-glow), transparent)" }} />
                 {/* ── HEADER ── */}
-                <div className="flex items-center justify-between px-5 py-3 border-b border-[var(--teal-border)] bg-[rgba(0,217,165,0.02)]">
+                <div className="flex items-center justify-between px-6 py-4 border-b border-white/5 bg-white/[0.02]">
                     <div className="flex items-center gap-3">
-                        <Terminal className="w-4 h-4 text-teal" />
-                        <span className="font-display font-bold text-teal tracking-[0.1em] uppercase text-sm">Ghost Core // Local Node</span>
-                        <div className="flex items-center gap-1.5 ml-4">
-                            <div className={`w-1.5 h-1.5 rounded-full ${status.state === "IDLE" ? "bg-teal shadow-[0_0_8px_rgba(0,217,165,1)]" :
-                                status.state === "THINKING" ? "bg-teal animate-pulse shadow-[0_0_8px_rgba(0,217,165,1)]" :
-                                    status.state === "DOWNLOADING" ? "bg-[var(--text-secondary)] animate-pulse" :
-                                        status.state === "ERROR" ? "bg-red-500" : "bg-[var(--text-muted)]"
+                        <Terminal className="w-4 h-4 text-cyan-400" />
+                        <span className="font-display font-bold text-white tracking-[0.15em] uppercase text-xs">Ghost Core // Sovereign Local Node</span>
+                        <div className="flex items-center gap-2 ml-6">
+                            <div className={`w-2 h-2 rounded-full ${status.state === "IDLE" ? "bg-cyan-400 shadow-[0_0_12px_rgba(6,182,212,1)]" :
+                                status.state === "THINKING" ? "bg-cyan-400 animate-pulse shadow-[0_0_12px_rgba(6,182,212,1)]" :
+                                    status.state === "DOWNLOADING" ? "bg-zinc-500 animate-pulse" :
+                                        status.state === "ERROR" ? "bg-rose-500" : "bg-zinc-800"
                                 }`} />
-                            <span className="font-mono text-[9px] uppercase tracking-widest text-[var(--text-secondary)]">
+                            <span className="font-mono text-[10px] uppercase tracking-widest text-zinc-500 font-bold">
                                 {status.state}
                             </span>
                         </div>
@@ -89,7 +89,7 @@ export function GhostTerminal({ onClose }: { onClose: () => void }) {
                 </div>
 
                 {/* ── TERMINAL VIEW ── */}
-                <div className="flex-1 p-5 overflow-y-auto space-y-3 font-mono text-[13px] leading-relaxed no-scrollbar bg-[#050508]">
+                <div className="flex-1 p-6 overflow-y-auto space-y-4 font-mono text-[13px] leading-relaxed no-scrollbar bg-black/20">
 
                     {status.state === "OFFLINE" && (
                         <div className="flex flex-col items-center justify-center h-full gap-5 opacity-80">
@@ -140,8 +140,8 @@ export function GhostTerminal({ onClose }: { onClose: () => void }) {
                 </div>
 
                 {/* ── INPUT ── */}
-                <div className="p-4 border-t border-[var(--bg-border)] bg-[var(--bg-elevated)] flex gap-3 items-center relative z-10">
-                    <span className="text-teal font-mono font-bold">{">"}</span>
+                <div className="p-4 border-t border-white/5 bg-white/[0.03] flex gap-4 items-center relative z-10">
+                    <span className="text-cyan-400 font-mono font-bold ml-2">λ</span>
                     <input
                         className="flex-1 bg-transparent border-none outline-none text-white font-mono text-[14px] placeholder-[var(--text-muted)] h-full"
                         placeholder={status.state === "IDLE" ? "Command the ghost..." : "System processing..."}

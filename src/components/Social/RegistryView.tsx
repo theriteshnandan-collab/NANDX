@@ -26,7 +26,7 @@ export const RegistryView: React.FC<RegistryViewProps> = ({ onJoinRoom, onAddCon
     const filteredPeers = localContacts.filter(p => (p.nickname || p.peerId).toLowerCase().includes(filter.toLowerCase()));
 
     return (
-        <div className="w-full h-full flex flex-col bg-zinc-950/40 backdrop-blur-xl border border-white/[0.04] rounded-3xl overflow-hidden">
+        <div className="w-full h-full flex flex-col glass-panel !rounded-[2.5rem] overflow-hidden border-white/5">
             {/* Header: Search & Navigation */}
             <div className="p-6 space-y-4 border-b border-white/[0.04]">
                 <div className="flex items-center justify-between">
@@ -101,11 +101,11 @@ export const RegistryView: React.FC<RegistryViewProps> = ({ onJoinRoom, onAddCon
 function RoomCard({ room, onJoin }: { room: any, onJoin: () => void }) {
     return (
         <motion.div
-            whileHover={{ y: -2 }}
-            className="group p-5 bg-white/[0.02] border border-white/[0.04] hover:border-cyan-500/30 rounded-2xl transition-all cursor-pointer relative overflow-hidden"
+            whileHover={{ y: -4 }}
+            className="group p-6 glass-panel border-white/5 hover:border-cyan-500/50 rounded-3xl transition-all cursor-pointer relative overflow-hidden shadow-xl"
             onClick={onJoin}
         >
-            <div className="absolute top-0 left-0 w-1 h-full bg-cyan-500/0 group-hover:bg-cyan-500/100 transition-all" />
+            <div className="absolute top-0 left-0 w-1.5 h-0 bg-cyan-500 group-hover:h-full transition-all duration-300" />
 
             <div className="flex items-start justify-between mb-4">
                 <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center">
@@ -139,13 +139,13 @@ function RoomCard({ room, onJoin }: { room: any, onJoin: () => void }) {
 function PeerRow({ peer, onAdd }: { peer: any, onAdd: () => void }) {
     return (
         <motion.div
-            whileHover={{ x: 4 }}
-            className="flex items-center justify-between p-4 bg-white/[0.01] hover:bg-white/[0.03] border border-white/[0.03] rounded-2xl transition-all"
+            whileHover={{ x: 6, backgroundColor: "rgba(255,255,255,0.03)" }}
+            className="flex items-center justify-between p-4 glass-panel border-white/5 group rounded-[1.5rem] transition-all"
         >
             <div className="flex items-center gap-4">
                 <div className="relative">
-                    <div className="w-10 h-10 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center">
-                        <User className="w-5 h-5 text-purple-400" />
+                    <div className="w-11 h-11 rounded-full bg-violet-500/10 border border-violet-500/20 flex items-center justify-center shadow-inner">
+                        <User className="w-5 h-5 text-violet-400" />
                     </div>
                     {peer.lastSeen > Date.now() - 60000 && (
                         <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 border-2 border-zinc-950 rounded-full" />

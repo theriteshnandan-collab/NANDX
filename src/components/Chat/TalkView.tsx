@@ -113,7 +113,7 @@ export function TalkView({
             className="flex flex-col h-full w-full max-w-5xl mx-auto px-4 py-4 relative"
         >
             {/* Header */}
-            <header className="w-full flex items-center justify-between px-5 py-4 card-elevated mb-4">
+            <header className="w-full flex items-center justify-between px-5 py-4 glass-panel rounded-2xl mb-4">
                 <div className="flex items-center gap-4">
                     <button onClick={() => setShowRooms(!showRooms)} className="btn-ghost !px-3 !bg-[var(--bg-border)] flex items-center gap-2">
                         <Hash className="w-4 h-4 text-teal" />
@@ -144,8 +144,8 @@ export function TalkView({
                 {showRooms && (
                     <motion.div
                         initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
-                        className="absolute top-20 left-4 z-50 card-elevated p-2 w-64 shadow-2xl"
-                        style={{ border: "1px solid var(--teal-border)" }}
+                        className="absolute top-20 left-4 z-50 glass-panel rounded-2xl p-2 w-64 shadow-2xl"
+                        style={{ border: "1px solid var(--violet-glow)" }}
                     >
                         <div className="max-h-60 overflow-y-auto no-scrollbar pb-2">
                             <button onClick={() => { onSwitchTopic("general"); setShowRooms(false); }}
@@ -205,8 +205,8 @@ export function TalkView({
                                     </div>
 
                                     {/* Bubble */}
-                                    <div className={`px-4 py-2.5 rounded-2xl text-[14px] leading-relaxed shadow-md font-medium text-white
-                                        ${isMe ? "bg-teal text-[#0A0A0F] rounded-br-sm" : "bg-[var(--bg-surface)] border border-[var(--bg-border)] rounded-bl-sm"}`}>
+                                    <div className={`px-4 py-2.5 rounded-2xl text-[14px] leading-relaxed shadow-lg font-medium text-white
+                                        ${isMe ? "bg-gradient-to-br from-cyan-500 to-teal-400 text-[#040406] rounded-br-sm border border-cyan-300/30" : "bg-white/5 backdrop-blur-xl border border-white/10 rounded-bl-sm"}`}>
 
                                         {msg.mediaType === "image" && msg.mediaData ? (
                                             <div className="flex flex-col gap-2">

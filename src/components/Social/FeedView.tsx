@@ -98,7 +98,7 @@ export function FeedView({ myId, connectedPeers = 0 }: FeedViewProps) {
             {/* ── Status Bar ── */}
             <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
                 className="w-full flex items-center justify-between mb-4 mt-2">
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg border-void section-elevated border">
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-white/5 bg-zinc-900/40 backdrop-blur-xl">
                     <div className={connectedPeers > 0 ? "status-online" : "status-offline"} />
                     <span className="label-data">
                         {connectedPeers > 0 ? `${connectedPeers} node${connectedPeers !== 1 ? 's' : ''} connected` : "Scanning mesh..."}
@@ -113,12 +113,12 @@ export function FeedView({ myId, connectedPeers = 0 }: FeedViewProps) {
 
             {/* ── Compose Card ── */}
             <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-                className="w-full mb-6 card-elevated p-5 relative overflow-hidden group">
-                <div className="absolute top-0 left-0 w-full h-[1px]" style={{ background: "linear-gradient(90deg, transparent, var(--teal-border), transparent)" }} />
+                className="w-full mb-6 glass-panel rounded-2xl p-5 relative overflow-hidden group">
+                <div className="absolute top-0 left-0 w-full h-[1px]" style={{ background: "linear-gradient(90deg, transparent, var(--violet-glow), transparent)" }} />
 
                 <div className="flex gap-4">
-                    <div className="w-10 h-10 rounded-full flex-shrink-0 card flex items-center justify-center">
-                        <User className="w-4 h-4 text-teal" />
+                    <div className="w-10 h-10 rounded-full flex-shrink-0 bg-white/5 border border-white/10 flex items-center justify-center">
+                        <User className="w-4 h-4 text-violet-400" />
                     </div>
                     <div className="flex-1 flex flex-col pt-1">
                         <textarea
@@ -159,12 +159,13 @@ export function FeedView({ myId, connectedPeers = 0 }: FeedViewProps) {
                     {displayPosts?.map(post => (
                         <motion.div key={post.id} layout
                             initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95 }}
-                            className="card p-5 w-full">
+                            className="glass-panel p-6 w-full rounded-[2rem] relative group overflow-hidden">
+                            <div className="absolute top-0 left-0 w-[2px] h-0 bg-gradient-to-b from-cyan-400 to-violet-500 group-hover:h-full transition-all duration-500" />
 
                             {/* Head */}
                             <div className="flex items-center justify-between mb-4">
                                 <div className="flex items-center gap-3">
-                                    <div className="w-9 h-9 rounded-full card-elevated flex items-center justify-center font-mono text-[12px] text-silver font-bold">
+                                    <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 shadow-inner flex items-center justify-center font-mono text-[13px] text-white font-bold">
                                         {post.authorName.charAt(0).toUpperCase()}
                                     </div>
                                     <div>
@@ -179,7 +180,7 @@ export function FeedView({ myId, connectedPeers = 0 }: FeedViewProps) {
                                         </div>
                                     </div>
                                 </div>
-                                <div className={post.authorId !== myId ? "w-1.5 h-1.5 rounded-full bg-teal shadow-[0_0_8px_rgba(0,217,165,0.4)]" : "w-1.5 h-1.5 rounded-full bg-[var(--text-muted)]"} />
+                                <div className={post.authorId !== myId ? "w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_12px_rgba(6,182,212,0.6)]" : "w-1.5 h-1.5 rounded-full bg-[var(--text-muted)]"} />
                             </div>
 
                             {/* Body */}
@@ -205,11 +206,11 @@ export function FeedView({ myId, connectedPeers = 0 }: FeedViewProps) {
                                 {summaries[post.id] && (
                                     <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }}
                                         className="ml-12 mb-4 overflow-hidden">
-                                        <div className="p-3 rounded-lg border border-[var(--bg-border)] bg-[rgba(0,217,165,0.03)]">
-                                            <div className="label-data flex items-center gap-1.5 text-teal mb-2">
-                                                <Sparkles className="w-3 h-3" /> Ghost Summary
+                                        <div className="p-4 rounded-xl border border-violet-500/20 bg-violet-500/5 backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
+                                            <div className="label-data flex items-center gap-1.5 text-violet-400 mb-2">
+                                                <Sparkles className="w-3.5 h-3.5" /> Ghost Summary
                                             </div>
-                                            <p className="text-[13px] text-silver leading-relaxed">{summaries[post.id]}</p>
+                                            <p className="text-[13px] text-zinc-300 leading-relaxed font-body">{summaries[post.id]}</p>
                                         </div>
                                     </motion.div>
                                 )}
