@@ -181,16 +181,24 @@ export function TalkView({
             <div className="flex-1 overflow-y-auto no-scrollbar scroll-smooth p-2 flex flex-col gap-6 w-full">
                 {filteredMessages.length === 0 ? (
                     <div className="h-full flex flex-col items-center justify-center opacity-40">
-                        <Lock className="w-8 h-8 text-[var(--text-muted)] mb-4" />
-                        <p className="label-data">End-to-End Encrypted Tunnel</p>
-                        <p className="font-mono text-[10px] text-[var(--text-muted)] mt-2">Awaiting transmission...</p>
+                        <motion.div
+                            initial={{ scale: 0.8 }}
+                            animate={{ scale: [0.8, 1, 0.8] }}
+                            transition={{ duration: 4, repeat: Infinity }}
+                        >
+                            <Lock className="w-10 h-10 text-blue-600 mb-4" />
+                        </motion.div>
+                        <p className="label-data text-slate-900">End-to-End Encrypted Tunnel</p>
+                        <p className="font-mono text-[10px] text-slate-400 mt-2 uppercase tracking-widest animate-pulse">Awaiting transmission...</p>
                     </div>
                 ) : (
                     filteredMessages.map((msg, i) => {
                         const isMe = msg.self;
                         return (
                             <motion.div
-                                initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+                                initial={{ opacity: 0, x: isMe ? 20 : -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: Math.min(i * 0.03, 0.3), type: "spring", stiffness: 300, damping: 25 }}
                                 key={i} className={`flex w-full ${isMe ? "justify-end" : "justify-start"}`}
                             >
                                 <div className={`flex flex-col gap-1 max-w-[85%] ${isMe ? "items-end" : "items-start"}`}>

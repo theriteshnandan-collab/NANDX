@@ -156,72 +156,88 @@ export function FeedView({ myId, connectedPeers = 0 }: FeedViewProps) {
             {/* ── Stream ── */}
             <div className="w-full flex-1 overflow-y-auto no-scrollbar pb-32 flex flex-col gap-4">
                 <AnimatePresence mode="popLayout">
-                    {displayPosts?.map(post => (
-                        <motion.div key={post.id} layout
-                            initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95 }}
-                            className="glass-panel p-6 w-full rounded-[2rem] relative group overflow-hidden">
-                            <div className="absolute top-0 left-0 w-[2px] h-0 bg-gradient-to-b from-cyan-400 to-violet-500 group-hover:h-full transition-all duration-500" />
+                    {displayPosts?.length === 0 && connectedPeers === 0 ? (
+                        // Shimmer Skeleton
+                        [1, 2, 3].map(i => (
+                            <div key={i} className="w-full h-40 bg-slate-50 border border-black/[0.03] rounded-[2.5rem] p-6 space-y-4 animate-shimmer" />
+                        ))
+                    ) : (
+                        displayPosts?.map((post, i) => (
+                            <motion.div key={post.id}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, scale: 0.95 }}
+                                transition={{
+                                    type: "spring",
+                                    stiffness: 260,
+                                    damping: 20,
+                                    delay: Math.min(i * 0.05, 0.5)
+                                }}
+                                layout
+                                className="glass-panel p-6 w-full rounded-[2.5rem] relative group overflow-hidden shadow-sm hover:shadow-xl transition-all"
+                            >
+                                <div className="absolute top-0 left-0 w-[2px] h-0 bg-gradient-to-b from-cyan-400 to-violet-500 group-hover:h-full transition-all duration-500" />
 
-                            {/* Head */}
-                            <div className="flex items-center justify-between mb-4">
-                                <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-full bg-white border border-black/10 shadow-sm flex items-center justify-center font-mono text-[13px] text-slate-800 font-bold">
-                                        {post.authorName.charAt(0).toUpperCase()}
-                                    </div>
-                                    <div>
-                                        <div className="flex items-center gap-2">
-                                            <span className="font-medium text-slate-900 text-[14px]">@{post.authorName}</span>
-                                            {post.authorId === myId && <span className="label-data px-1.5 py-0.5 rounded bg-slate-100 text-slate-500">You</span>}
+                                {/* Head */}
+                                <div className="flex items-center justify-between mb-4">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 rounded-full bg-white border border-black/10 shadow-sm flex items-center justify-center font-mono text-[13px] text-slate-800 font-bold">
+                                            {post.authorName.charAt(0).toUpperCase()}
                                         </div>
-                                        <div className="label-data flex items-center gap-1 mt-0.5">
-                                            <span>{post.authorId.substring(0, 8)}</span>
-                                            <span style={{ color: "var(--bg-border)" }}>•</span>
-                                            <span>{new Date(post.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className={post.authorId !== myId ? "w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_12px_rgba(37,99,235,0.4)]" : "w-1.5 h-1.5 rounded-full bg-slate-300"} />
-                            </div>
-
-                            {/* Body */}
-                            <p className="text-[14px] leading-relaxed text-slate-700 whitespace-pre-wrap ml-12 mb-4">
-                                {post.text}
-                            </p>
-
-                            {/* Actions */}
-                            <div className="flex items-center gap-3 ml-12 mb-2">
-                                <button onClick={() => handleVibe(post)} className="btn-ghost !px-2 !py-1 text-silver hover:text-teal group/vibe">
-                                    <Heart className="w-4 h-4 transition-transform group-active/vibe:scale-75" />
-                                    <span className="font-mono text-[11px]">{post.vibeCount || 0}</span>
-                                </button>
-                                <button onClick={() => handleSummarize(post)} disabled={summarizing[post.id]}
-                                    className="btn-ghost !px-2 !py-1 ml-auto text-silver hover:text-teal">
-                                    <Sparkles className="w-3.5 h-3.5" />
-                                    <span className="label-data !m-0">{summarizing[post.id] ? "..." : "AI"}</span>
-                                </button>
-                            </div>
-
-                            {/* AI Summary Panel */}
-                            <AnimatePresence>
-                                {summaries[post.id] && (
-                                    <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }}
-                                        className="ml-12 mb-4 overflow-hidden">
-                                        <div className="p-4 rounded-xl border border-blue-500/10 bg-blue-500/5 backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
-                                            <div className="label-data flex items-center gap-1.5 text-blue-600 mb-2">
-                                                <Sparkles className="w-3.5 h-3.5" /> Ghost Summary
+                                        <div>
+                                            <div className="flex items-center gap-2">
+                                                <span className="font-medium text-slate-900 text-[14px]">@{post.authorName}</span>
+                                                {post.authorId === myId && <span className="label-data px-1.5 py-0.5 rounded bg-slate-100 text-slate-500">You</span>}
                                             </div>
-                                            <p className="text-[13px] text-slate-600 leading-relaxed font-body">{summaries[post.id]}</p>
+                                            <div className="label-data flex items-center gap-1 mt-0.5">
+                                                <span>{post.authorId.substring(0, 8)}</span>
+                                                <span style={{ color: "var(--bg-border)" }}>•</span>
+                                                <span>{new Date(post.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                            </div>
                                         </div>
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
+                                    </div>
+                                    <div className={post.authorId !== myId ? "w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_12px_rgba(37,99,235,0.4)]" : "w-1.5 h-1.5 rounded-full bg-slate-300"} />
+                                </div>
 
-                            {/* Replies */}
-                            <div className="ml-12 border-t pt-3 mt-2" style={{ borderColor: "var(--bg-border)" }}>
-                                <ReplyThread post={post} myId={myId} />
-                            </div>
-                        </motion.div>
-                    ))}
+                                {/* Body */}
+                                <p className="text-[14px] leading-relaxed text-slate-700 whitespace-pre-wrap ml-12 mb-4">
+                                    {post.text}
+                                </p>
+
+                                {/* Actions */}
+                                <div className="flex items-center gap-3 ml-12 mb-2">
+                                    <button onClick={() => handleVibe(post)} className="btn-ghost !px-2 !py-1 text-silver hover:text-teal group/vibe">
+                                        <Heart className="w-4 h-4 transition-transform group-active/vibe:scale-75" />
+                                        <span className="font-mono text-[11px]">{post.vibeCount || 0}</span>
+                                    </button>
+                                    <button onClick={() => handleSummarize(post)} disabled={summarizing[post.id]}
+                                        className="btn-ghost !px-2 !py-1 ml-auto text-silver hover:text-teal">
+                                        <Sparkles className="w-3.5 h-3.5" />
+                                        <span className="label-data !m-0">{summarizing[post.id] ? "..." : "AI"}</span>
+                                    </button>
+                                </div>
+
+                                {/* AI Summary Panel */}
+                                <AnimatePresence>
+                                    {summaries[post.id] && (
+                                        <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }}
+                                            className="ml-12 mb-4 overflow-hidden">
+                                            <div className="p-4 rounded-xl border border-blue-500/10 bg-blue-500/5 backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
+                                                <div className="label-data flex items-center gap-1.5 text-blue-600 mb-2">
+                                                    <Sparkles className="w-3.5 h-3.5" /> Ghost Summary
+                                                </div>
+                                                <p className="text-[13px] text-slate-600 leading-relaxed font-body">{summaries[post.id]}</p>
+                                            </div>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+
+                                {/* Replies */}
+                                <div className="ml-12 border-t pt-3 mt-2" style={{ borderColor: "var(--bg-border)" }}>
+                                    <ReplyThread post={post} myId={myId} />
+                                </div>
+                            </motion.div>
+                        ))}
 
                     {/* Empty State */}
                     {displayPosts?.length === 0 && (

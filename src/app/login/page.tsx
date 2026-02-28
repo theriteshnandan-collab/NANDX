@@ -27,11 +27,10 @@ export default function LoginPage() {
             {/* LEFT — Form */}
             <div className="flex flex-col justify-center px-8 md:px-16 py-12 relative">
                 <Link href="/" className="absolute top-8 left-8 flex items-center gap-2 group">
-                    <div className="w-7 h-7 rounded-lg flex items-center justify-center transition-all"
-                        style={{ background: "var(--teal-glow)", border: "1px solid var(--teal-border)" }}>
-                        <Zap className="w-4 h-4" style={{ color: "var(--teal)" }} />
+                    <div className="w-7 h-7 rounded-lg flex items-center justify-center transition-all bg-blue-500/10 border border-blue-500/20">
+                        <Zap className="w-4 h-4 text-blue-600" />
                     </div>
-                    <span className="font-display font-bold text-white text-[15px]">NANDIX</span>
+                    <span className="font-display font-bold text-slate-900 text-[15px]">NANDIX</span>
                 </Link>
 
                 <motion.div
@@ -40,8 +39,8 @@ export default function LoginPage() {
                     transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                     className="max-w-[360px] mx-auto w-full mt-12"
                 >
-                    <div className="eyebrow mb-3">Returning Node</div>
-                    <h1 className="font-display font-bold text-white leading-tight tracking-tight mb-2"
+                    <div className="eyebrow mb-3 text-blue-600">Returning Node</div>
+                    <h1 className="font-display font-bold text-slate-900 leading-tight tracking-tight mb-2"
                         style={{ fontSize: "clamp(2rem,4vw,2.8rem)" }}>
                         Re-enter<br />the mesh.
                     </h1>
@@ -69,7 +68,7 @@ export default function LoginPage() {
 
                         <motion.button type="submit" whileTap={{ scale: 0.97 }}
                             disabled={loading}
-                            className="btn-teal justify-center mt-2 rounded-xl py-3 disabled:opacity-60">
+                            className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2 justify-center mt-2 rounded-xl py-3 font-bold text-[14px] shadow-lg shadow-blue-500/20 disabled:opacity-60 transition-all">
                             {loading ? (
                                 <motion.div animate={{ rotate: 360 }} transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}>
                                     <Zap className="w-4 h-4" />
@@ -102,7 +101,7 @@ export default function LoginPage() {
 
                 <motion.div initial={{ opacity: 0, x: 32 }} animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.2, duration: 0.6 }}>
-                    <div className="eyebrow mb-8">The Protocol</div>
+                    <div className="eyebrow mb-8 text-blue-600">The Protocol</div>
 
                     {[
                         { icon: Fingerprint, label: "Keypair Identity", body: "Generated in your browser via WebCrypto. Never transmitted." },
@@ -114,20 +113,19 @@ export default function LoginPage() {
                             transition={{ delay: 0.3 + i * 0.1 }}
                             className="flex gap-5 mb-8"
                         >
-                            <div className="w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center"
-                                style={{ background: "var(--teal-glow)", border: "1px solid var(--teal-border)" }}>
-                                <item.icon className="w-5 h-5" style={{ color: "var(--teal)" }} />
+                            <div className="w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center bg-blue-500/10 border border-blue-500/20">
+                                <item.icon className="w-5 h-5 text-blue-600" />
                             </div>
                             <div>
-                                <div className="font-medium text-white text-[14px] mb-1">{item.label}</div>
-                                <div className="text-[13px] leading-relaxed" style={{ color: "var(--text-secondary)" }}>{item.body}</div>
+                                <div className="font-bold text-slate-800 text-[14px] mb-1">{item.label}</div>
+                                <div className="text-[13px] leading-relaxed text-slate-500">{item.body}</div>
                             </div>
                         </motion.div>
                     ))}
 
-                    <div className="mt-12 pt-8" style={{ borderTop: "1px solid var(--bg-border)" }}>
-                        <div className="font-display font-bold text-[3rem] leading-none" style={{ color: "var(--teal)" }}>∞</div>
-                        <div className="label-data mt-2">Sovereign Nodes on the Mesh</div>
+                    <div className="mt-12 pt-8 border-t border-black/[0.03]">
+                        <div className="font-display font-bold text-[3rem] leading-none text-blue-600">∞</div>
+                        <div className="label-data mt-2 text-slate-400">Sovereign Nodes on the Mesh</div>
                     </div>
                 </motion.div>
             </div>

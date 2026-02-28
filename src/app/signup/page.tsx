@@ -30,16 +30,15 @@ export default function SignupPage() {
                 style={{ background: "var(--bg-elevated)", borderRight: "1px solid var(--bg-border)" }}>
 
                 <Link href="/" className="flex items-center gap-2 mb-16">
-                    <div className="w-7 h-7 rounded-lg flex items-center justify-center"
-                        style={{ background: "var(--teal-glow)", border: "1px solid var(--teal-border)" }}>
-                        <Zap className="w-4 h-4" style={{ color: "var(--teal)" }} />
+                    <div className="w-7 h-7 rounded-lg flex items-center justify-center bg-blue-500/10 border border-blue-500/20">
+                        <Zap className="w-4 h-4 text-blue-600" />
                     </div>
-                    <span className="font-display font-bold text-white text-[15px]">NANDIX</span>
+                    <span className="font-display font-bold text-slate-900 text-[15px]">NANDIX</span>
                 </Link>
 
                 <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-                    <div className="eyebrow mb-6">New Node Ceremony</div>
-                    <h2 className="font-display font-bold text-white leading-tight tracking-tight mb-6"
+                    <div className="eyebrow mb-6 text-blue-600">New Node Ceremony</div>
+                    <h2 className="font-display font-bold text-slate-900 leading-tight tracking-tight mb-6"
                         style={{ fontSize: "clamp(2rem, 4vw, 3rem)" }}>
                         Your identity<br />is your keys.
                     </h2>
@@ -60,15 +59,14 @@ export default function SignupPage() {
                                 transition={{ delay: 0.3 + i * 0.1 }}
                                 className="flex items-center gap-4"
                             >
-                                <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
-                                    style={{ background: "var(--bg-surface)", border: "1px solid var(--bg-border)" }}>
-                                    <s.icon className="w-4 h-4" style={{ color: "var(--text-muted)" }} />
+                                <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 bg-white border border-black/5 shadow-sm">
+                                    <s.icon className="w-4 h-4 text-slate-400" />
                                 </div>
                                 <div className="flex-1">
-                                    <div className="font-medium text-white text-[13px]">{s.label}</div>
-                                    <div className="label-data">{s.body}</div>
+                                    <div className="font-bold text-slate-800 text-[13px]">{s.label}</div>
+                                    <div className="label-data text-slate-400">{s.body}</div>
                                 </div>
-                                <div className="label-data">{s.step}</div>
+                                <div className="label-data text-blue-500/40">{s.step}</div>
                             </motion.div>
                         ))}
                     </div>
@@ -79,19 +77,18 @@ export default function SignupPage() {
             <div className="flex flex-col justify-center px-8 md:px-16 py-12 relative">
                 {/* Mobile logo */}
                 <Link href="/" className="lg:hidden flex items-center gap-2 mb-10">
-                    <div className="w-7 h-7 rounded-lg flex items-center justify-center"
-                        style={{ background: "var(--teal-glow)", border: "1px solid var(--teal-border)" }}>
-                        <Zap className="w-4 h-4" style={{ color: "var(--teal)" }} />
+                    <div className="w-7 h-7 rounded-lg flex items-center justify-center bg-blue-500/10 border border-blue-500/20">
+                        <Zap className="w-4 h-4 text-blue-600" />
                     </div>
-                    <span className="font-display font-bold text-white text-[15px]">NANDIX</span>
+                    <span className="font-display font-bold text-slate-900 text-[15px]">NANDIX</span>
                 </Link>
 
                 <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
                     className="max-w-[360px] mx-auto w-full">
 
-                    <div className="eyebrow mb-3">Genesis Protocol</div>
-                    <h1 className="font-display font-bold text-white leading-tight tracking-tight mb-2"
+                    <div className="eyebrow mb-3 text-blue-600">Genesis Protocol</div>
+                    <h1 className="font-display font-bold text-slate-900 leading-tight tracking-tight mb-2"
                         style={{ fontSize: "clamp(2rem,4vw,2.8rem)" }}>
                         Become<br />a node.
                     </h1>
@@ -116,7 +113,7 @@ export default function SignupPage() {
 
                         <motion.button type="submit" whileTap={{ scale: 0.97 }}
                             disabled={step !== "idle" || !handle}
-                            className="btn-teal justify-center mt-2 rounded-xl py-3 disabled:opacity-60">
+                            className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2 justify-center mt-2 rounded-xl py-3 font-bold text-[14px] shadow-lg shadow-blue-500/20 disabled:opacity-60 transition-all">
                             {step === "done" ? (
                                 <><Sparkles className="w-4 h-4" /> Identity Generated!</>
                             ) : step === "generating" ? (
@@ -137,8 +134,8 @@ export default function SignupPage() {
                                     <motion.div key={s} initial={{ opacity: 0 }} animate={{ opacity: 1 }}
                                         transition={{ delay: i * 0.4 }}
                                         className="flex items-center gap-2 mb-2 last:mb-0">
-                                        <Zap className="w-3 h-3 animate-pulse" style={{ color: "var(--teal)" }} />
-                                        <span className="label-data" style={{ color: "var(--teal)", opacity: 0.7 }}>{s}</span>
+                                        <Zap className="w-3 h-3 animate-pulse text-blue-600" />
+                                        <span className="label-data text-blue-600/70 font-bold">{s}</span>
                                     </motion.div>
                                 ))}
                             </div>
