@@ -1181,7 +1181,11 @@ export class NandixMesh {
         if (this.provider) this.provider.destroy();
         this.currentSwarm = topic;
         this.provider = new WebrtcProvider(`nandix-v2-${topic}`, this.ydoc, {
-            signaling: ["wss://signaling.yjs.dev"],
+            signaling: [
+                "wss://signaling.yjs.dev",
+                "wss://y-webrtc-signaling-eu.herokuapp.com",
+                "wss://y-webrtc-signaling-us.herokuapp.com"
+            ],
             password: `trident-${topic}`
         });
         console.log(`[TRIDENT] 🌐 Joined swarm: ${topic}`);

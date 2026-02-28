@@ -21,8 +21,8 @@ export async function GET(req: NextRequest) {
                 description: result.metadata.description
             }
         });
-    } catch (error: any) {
-        console.error(`[SCRAPE-API] ❌ Failed:`, error.message);
+    } catch (error: unknown) {
+        console.error(`[SCRAPE-API] ❌ Failed:`, (error as Error).message);
         return NextResponse.json({ error: 'Failed to scrape URL' }, { status: 500 });
     }
 }

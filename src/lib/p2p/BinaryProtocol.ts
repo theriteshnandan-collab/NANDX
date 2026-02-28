@@ -41,6 +41,10 @@ const TYPE_MAP: Record<string, number> = {
     "PROFILE_SYNC": 13,
     "ROOM_INVITE": 14,
     "ROOM_ANNOUNCE": 15,
+    "SOCIAL_POST": 16,
+    "SOCIAL_VIBE": 17,
+    "SOCIAL_REPLY": 18,
+    "SOCIAL_DELETE": 19,
 
     // System Control (RED Wire — Critical)
     "PING": 20,
