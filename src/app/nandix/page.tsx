@@ -969,40 +969,42 @@ function RadarView({ myId, connectedPeers, discoveredRooms }: { myId: string | n
                                     initial={{ height: 0, opacity: 0 }}
                                     animate={{ height: "auto", opacity: 1 }}
                                     exit={{ height: 0, opacity: 0 }}
+                                >
                                     <div className="overflow-hidden">
                                         <div className="p-5 rounded-[2rem] bg-white border border-blue-500/10 shadow-sm">
-                                        {/* ═══ RECOVERY INPUT (Expandable) ═══ */}
-                                        <AnimatePresence>
-                                            {showRecovery && (
-                                                <motion.div
-                                                    initial={{ height: 0, opacity: 0 }}
-                                                    animate={{ height: "auto", opacity: 1 }}
-                                                    exit={{ height: 0, opacity: 0 }}
-                                                    className="overflow-hidden"
-                                                >
-                                                    <div className="p-5 rounded-[2rem] bg-white border border-blue-500/10 shadow-xl">
-                                                        <span className="text-[9px] font-black uppercase tracking-[0.4em] text-blue-600/60 block mb-3">Enter 12 Magic Words</span>
-                                                        <textarea
-                                                            value={recoveryWords}
-                                                            onChange={(e) => setRecoveryWords(e.target.value)}
-                                                            placeholder="word1 word2 word3 word4 word5 word6 word7 word8 word9 word10 word11 word12"
-                                                            rows={3}
-                                                            className="w-full bg-slate-50 rounded-xl px-4 py-3 text-[12px] text-slate-900 font-bold placeholder-slate-300 outline-none font-mono border border-black/[0.03] focus:border-blue-500/30 transition-all resize-none shadow-inner"
-                                                        />
-                                                        <button
-                                                            onClick={handleRecover}
-                                                            disabled={recovering || !recoveryWords.trim()}
-                                                            className={`w-full mt-3 py-3 rounded-xl text-[11px] font-mono uppercase tracking-wider transition-all shadow-lg ${recoveryWords.trim()
-                                                                ? "bg-blue-600 text-white shadow-blue-500/20"
-                                                                : "bg-slate-50 border border-black/[0.02] text-slate-200"
-                                                                }`}
-                                                        >
-                                                            {recovering ? "Recovering..." : "Restore Identity"}
-                                                        </button>
-                                                    </div>
-                                                </motion.div>
-                                            )}
-                                        </AnimatePresence>
+                                            {/* ═══ RECOVERY INPUT (Expandable) ═══ */}
+                                            <AnimatePresence>
+                                                {showRecovery && (
+                                                    <motion.div
+                                                        initial={{ height: 0, opacity: 0 }}
+                                                        animate={{ height: "auto", opacity: 1 }}
+                                                        exit={{ height: 0, opacity: 0 }}
+                                                        className="overflow-hidden"
+                                                    >
+                                                        <div className="p-5 rounded-[2rem] bg-white border border-blue-500/10 shadow-xl">
+                                                            <span className="text-[9px] font-black uppercase tracking-[0.4em] text-blue-600/60 block mb-3">Enter 12 Magic Words</span>
+                                                            <textarea
+                                                                value={recoveryWords}
+                                                                onChange={(e) => setRecoveryWords(e.target.value)}
+                                                                placeholder="word1 word2 word3 word4 word5 word6 word7 word8 word9 word10 word11 word12"
+                                                                rows={3}
+                                                                className="w-full bg-slate-50 rounded-xl px-4 py-3 text-[12px] text-slate-900 font-bold placeholder-slate-300 outline-none font-mono border border-black/[0.03] focus:border-blue-500/30 transition-all resize-none shadow-inner"
+                                                            />
+                                                            <button
+                                                                onClick={handleRecover}
+                                                                disabled={recovering || !recoveryWords.trim()}
+                                                                className={`w-full mt-3 py-3 rounded-xl text-[11px] font-mono uppercase tracking-wider transition-all shadow-lg ${recoveryWords.trim()
+                                                                    ? "bg-blue-600 text-white shadow-blue-500/20"
+                                                                    : "bg-slate-50 border border-black/[0.02] text-slate-200"
+                                                                    }`}
+                                                            >
+                                                                {recovering ? "Recovering..." : "Restore Identity"}
+                                                            </button>
+                                                        </div>
+                                                    </motion.div>
+                                                )}
+                                            </AnimatePresence>
+                                        </div>
                                     </div>
                                 </motion.div>
                             )}

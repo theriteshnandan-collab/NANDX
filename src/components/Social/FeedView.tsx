@@ -237,7 +237,8 @@ export function FeedView({ myId, connectedPeers = 0 }: FeedViewProps) {
                                     <ReplyThread post={post} myId={myId} />
                                 </div>
                             </motion.div>
-                        ))}
+                        ))
+                    )}
 
                     {/* Empty State */}
                     {displayPosts?.length === 0 && (

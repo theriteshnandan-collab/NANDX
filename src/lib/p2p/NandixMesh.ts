@@ -1191,7 +1191,7 @@ export class NandixMesh {
 
     public getDoc(): Y.Doc { return this.ydoc; }
     public getMyId(): string | null { return this.myId; }
-    public getConnectedPeerIds(): string[] { return Array.from(this.chatConnections.keys()); }
+
 
     /**
      * 📊 TRACE CONNECTION QUALITY

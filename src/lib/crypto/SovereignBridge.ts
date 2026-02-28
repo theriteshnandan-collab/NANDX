@@ -140,7 +140,7 @@ export class SovereignBridge {
         return crypto.subtle.deriveKey(
             {
                 name: "PBKDF2",
-                salt: salt,
+                salt: salt as unknown as BufferSource,
                 iterations: 100000,
                 hash: "SHA-256"
             },
