@@ -38,7 +38,7 @@ export default function Hero() {
                     Start Building
                     <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </Link>
-                <div className="flex items-center gap-2 px-6 py-2.5 rounded-[2px] bg-black/40 border border-white/10 font-mono text-sm text-[#888]">
+                <div className="flex items-center gap-2 px-6 py-2.5 rounded-[2px] bg-slate-900/40 border border-white/10 font-mono text-sm text-[#888]">
                     <span className="text-[#FF4F00]">$</span> npx danrit init
                 </div>
             </div>

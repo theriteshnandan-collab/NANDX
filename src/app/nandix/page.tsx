@@ -839,8 +839,8 @@ function RadarView({ myId, connectedPeers, discoveredRooms }: { myId: string | n
 
                         {/* ═══ CONTACTS PANEL ═══ */}
                         {contacts && contacts.length > 0 && (
-                            <div className="relative p-6 md:p-7 rounded-[2.2rem] bg-zinc-950/40 backdrop-blur-3xl border border-white/[0.03]">
-                                <span className="text-[9px] font-black uppercase tracking-[0.4em] text-zinc-700 block mb-4">
+                            <div className="relative p-6 md:p-7 rounded-[2.2rem] bg-white border border-black/5 shadow-sm">
+                                <span className="text-[9px] font-black uppercase tracking-[0.4em] text-slate-500 block mb-4">
                                     Contacts · {contacts.length}
                                 </span>
                                 <div className="space-y-2">
@@ -864,7 +864,7 @@ function RadarView({ myId, connectedPeers, discoveredRooms }: { myId: string | n
 
                                                 {/* Connection Quality Badge */}
                                                 {isOnline && (
-                                                    <div className={`px-1 rounded bg-black/40 border border-white/5 flex items-center gap-1 ${mesh.getQuality(contact.peerId) === "relay" ? "text-amber-500" : "text-emerald-500/60"
+                                                    <div className={`px-1 rounded bg-slate-100 border border-black/5 flex items-center gap-1 ${mesh.getQuality(contact.peerId) === "relay" ? "text-amber-500" : "text-emerald-600"
                                                         }`}>
                                                         <span className="text-[7px] font-black tracking-tighter uppercase">
                                                             {mesh.getQuality(contact.peerId) === "relay" ? "RLY" : "DIR"}
@@ -925,7 +925,7 @@ function RadarView({ myId, connectedPeers, discoveredRooms }: { myId: string | n
                                                                 removeContact(contact.peerId);
                                                             }
                                                         }}
-                                                        className="w-7 h-7 rounded-lg bg-zinc-900 border border-white/5 flex items-center justify-center text-zinc-600 hover:text-rose-500 hover:border-rose-500/20 transition-all"
+                                                        className="w-7 h-7 rounded-lg bg-slate-100 border border-black/5 flex items-center justify-center text-slate-400 hover:text-rose-500 hover:border-rose-500/20 transition-all"
                                                         title="Remove"
                                                     >
                                                         ×
@@ -969,9 +969,8 @@ function RadarView({ myId, connectedPeers, discoveredRooms }: { myId: string | n
                                     initial={{ height: 0, opacity: 0 }}
                                     animate={{ height: "auto", opacity: 1 }}
                                     exit={{ height: 0, opacity: 0 }}
-                                    className="overflow-hidden"
-                                >
-                                    <div className="p-5 rounded-[2rem] bg-zinc-950/40 backdrop-blur-3xl border border-violet-500/10">
+                                    <div className="overflow-hidden">
+                                        <div className="p-5 rounded-[2rem] bg-white border border-blue-500/10 shadow-sm">
                                         {/* ═══ RECOVERY INPUT (Expandable) ═══ */}
                                         <AnimatePresence>
                                             {showRecovery && (
@@ -1149,14 +1148,14 @@ function ProfileView({ profile, onSave, shards, onToggleShard }: { profile: User
                             <div className="flex items-center justify-center md:justify-start gap-2 mt-3">
                                 <button
                                     onClick={handleCopy}
-                                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-[9px] font-mono uppercase tracking-wider transition-all ${copied ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400" : "bg-zinc-900/60 border-white/[0.04] text-zinc-500 hover:text-white"}`}
+                                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-[9px] font-mono uppercase tracking-wider transition-all ${copied ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400" : "bg-slate-100 border-black/5 text-slate-500 hover:text-blue-600"}`}
                                 >
                                     {copied ? <Check className="w-2.5 h-2.5" /> : <Copy className="w-2.5 h-2.5" />}
                                     {copied ? "Copied" : "Copy"}
                                 </button>
                                 <button
                                     onClick={() => { if (navigator.share) navigator.share({ title: "NANDIX ID", text: profile.peerId }); else handleCopy(); }}
-                                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-900/60 border border-white/[0.04] text-[9px] font-mono uppercase tracking-wider text-zinc-500 hover:text-white transition-all"
+                                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 border border-black/5 text-[9px] font-mono uppercase tracking-wider text-slate-500 hover:text-blue-600 transition-all"
                                 >
                                     <Share2 className="w-2.5 h-2.5" />
                                     Share
@@ -1641,16 +1640,16 @@ function BotLaboratory({ shards, onToggle }: { shards: BotShard[]; onToggle: (id
                 {shards.map((shard) => (
                     <div
                         key={shard.id}
-                        className={`p-4 rounded-2xl border transition-all ${shard.enabled ? "bg-violet-500/5 border-violet-500/20" : "bg-black/20 border-white/[0.02]"}`}
+                        className={`p-4 rounded-2xl border transition-all ${shard.enabled ? "bg-violet-500/10 border-violet-500/20" : "bg-white/40 border-black/5"}`}
                     >
                         <div className="flex items-start justify-between">
                             <div className="space-y-1">
-                                <h4 className={`text-[11px] font-bold ${shard.enabled ? "text-violet-400" : "text-zinc-500"}`}>{shard.name}</h4>
-                                <p className="text-[9px] text-zinc-600 leading-relaxed max-w-[180px]">{shard.description}</p>
+                                <h4 className={`text-[11px] font-bold ${shard.enabled ? "text-violet-600" : "text-slate-500"}`}>{shard.name}</h4>
+                                <p className="text-[9px] text-slate-400 leading-relaxed max-w-[180px]">{shard.description}</p>
                             </div>
                             <button
                                 onClick={() => onToggle(shard.id, !shard.enabled)}
-                                className={`w-10 h-6 rounded-full relative transition-all ${shard.enabled ? "bg-violet-500" : "bg-zinc-800"}`}
+                                className={`w-10 h-6 rounded-full relative transition-all ${shard.enabled ? "bg-violet-600" : "bg-slate-200"}`}
                             >
                                 <motion.div
                                     animate={{ x: shard.enabled ? 18 : 2 }}

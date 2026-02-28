@@ -83,7 +83,7 @@ export default function DataViewer({ data }: DataViewerProps) {
                         {data.records && (
                             <div className="space-y-4 mb-8">
                                 <h3 className="text-white text-xs font-bold uppercase tracking-widest">DNS Records</h3>
-                                <div className="bg-black/50 rounded-lg p-4 border border-white/5 font-mono text-[10px]">
+                                <div className="bg-slate-900/50 rounded-lg p-4 border border-white/5 font-mono text-[10px]">
                                     {data.records.map((record, i) => (
                                         <div key={i} className="py-1 border-b border-white/5 last:border-0 text-[#00E054]">
                                             {JSON.stringify(record, null, 2)}

@@ -36,9 +36,9 @@ export const LinkPreview: React.FC<LinkPreviewProps> = ({ url }) => {
 
     if (loading) {
         return (
-            <div className="w-full max-w-sm mt-2 p-4 rounded-2xl bg-white/[0.02] border border-white/[0.04] flex items-center gap-3">
+            <div className="w-full max-w-sm mt-2 p-4 rounded-2xl bg-white border border-black/[0.04] flex items-center gap-3 shadow-sm">
                 <Loader2 className="w-4 h-4 text-cyan-500 animate-spin" />
-                <span className="text-[10px] font-bold text-white/20 uppercase tracking-widest">Scanning Signal...</span>
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Scanning Signal...</span>
             </div>
         );
     }
@@ -54,15 +54,15 @@ export const LinkPreview: React.FC<LinkPreviewProps> = ({ url }) => {
             animate={{ opacity: 1, scale: 1 }}
             className="block w-full max-w-sm mt-3 group"
         >
-            <div className="overflow-hidden rounded-2xl bg-zinc-950/40 backdrop-blur-3xl border border-white/[0.04] group-hover:border-cyan-500/30 transition-all shadow-2xl">
+            <div className="overflow-hidden rounded-2xl bg-white backdrop-blur-3xl border border-black/5 group-hover:border-cyan-500/30 transition-all shadow-sm group-hover:shadow-lg">
                 {metadata.image && (
-                    <div className="relative aspect-video w-full overflow-hidden border-b border-white/[0.03]">
+                    <div className="relative aspect-video w-full overflow-hidden border-b border-black/[0.03]">
                         <img
                             src={metadata.image}
                             alt={metadata.title}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/80 to-transparent" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-white/80 to-transparent" />
                     </div>
                 )}
 
@@ -78,19 +78,19 @@ export const LinkPreview: React.FC<LinkPreviewProps> = ({ url }) => {
                         <span className="text-[9px] font-mono text-white/10 truncate">{new URL(url).hostname}</span>
                     </div>
 
-                    <h4 className="text-sm font-bold text-white line-clamp-1 group-hover:text-cyan-400 transition-colors">
+                    <h4 className="text-sm font-bold text-slate-900 line-clamp-1 group-hover:text-cyan-600 transition-colors">
                         {metadata.title}
                     </h4>
 
                     {metadata.description && (
-                        <p className="text-[11px] text-white/30 line-clamp-2 leading-relaxed font-medium">
+                        <p className="text-[11px] text-slate-500 line-clamp-2 leading-relaxed font-medium">
                             {metadata.description}
                         </p>
                     )}
 
                     <div className="pt-2 flex items-center justify-end">
-                        <div className="p-1.5 rounded-lg bg-white/5 border border-white/5 group-hover:border-cyan-500/30 transition-all">
-                            <ExternalLink className="w-3 h-3 text-white/20 group-hover:text-cyan-400" />
+                        <div className="p-1.5 rounded-lg bg-slate-900/5 border border-black/5 group-hover:border-cyan-500/30 transition-all">
+                            <ExternalLink className="w-3 h-3 text-slate-400 group-hover:text-cyan-600" />
                         </div>
                     </div>
                 </div>

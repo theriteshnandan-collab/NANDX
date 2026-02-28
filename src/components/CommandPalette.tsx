@@ -29,7 +29,7 @@ export default function CommandPalette() {
     if (!open) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-start justify-center pt-[20vh] bg-black/60 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-start justify-center pt-[20vh] bg-slate-900/60 backdrop-blur-sm">
             <Command className="w-[640px] max-w-full bg-[#09090b] border border-white/10 shadow-2xl rounded-xl overflow-hidden animate-in fade-in zoom-in-95 duration-100">
                 <div className="flex items-center border-b border-white/10 px-4">
                     <Search className="w-5 h-5 text-[#666]" />

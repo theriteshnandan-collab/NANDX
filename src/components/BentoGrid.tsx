@@ -73,7 +73,7 @@ export function BentoGrid() {
                 <Card className="h-full bg-zinc-900/50 border-zinc-800/50 hover:border-orange-500/50 transition-colors group rounded-md overflow-hidden">
                     <CardHeader>
                         <div className="flex justify-between items-start mb-4">
-                            <div className="p-3 bg-zinc-950/50 border border-zinc-800 text-orange-500 group-hover:scale-110 transition-transform">
+                            <div className="p-3 bg-slate-100/50 border border-zinc-800 text-orange-500 group-hover:scale-110 transition-transform">
                                 <Camera className="w-6 h-6" />
                             </div>
                             <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest border border-zinc-800 px-2 py-0.5">
@@ -90,7 +90,7 @@ export function BentoGrid() {
                         </CardDescription>
                         <Button
                             variant="secondary"
-                            className="w-full bg-zinc-950 hover:bg-zinc-900 text-zinc-300 rounded-none border border-zinc-800 group-hover:border-orange-500/30 transition-colors"
+                            className="w-full bg-slate-100 hover:bg-zinc-900 text-zinc-300 rounded-none border border-zinc-800 group-hover:border-orange-500/30 transition-colors"
                             onClick={() => router.push("/dashboard/laboratory?tab=shot")}
                         >
                             DEPLOY ENGINE <Zap className="ml-2 w-3 h-3 text-yellow-500" />
@@ -109,7 +109,7 @@ export function BentoGrid() {
                 <Card className="h-full bg-zinc-900/50 border-zinc-800/50 hover:border-green-500/50 transition-colors group rounded-md overflow-hidden">
                     <CardHeader>
                         <div className="flex justify-between items-start mb-4">
-                            <div className="p-3 bg-zinc-950/50 border border-zinc-800 text-green-500 group-hover:scale-110 transition-transform">
+                            <div className="p-3 bg-slate-100/50 border border-zinc-800 text-green-500 group-hover:scale-110 transition-transform">
                                 <QrCode className="w-6 h-6" />
                             </div>
                             <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest border border-zinc-800 px-2 py-0.5">
@@ -126,7 +126,7 @@ export function BentoGrid() {
                         </CardDescription>
                         <Button
                             variant="secondary"
-                            className="w-full bg-zinc-950 hover:bg-zinc-900 text-zinc-300 rounded-none border border-zinc-800 group-hover:border-green-500/30 transition-colors"
+                            className="w-full bg-slate-100 hover:bg-zinc-900 text-zinc-300 rounded-none border border-zinc-800 group-hover:border-green-500/30 transition-colors"
                             onClick={() => router.push("/dashboard/laboratory?tab=qr")}
                         >
                             DEPLOY ENGINE <Zap className="ml-2 w-3 h-3 text-yellow-500" />

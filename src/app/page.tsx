@@ -33,7 +33,8 @@ function ParticleNet() {
     const init = () => {
       resize();
       nodes.length = 0;
-      const count = Math.min(60, Math.floor(canvas.width / 20));
+      // Mobile-optimized particle limit to ensure constant 60fps on low-end devices
+      const count = Math.min(40, Math.floor(canvas.width / 25));
       for (let i = 0; i < count; i++) {
         nodes.push({
           x: Math.random() * canvas.width,

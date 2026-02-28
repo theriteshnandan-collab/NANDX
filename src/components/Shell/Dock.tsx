@@ -17,7 +17,7 @@ export const Dock: React.FC<DockProps> = ({ activeMode, onModeChange }) => {
             <motion.div
                 initial={{ y: 50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                className="bg-zinc-950/60 backdrop-blur-[120px] border border-white/5 px-5 py-3 rounded-[2.5rem] flex items-center gap-2 shadow-[0_25px_80px_rgba(0,0,0,0.8)]"
+                className="bg-white/60 backdrop-blur-[120px] border border-black/5 px-5 py-3 rounded-[2.5rem] flex items-center gap-2 shadow-sm"
             >
                 <DockItem
                     icon={<MessageSquare className="w-5 h-5" />}
@@ -67,7 +67,7 @@ const DockItem = ({ icon, label, active, onClick, color }: {
         >
             <motion.div
                 animate={active ? { scale: 1.15, y: -2 } : { scale: 1, y: 0 }}
-                className={`transition-all duration-300 z-10 ${active ? colorClasses[color] : 'text-zinc-500 group-hover:text-zinc-300'}`}
+                className={`transition-all duration-300 z-10 ${active ? colorClasses[color] : 'text-slate-400 group-hover:text-slate-600'}`}
             >
                 {icon}
             </motion.div>
@@ -77,7 +77,7 @@ const DockItem = ({ icon, label, active, onClick, color }: {
             {active && (
                 <motion.div
                     layoutId="dock-indicator"
-                    className="absolute inset-0 bg-white/[0.03] rounded-2xl border border-white/5"
+                    className="absolute inset-0 bg-slate-900/[0.03] rounded-2xl border border-black/5"
                     transition={{ type: "spring", stiffness: 400, damping: 30 }}
                 />
             )}

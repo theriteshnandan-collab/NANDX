@@ -50,7 +50,7 @@ export function ScrapeConsole() {
 
             {/* TERMINAL BODY */}
             <div className="flex-1 p-4 font-mono text-xs overflow-hidden flex flex-col relative">
-                <div className="flex items-center gap-2 mb-4 bg-black/50 p-2 rounded border border-zinc-800/50 focus-within:border-blue-500/50 transition-colors">
+                <div className="flex items-center gap-2 mb-4 bg-slate-900/50 p-2 rounded border border-zinc-800/50 focus-within:border-blue-500/50 transition-colors">
                     <span className="text-blue-500">$</span>
                     <input
                         type="text"
@@ -70,7 +70,7 @@ export function ScrapeConsole() {
                 </div>
 
                 {/* OUTPUT WINDOW */}
-                <div className="flex-1 bg-black/40 rounded border border-zinc-800/30 p-3 overflow-y-auto text-zinc-400 scrollbar-thin scrollbar-thumb-zinc-800">
+                <div className="flex-1 bg-slate-900/40 rounded border border-zinc-800/30 p-3 overflow-y-auto text-zinc-400 scrollbar-thin scrollbar-thumb-zinc-800">
                     <AnimatePresence mode="wait">
                         {loading ? (
                             <motion.div
@@ -99,7 +99,7 @@ export function ScrapeConsole() {
             </div>
 
             {/* FOOTER STATS */}
-            <div className="px-4 py-2 bg-black/80 border-t border-white/5 flex justify-between text-[9px] text-zinc-500 font-mono uppercase tracking-wider relative z-10">
+            <div className="px-4 py-2 bg-slate-900/80 border-t border-white/5 flex justify-between text-[9px] text-zinc-500 font-mono uppercase tracking-wider relative z-10">
                 <span>Latency: {loading ? "CALCULATING..." : "24ms"}</span>
                 <span className="text-blue-500/80">Proxy: SECURE</span>
             </div>

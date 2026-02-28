@@ -62,7 +62,7 @@ export default function Vault() {
                             <h3 className="text-white font-bold mb-1">Store this key immediately</h3>
                             <p className="text-[#888] text-xs mb-4">It will never be shown again. If you lose it, you will need to generate a new one.</p>
 
-                            <div className="flex items-center gap-2 bg-black/50 border border-white/10 rounded px-3 py-2.5 font-mono text-sm text-white">
+                            <div className="flex items-center gap-2 bg-slate-900/50 border border-white/10 rounded px-3 py-2.5 font-mono text-sm text-white">
                                 <span className="flex-1 break-all">{newKey}</span>
                                 <button
                                     onClick={() => navigator.clipboard.writeText(newKey)}

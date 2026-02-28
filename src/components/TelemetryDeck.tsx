@@ -53,7 +53,7 @@ export default function TelemetryDeck() {
             </div>
 
             {/* Placeholder for future real-time metric (e.g. Total Saved Templates) */}
-            <div className="border border-white/5 p-6 bg-black/20 flex flex-col justify-center items-center text-center opacity-40">
+            <div className="border border-white/5 p-6 bg-slate-900/20 flex flex-col justify-center items-center text-center opacity-40">
                 <BarChart3 size={24} className="text-muted-foreground mb-2" />
                 <div className="text-[10px] uppercase tracking-[0.2em] font-bold">Additional Telemetry Coming Soon</div>
                 <div className="text-[8px] text-muted-foreground mt-1 max-w-[200px]">Real-time success rates and latency will be active once your fleet scales.</div>

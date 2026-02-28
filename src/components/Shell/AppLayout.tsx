@@ -17,18 +17,18 @@ export const AppLayout: React.FC<{
     peerList: React.ReactNode;
 }> = ({ children, sidebar, peerList }) => {
     return (
-        <div className="flex h-screen bg-[#050505] text-zinc-100 font-sans overflow-hidden">
+        <div className="flex h-screen bg-[#F8FAFC] text-slate-900 font-sans overflow-hidden">
 
             {/* COLUMN 1: SOVEREIGNS (Servers) */}
-            <aside className="w-20 bg-black/40 border-r border-white/5 flex flex-col items-center py-4 space-y-4">
+            <aside className="w-20 bg-slate-100/50 border-r border-black/5 flex flex-col items-center py-4 space-y-4">
                 <div className="w-12 h-12 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl flex items-center justify-center mb-2">
                     <Shield className="w-6 h-6 text-emerald-400" />
                 </div>
-                <div className="h-0.5 w-8 bg-white/5 rounded-full" />
+                <div className="h-0.5 w-8 bg-slate-900/5 rounded-full" />
                 {sidebar}
 
                 <div className="mt-auto pb-4 space-y-4">
-                    <button className="w-12 h-12 flex items-center justify-center text-zinc-600 hover:text-emerald-400 transition-colors">
+                    <button className="w-12 h-12 flex items-center justify-center text-slate-400 hover:text-emerald-500 transition-colors">
                         <Settings className="w-5 h-5" />
                     </button>
                 </div>
@@ -36,9 +36,9 @@ export const AppLayout: React.FC<{
 
             {/* COLUMN 2: CHANNEL LIST & CHAT (The Core) */}
             <main className="flex-1 flex overflow-hidden">
-                <div className="w-64 bg-zinc-900/20 border-r border-white/5 hidden md:flex flex-col">
-                    <div className="h-14 px-4 flex items-center border-b border-white/5">
-                        <h2 className="text-xs font-black uppercase tracking-widest text-zinc-500">Channels</h2>
+                <div className="w-64 bg-slate-50/50 border-r border-black/5 hidden md:flex flex-col">
+                    <div className="h-14 px-4 flex items-center border-b border-black/5">
+                        <h2 className="text-xs font-black uppercase tracking-widest text-slate-500">Channels</h2>
                     </div>
                     <div className="flex-1 p-2 space-y-1">
                         <ChannelItem icon={<Hash className="w-4 h-4" />} label="general" active />
@@ -48,10 +48,10 @@ export const AppLayout: React.FC<{
                     </div>
                 </div>
 
-                <div className="flex-1 flex flex-col bg-zinc-950/20">
-                    <div className="h-14 px-6 flex items-center justify-between border-b border-white/5 backdrop-blur-xl bg-black/20 z-10">
+                <div className="flex-1 flex flex-col bg-white/50">
+                    <div className="h-14 px-6 flex items-center justify-between border-b border-black/5 backdrop-blur-xl bg-white/40 z-10">
                         <div className="flex items-center gap-2">
-                            <Hash className="text-zinc-500 w-5 h-5" />
+                            <Hash className="text-slate-500 w-5 h-5" />
                             <span className="font-bold text-sm tracking-tight">general</span>
                         </div>
                         <div className="flex items-center gap-4">
@@ -66,8 +66,8 @@ export const AppLayout: React.FC<{
             </main>
 
             {/* COLUMN 3: PEER LIST (Presence) */}
-            <aside className="w-64 bg-black/40 border-l border-white/5 hidden lg:flex flex-col p-4">
-                <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-600 mb-4">Discovery</h2>
+            <aside className="w-64 bg-slate-50/30 border-l border-black/5 hidden lg:flex flex-col p-4">
+                <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4">Discovery</h2>
                 {peerList}
             </aside>
 
@@ -76,7 +76,7 @@ export const AppLayout: React.FC<{
 };
 
 const ChannelItem: React.FC<{ icon: React.ReactNode; label: string; active?: boolean }> = ({ icon, label, active }) => (
-    <button className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all ${active ? 'bg-emerald-500/10 text-emerald-400' : 'text-zinc-500 hover:bg-white/5 hover:text-zinc-300'}`}>
+    <button className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all ${active ? 'bg-emerald-500/10 text-emerald-600' : 'text-slate-500 hover:bg-slate-900/5 hover:text-slate-700'}`}>
         {icon}
         <span>{label}</span>
     </button>

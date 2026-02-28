@@ -83,7 +83,7 @@ export function ApiKeyManager({ keys }: { keys: ApiKey[] }) {
                             </Button>
                         </div>
                     </div>
-                    <div className="font-mono text-sm text-emerald-400 break-all p-2 bg-black/50 rounded border border-emerald-500/20">
+                    <div className="font-mono text-sm text-emerald-400 break-all p-2 bg-slate-900/50 rounded border border-emerald-500/20">
                         {newKey}
                     </div>
                     <p className="text-xs text-zinc-500 mt-2">

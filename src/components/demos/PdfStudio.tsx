@@ -58,7 +58,7 @@ export function PdfStudio() {
             {/* SPLIT VIEW */}
             <div className="flex-1 flex overflow-hidden">
                 {/* EDITOR */}
-                <div className="w-1/2 p-0 border-r border-zinc-800 bg-black">
+                <div className="w-1/2 p-0 border-r border-zinc-800 bg-slate-900">
                     <textarea
                         className="w-full h-full bg-transparent text-zinc-300 font-mono text-[10px] p-3 resize-none focus:outline-none"
                         value={html}
@@ -79,7 +79,7 @@ export function PdfStudio() {
                     )}
 
                     {loading && (
-                        <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">
+                        <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center">
                             <Loader2 className="w-6 h-6 text-red-500 animate-spin" />
                         </div>
                     )}

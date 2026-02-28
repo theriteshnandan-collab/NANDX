@@ -106,7 +106,7 @@ export const GhostRemote: React.FC<GhostRemoteProps> = ({ onClose }) => {
                             </p>
                         </div>
                     </div>
-                    <button onClick={onClose} className="p-2 rounded-xl hover:bg-black/5 text-slate-400 transition-colors">
+                    <button onClick={onClose} className="p-2 rounded-xl hover:bg-slate-900/5 text-slate-400 transition-colors">
                         <X className="w-5 h-5" />
                     </button>
                 </div>
