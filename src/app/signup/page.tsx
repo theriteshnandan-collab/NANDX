@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Zap, Key, Radio, Globe, Sparkles } from "lucide-react";
+import { identity } from "@/lib/crypto/Identity";
 
 /* ══════════════════════════════════════════════════════════
    SIGNUP — Billion Dollar Brand
@@ -13,6 +14,16 @@ import { ArrowRight, Zap, Key, Radio, Globe, Sparkles } from "lucide-react";
 export default function SignupPage() {
     const [handle, setHandle] = useState("");
     const [step, setStep] = useState<"idle" | "generating" | "done">("idle");
+
+    // === AUTH GUARD ===
+    // Instantly eject users who already have an identity to prevent amnesia
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const force = urlParams.get("force");
+        if (identity.hasIdentity() && force !== "true") {
+            window.location.href = "/nandix";
+        }
+    }, []);
 
     const handleGenerate = (e: React.FormEvent) => {
         e.preventDefault();

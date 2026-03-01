@@ -46,7 +46,12 @@ export default function NandixOS() {
     const [mode, setMode] = useState<VoidMode>("FEED");
     const [activeTopic, setActiveTopic] = useState("general");
     const { messages, sendMessage, sendMediaMessage } = useSovereign(activeTopic);
-    const { myId, connectedPeers, mnemonic, isNewIdentity } = useMesh();
+    const { myId, connectedPeers, mnemonic, isNewIdentity, status, resetIdentity } = useMesh();
+
+    // HYDRATION SHIELD: Prevent SSR mismatches
+    const [isMounted, setIsMounted] = useState(false);
+    useEffect(() => setIsMounted(true), []);
+
     const [streamProgress, setStreamProgress] = useState({ percent: 0, file: "" });
     const [pairingRequest, setPairingRequest] = useState<{ peerId: string; secret: string } | null>(null);
     const [isPairing, setIsPairing] = useState(false);
@@ -226,6 +231,38 @@ export default function NandixOS() {
 
     return (
         <div className="relative w-screen h-screen overflow-hidden bg-[var(--bg-base)] text-[var(--text-primary)] selection:bg-blue-500/20">
+            {/* ═══ CONNECTING OVERLAY ═══ */}
+            <AnimatePresence>
+                {isMounted && status !== "ONLINE" && !showVessel && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-[var(--bg-base)] text-center px-6"
+                    >
+                        <motion.div animate={{ rotate: 360 }} transition={{ duration: 2, repeat: Infinity, ease: "linear" }} className="mb-6">
+                            <Zap className="w-8 h-8 text-blue-500" />
+                        </motion.div>
+                        <h2 className="font-display font-bold text-slate-900 text-xl tracking-tight mb-2">
+                            {status === "ERROR" ? "Connection Failed" : "Reclaiming Sovereign Identity..."}
+                        </h2>
+                        <p className="text-[13px] text-slate-500 max-w-[280px] mb-8">
+                            {status === "ERROR"
+                                ? "There was a fatal network error. Please reload the mesh."
+                                : "Waiting for the P2P network to release your cryptographic keys."}
+                        </p>
+
+                        <button
+                            onClick={resetIdentity}
+                            className="text-[11px] font-bold uppercase tracking-widest text-slate-400 hover:text-rose-500 transition-colors flex items-center gap-2"
+                        >
+                            <Trash2 className="w-3 h-3" />
+                            Start Fresh (Wipe Vault)
+                        </button>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
             {/* ═══ ERROR TOAST ═══ */}
             <AnimatePresence>
                 {lastError && (

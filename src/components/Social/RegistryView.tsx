@@ -86,6 +86,37 @@ export const RegistryView: React.FC<RegistryViewProps> = ({ onJoinRoom, onAddCon
                             exit={{ opacity: 0, y: -10 }}
                             className="space-y-2"
                         >
+                            {/* Manual Connect Fallback */}
+                            <div className="flex items-center gap-2 p-2 bg-slate-50 border border-black/5 rounded-2xl mb-4 group focus-within:border-blue-500/30 transition-colors">
+                                <div className="p-2 bg-blue-500/10 rounded-xl">
+                                    <Zap className="w-4 h-4 text-blue-600" />
+                                </div>
+                                <input
+                                    id="registryForceDial"
+                                    type="text"
+                                    placeholder="Direct connect ID..."
+                                    className="flex-1 bg-transparent px-2 text-sm text-slate-800 placeholder:text-slate-400 outline-none font-mono"
+                                    onKeyDown={(e) => {
+                                        if (e.key === "Enter" && e.currentTarget.value) {
+                                            onAddContact(e.currentTarget.value.trim());
+                                            e.currentTarget.value = "";
+                                        }
+                                    }}
+                                />
+                                <button
+                                    onClick={() => {
+                                        const input = document.getElementById('registryForceDial') as HTMLInputElement;
+                                        if (input && input.value) {
+                                            onAddContact(input.value.trim());
+                                            input.value = "";
+                                        }
+                                    }}
+                                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl transition-colors shadow-sm"
+                                >
+                                    Dial
+                                </button>
+                            </div>
+
                             {filteredPeers.map((peer) => (
                                 <PeerRow key={peer.peerId} peer={peer} onAdd={() => onAddContact(peer.peerId)} />
                             ))}

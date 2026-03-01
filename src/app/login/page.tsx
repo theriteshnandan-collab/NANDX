@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Lock, Fingerprint, Shield, Zap, Eye, EyeOff } from "lucide-react";
+import { identity } from "@/lib/crypto/Identity";
 
 /* ══════════════════════════════════════════════════════════
    LOGIN — Billion Dollar Brand
@@ -13,6 +14,16 @@ import { ArrowRight, Lock, Fingerprint, Shield, Zap, Eye, EyeOff } from "lucide-
 export default function LoginPage() {
     const [showPass, setShowPass] = useState(false);
     const [loading, setLoading] = useState(false);
+
+    // === AUTH GUARD ===
+    // Instantly eject users who already have an identity to prevent amnesia
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const force = urlParams.get("force");
+        if (identity.hasIdentity() && force !== "true") {
+            window.location.href = "/nandix";
+        }
+    }, []);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();

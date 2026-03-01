@@ -212,24 +212,42 @@ export class NandixMesh {
                     }, 3000);
                 }
 
-                // If the ID is taken, retry without custom ID
+                // 🚨 GHOST CONNECTION ERADICATION
+                // If the ID is taken, assume ghost connection from reload.
+                // WE NEVER FALL BACK TO UUID. WE AGGRESSIVELY POLL UNTIL CLAIMED.
                 if (err.type === "unavailable-id" && id) {
-                    console.log(`[TRIDENT] 🔄 ID taken, retrying with auto-ID...`);
+                    console.warn(`[TRIDENT] 👻 Ghost connection detected for ${id}. Commencing aggressive reclamation...`);
                     clearTimeout(timeout);
+
+                    // Destroy the current failed peer before retrying
                     try { this.peer?.destroy(); } catch (_) { }
 
-                    this.peer = new Peer(config);
-                    this.peer.on("open", (autoId) => {
-                        this.myId = autoId;
-                        console.log(`[TRIDENT] ✅ AUTO-ID OPEN: ${autoId}`);
-                        // Re-register ALL listeners on the new peer
+                    const attemptReclamation = () => {
+                        console.log(`[TRIDENT] 🔄 Attempting to reclaim sovereign ID: ${id}...`);
+                        this.peer = new Peer(id, config);
+
+                        this.peer.on("open", (reclaimedId) => {
+                            this.myId = reclaimedId;
+                            console.log(`[TRIDENT] ✅ SOVEREIGN ID RECLAIMED: ${reclaimedId}`);
+                            this.registerPeerListeners();
+                            resolve(reclaimedId);
+                        });
+
+                        this.peer.on("error", (e2: any) => {
+                            if (e2.type === "unavailable-id") {
+                                console.warn(`[TRIDENT] ⏳ Ghost socket still active. Retrying in 3s...`);
+                                try { this.peer?.destroy(); } catch (_) { }
+                                setTimeout(attemptReclamation, 3000);
+                            } else {
+                                console.error(`[TRIDENT] ❌ Fatal reclamation error:`, e2);
+                            }
+                        });
+
                         this.registerPeerListeners();
-                        resolve(autoId);
-                    });
-                    this.peer.on("error", (e2: any) => {
-                        console.error(`[TRIDENT] ❌ FATAL:`, e2);
-                    });
-                    this.registerPeerListeners();
+                    };
+
+                    // Wait 3 seconds for the global PeerJS server to naturally timeout the ghost socket
+                    setTimeout(attemptReclamation, 3000);
                 }
             });
 
@@ -1182,9 +1200,7 @@ export class NandixMesh {
         this.currentSwarm = topic;
         this.provider = new WebrtcProvider(`nandix-v2-${topic}`, this.ydoc, {
             signaling: [
-                "wss://signaling.yjs.dev",
-                "wss://y-webrtc-signaling-eu.herokuapp.com",
-                "wss://y-webrtc-signaling-us.herokuapp.com"
+                "wss://signaling.yjs.dev"
             ],
             password: `trident-${topic}`
         });

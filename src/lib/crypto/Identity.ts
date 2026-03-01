@@ -40,12 +40,22 @@ export interface UserProfile {
 export class SovereignIdentity {
     private cachedId: string | null = null;
     private cachedMnemonic: string | null = null;
+    private isGenerating: boolean = false;
 
     /**
      * Generate or retrieve a persistent Sovereign Identity.
      * Returns both the Peer ID and the mnemonic (for display/backup).
      */
     public async generate(): Promise<SovereignProfile> {
+        // Prevent React StrictMode double execution race conditions
+        if (this.isGenerating) {
+            console.log("[IDENTITY] ⏳ Generation already in progress, waiting...");
+            // Poll until generation finishes
+            while (this.isGenerating) {
+                await new Promise(r => setTimeout(r, 50));
+            }
+        }
+
         // 1. Check if we already have a mnemonic stored
         if (typeof window !== "undefined") {
             const storedMnemonic = localStorage.getItem(STORAGE_KEY_MNEMONIC);
@@ -61,6 +71,8 @@ export class SovereignIdentity {
             }
         }
 
+        this.isGenerating = true;
+
         // 2. Generate new mnemonic (12 words from 128-bit entropy)
         const mnemonic = generateMnemonic(wordlist, 128);
         const deviceId = this.getDeviceId();
@@ -73,6 +85,7 @@ export class SovereignIdentity {
         this.cachedMnemonic = mnemonic;
         this.persist(mnemonic, id);
 
+        this.isGenerating = false;
         console.log(`[IDENTITY] 🆕 New identity forged: ${id} (Device: ${deviceId})`);
         return { id, mnemonic, signingPublicKey, isNew: true };
     }

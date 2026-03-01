@@ -152,6 +152,34 @@ export function RadarView({ myId, connectedPeers, onAddContact, onJoinRoom }: Ra
                 )}
             </motion.div>
 
+            {/* ── Direct Dial Fallback ── */}
+            <div className="w-full card p-1 mb-8 bg-blue-500/5 border-blue-500/20 shadow-sm">
+                <div className="flex items-center justify-between">
+                    <input
+                        id="forceDialInput"
+                        type="text"
+                        placeholder="Force-dial peer ID (nandix-...)"
+                        className="flex-1 bg-transparent px-4 py-3 outline-none text-[13px] text-slate-800 placeholder:text-slate-400 font-mono"
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter" && e.currentTarget.value) {
+                                onAddContact(e.currentTarget.value.trim());
+                                e.currentTarget.value = "";
+                            }
+                        }}
+                    />
+                    <div className="px-4 border-l border-blue-500/10 hover:bg-blue-500/10 cursor-pointer h-full py-3 rounded-r-xl transition-colors"
+                        onClick={() => {
+                            const input = document.getElementById('forceDialInput') as HTMLInputElement;
+                            if (input && input.value) {
+                                onAddContact(input.value.trim());
+                                input.value = "";
+                            }
+                        }}>
+                        <Zap className="w-4 h-4 text-blue-500" />
+                    </div>
+                </div>
+            </div>
+
             {/* ── Active Nodes List ── */}
             <div className="w-full flex flex-col gap-3">
                 <div className="flex items-center gap-2 mb-2">

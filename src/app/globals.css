@@ -13,42 +13,42 @@
 /* ── TOKENS ─────────────────────────────────────────────────── */
 @layer base {
   :root {
-    /* Backgrounds — Solar Premium (Light Metallic) */
-    --bg-base:       #F8FAFC; /* Clean metallic slate white */
-    --bg-elevated:   rgba(255, 255, 255, 0.8); /* Highly transparent white */
-    --bg-surface:    rgba(255, 255, 255, 0.65); /* Frosted light surface */
-    --bg-border:     rgba(0, 0, 0, 0.06);
-    --bg-hover:      rgba(0, 0, 0, 0.04);
+    /* Backgrounds — Premium Light Mode (Glassmorphism Base) */
+    --bg-base:       #F1F5F9; /* Slate 100 - Provides contrast for white cards */
+    --bg-elevated:   rgba(255, 255, 255, 0.85); /* Frost glass white */
+    --bg-surface:    rgba(255, 255, 255, 0.5); /* Lighter frost */
+    --bg-border:     rgba(15, 23, 42, 0.08); /* Slate 900 border */
+    --bg-hover:      rgba(15, 23, 42, 0.04);
 
-    /* Accents — Solar (Metallic Blue + Slate + Graphite) */
-    --teal:          #2563EB; /* Sophisticated Royal Blue */
+    /* Accents — Royal Blue & Vivid Cyan */
+    --teal:          #2563EB; /* Primary Royal Blue */
     --teal-dim:      #1D4ED8;
-    --teal-glow:     rgba(37, 99, 235, 0.1);
-    --teal-border:   rgba(37, 99, 235, 0.2);
+    --teal-glow:     rgba(37, 99, 235, 0.15);
+    --teal-border:   rgba(37, 99, 235, 0.25);
 
-    --violet:        #7C3AED; /* Clean Violet */
-    --violet-glow:   rgba(124, 58, 237, 0.1);
+    --violet:        #7C3AED; 
+    --violet-glow:   rgba(124, 58, 237, 0.15);
     
-    --cyan:          #0891B2; /* Rich Cyan */
-    --cyan-glow:     rgba(8, 145, 178, 0.1);
+    --cyan:          #06B6D4; 
+    --cyan-glow:     rgba(6, 182, 212, 0.15);
 
-    /* Text — Deep Contrast */
+    /* Text — Ultra High Contrast */
     --text-primary:  #0F172A; /* Slate 900 */
-    --text-secondary:#475569; /* Slate 600 */
-    --text-muted:    #94A3B8; /* Slate 400 */
+    --text-secondary:#334155; /* Slate 700 - Darker for readability */
+    --text-muted:    #64748B; /* Slate 500 */
 
-    /* Status */
-    --amber:         #D97706; /* Warmer Amber */
-    --red:           #DC2626; /* Clean Red */
-    --green:         #16A34A; /* Professional Green */
+    /* Status Variables */
+    --amber:         #D97706; 
+    --red:           #E11D48; /* Rose 600 - More premium red */
+    --green:         #059669; /* Emerald 600 */
 
-    /* Fonts */
-    --font-display:  'Space Grotesk', -apple-system, sans-serif;
-    --font-body:     'Inter', -apple-system, sans-serif;
+    /* Typography */
+    --font-display:  'Space Grotesk', -apple-system, system-ui, sans-serif;
+    --font-body:     'Inter', -apple-system, system-ui, sans-serif;
     --font-mono:     'JetBrains Mono', 'Geist Mono', monospace;
 
-    /* Radius — Professional High-Fidelity */
-    --r-sm:  10px;
+    /* Radius — Ultra-Smooth */
+    --r-sm:  12px;
     --r-md:  16px;
     --r-lg:  24px;
     --r-xl:  32px;
@@ -191,28 +191,40 @@
     color: var(--text-primary);
   }
 
-  /* ── CARDS (Solar Premium) ─────────────────────────── */
+  /* ── CARDS (Premium Glassmorphism) ─────────────────────────── */
   .card {
-    background: var(--bg-surface);
+    background: var(--bg-elevated);
+    border: 1px solid var(--bg-border);
+    border-radius: var(--r-xl);
+    padding: 32px;
+    box-shadow: 
+      0 4px 24px -4px rgba(15, 23, 42, 0.05),
+      0 12px 32px -8px rgba(15, 23, 42, 0.03),
+      inset 0 1px 1px rgba(255, 255, 255, 0.8),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.5);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
-    border: 1px solid var(--bg-border);
-    border-radius: var(--r-lg);
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .card:hover {
-    border-color: rgba(0,0,0,0.1);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.9);
     transform: translateY(-2px);
+    box-shadow: 
+      0 12px 36px -4px rgba(15, 23, 42, 0.08),
+      0 24px 48px -12px rgba(15, 23, 42, 0.04),
+      inset 0 1px 1px rgba(255, 255, 255, 0.9),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.6);
   }
   .card-elevated {
-    background: var(--bg-elevated);
+    background: #FFFFFF;
     backdrop-filter: blur(32px);
     -webkit-backdrop-filter: blur(32px);
-    border: 1px solid var(--bg-border);
-    border-radius: var(--r-lg);
-    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 1);
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    border-radius: var(--r-xl);
+    box-shadow: 
+      0 24px 64px -12px rgba(15, 23, 42, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 1);
   }
   .card-teal {
     background: var(--bg-surface);
@@ -232,21 +244,28 @@
   /* ── INPUTS ─────────────────────────────────────────── */
   .input-void {
     width: 100%;
-    padding: 12px 16px;
-    background: var(--bg-surface);
+    background: #FFFFFF;
     border: 1px solid var(--bg-border);
-    border-radius: var(--r-md);
-    font-family: var(--font-body);
-    font-size: 14px;
     color: var(--text-primary);
-    outline: none;
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
-  }
-  .input-void:focus {
-    border-color: var(--teal-border);
-    box-shadow: 0 0 0 3px var(--teal-glow);
+    border-radius: var(--r-md);
+    padding: 14px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: var(--font-body);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 
+      0 1px 2px rgba(15, 23, 42, 0.02),
+      inset 0 1px 2px rgba(15, 23, 42, 0.02);
   }
   .input-void::placeholder { color: var(--text-muted); }
+  .input-void:focus {
+    outline: none;
+    border-color: var(--teal);
+    background: #FFFFFF;
+    box-shadow: 
+      0 0 0 3px var(--teal-glow),
+      0 4px 12px rgba(37, 99, 235, 0.08);
+  }
 
   /* ── STATUS DOT ─────────────────────────────────────── */
   .status-online {

@@ -113,11 +113,11 @@ export function FeedView({ myId, connectedPeers = 0 }: FeedViewProps) {
 
             {/* ── Compose Card ── */}
             <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-                className="w-full mb-6 glass-panel rounded-2xl p-5 relative overflow-hidden group">
+                className="w-full mb-6 glass-panel rounded-2xl p-5 relative overflow-hidden group focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500/30 transition-all border border-transparent">
                 <div className="absolute top-0 left-0 w-full h-[1px]" style={{ background: "linear-gradient(90deg, transparent, var(--violet-glow), transparent)" }} />
 
                 <div className="flex gap-4">
-                    <div className="w-10 h-10 rounded-full flex-shrink-0 bg-white border border-black/5 shadow-sm flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-full flex-shrink-0 bg-white border border-black/5 shadow-[0_2px_10px_rgba(0,0,0,0.05)] flex items-center justify-center">
                         <User className="w-4 h-4 text-blue-500" />
                     </div>
                     <div className="flex-1 flex flex-col pt-1">
@@ -134,9 +134,15 @@ export function FeedView({ myId, connectedPeers = 0 }: FeedViewProps) {
                             <div className="label-data flex items-center gap-1.5 text-blue-600">
                                 <Radio className="w-3.5 h-3.5" /> P2P Encrypted
                             </div>
-                            <button onClick={handlePost} disabled={!composeText.trim()} className="btn-teal !py-2 !px-4 !text-[13px] !bg-blue-600 !text-white hover:!bg-blue-700">
-                                <Send className="w-3.5 h-3.5" /> Transmit
-                            </button>
+                            <motion.button
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.95 }}
+                                onClick={handlePost}
+                                disabled={!composeText.trim() || !myId || isSyncing}
+                                className="btn-teal !py-2 !px-4 !text-[13px] !bg-blue-600 !text-white hover:!bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_4px_14px_rgba(37,99,235,0.25)] flex items-center gap-2">
+                                {isSyncing ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Send className="w-3.5 h-3.5" />}
+                                {isSyncing ? "Broadcasting..." : "Transmit"}
+                            </motion.button>
                         </div>
                     </div>
                 </div>
@@ -145,21 +151,25 @@ export function FeedView({ myId, connectedPeers = 0 }: FeedViewProps) {
             {/* ── Tabs ── */}
             <div className="w-full flex gap-2 mb-6 border-b pb-2" style={{ borderColor: "var(--bg-border)" }}>
                 {(["LATEST", "TRENDING"] as FeedTab[]).map(t => (
-                    <button key={t} onClick={() => setTab(t)}
-                        className={`btn-ghost ${tab === t ? "text-primary !bg-[var(--bg-border)]" : ""}`}>
-                        {t === "TRENDING" ? <TrendingUp className="w-3.5 h-3.5 text-teal" /> : <Zap className="w-3.5 h-3.5 text-teal" />}
-                        <span className="label-data !text-[11px] !m-0 !p-0" style={{ color: "var(--text-primary)" }}>{t}</span>
-                    </button>
+                    <motion.button key={t}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => setTab(t)}
+                        className={`btn-ghost !px-4 !py-2 ${tab === t ? "text-primary !bg-[var(--bg-border)]" : ""}`}>
+                        {t === "TRENDING" ? <TrendingUp className={`w-3.5 h-3.5 ${tab === t ? "text-teal" : "text-silver"}`} /> : <Zap className={`w-3.5 h-3.5 ${tab === t ? "text-teal" : "text-silver"}`} />}
+                        <span className={`label-data !text-[12px] !m-0 !p-0 ${tab === t ? "font-bold text-slate-900" : "font-medium"}`}>{t}</span>
+                    </motion.button>
                 ))}
             </div>
 
             {/* ── Stream ── */}
             <div className="w-full flex-1 overflow-y-auto no-scrollbar pb-32 flex flex-col gap-4">
                 <AnimatePresence mode="popLayout">
-                    {displayPosts?.length === 0 && connectedPeers === 0 ? (
+                    {isSyncing && (!displayPosts || displayPosts.length === 0) ? (
                         // Shimmer Skeleton
                         [1, 2, 3].map(i => (
-                            <div key={i} className="w-full h-40 bg-slate-50 border border-black/[0.03] rounded-[2.5rem] p-6 space-y-4 animate-shimmer" />
+                            <motion.div key={`skeleton-${i}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                                className="w-full h-40 bg-slate-50 border border-black/[0.03] rounded-[2.5rem] p-6 space-y-4 animate-shimmer" />
                         ))
                     ) : (
                         displayPosts?.map((post, i) => (
@@ -241,8 +251,8 @@ export function FeedView({ myId, connectedPeers = 0 }: FeedViewProps) {
                     )}
 
                     {/* Empty State */}
-                    {displayPosts?.length === 0 && (
-                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                    {displayPosts?.length === 0 && !isSyncing && (
+                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                             className="w-full py-20 flex flex-col items-center justify-center text-center opacity-50">
                             <Radio className="w-8 h-8 text-[var(--text-muted)] mb-4" />
                             <div className="eyebrow mb-2">Empty Void</div>
